@@ -1,12 +1,12 @@
-Debug: Quoting executed in: 0.000919s
-Debug: Erasure executed in: 0.008003s
-Debug: Removal of prop discrimination executed in: 0.043136s
-Debug: Dearg analysis executed in: 0.000283s
-Debug: Dearging executed in: 0.000958s
-Debug: Expansion of match branches executed in: 0.000049s
-Debug: Substitution of top level fixes executed in: 0.000011s
-Debug: Printing executed in: 0.002529s
-Debug: Extraction executed in: 0.055587s
+Debug: Quoting executed in: 0.001163s
+Debug: Erasure executed in: 0.008841s
+Debug: Removal of prop discrimination executed in: 0.044354s
+Debug: Dearg analysis executed in: 0.000267s
+Debug: Dearging executed in: 0.000910s
+Debug: Expansion of match branches executed in: 0.000028s
+Debug: Substitution of top level fixes executed in: 0.000012s
+Debug: Printing executed in: 0.004154s
+Debug: Extraction executed in: 0.059122s
 #![allow(dead_code)]
 #![allow(non_camel_case_types)]
 #![allow(unused_imports)]
