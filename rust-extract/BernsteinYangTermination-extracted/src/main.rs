@@ -1,18 +1,8 @@
-Debug: Quoting executed in: 0.001136s
-Debug: Erasure executed in: 0.008398s
-Debug: Removal of prop discrimination executed in: 0.043811s
-Debug: Dearg analysis executed in: 0.000316s
-Debug: Dearging executed in: 0.001027s
-Debug: Expansion of match branches executed in: 0.000046s
-Debug: Substitution of top level fixes executed in: 0.000010s
-Debug: Printing executed in: 0.002587s
-Debug: Extraction executed in: 0.056795s
 #![allow(dead_code)]
 #![allow(non_camel_case_types)]
 #![allow(unused_imports)]
 #![allow(non_snake_case)]
 #![allow(unused_variables)]
-#![feature(unsigned_abs)]
 
 use std::marker::PhantomData;
 
@@ -619,5 +609,5 @@ fn ConCert_Extraction_BernsteinYangTermination_W__curried(&'a self) -> &'a dyn F
 }
 }
 fn main() {
-  print!("{:?}", Program::new().ConCert_Extraction_BernsteinYangTermination_W())
+  println!("{:?}", Program::new().ConCert_Extraction_BernsteinYangTermination_W(10))
 }
