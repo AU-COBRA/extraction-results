@@ -1,3 +1,127 @@
+Main contract CounterSubsetTypes
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "exist_"
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "powInt"
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "modInt"
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "eqInt"
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "leInt"
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "mulInt"
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "snd"
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "fst"
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:47.56-47.60: Warning: 
+unused variable "ctx_"
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:2.38-2.43: Warning: 
+Unresolved type 'a. Type variables 'a were replaced by unit.
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:2.18-2.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:3.38-3.43: Warning: 
+Unresolved type 'b. Type variables 'b were replaced by unit.
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:3.18-3.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:16.15-16.16: Warning: 
+Unresolved type 'o1. Type variables 'o1 were replaced by unit.
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:16.11-16.12: Warning: 
+Unresolved type 'o1. Type variables 'o1 were replaced by unit.
+./examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:55.18-55.100: Warning: 
+Unresolved type ((int -> (operation list * int))[@closure
+                                  :(((coq_msg ->
+                                        ((int -> ('u3 list * int) option)
+                                        [@closure
+                                          :((bool ->
+                                               ((bool -> coq_sumbool)
+                                               [@closure :bool]))
+                                             *
+                                             ((int ->
+                                                 ((int -> int)[@closure
+                                                                :(int *
+                                                                   (int ->
+                                                                    ((int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])))]))
+                                             [@closure
+                                               :int ->
+                                                  ((int -> int)[@closure
+                                                                 :int])])
+                                             *
+                                             ((int ->
+                                                 ((int -> int)[@closure
+                                                                :((int ->
+                                                                    ((
+                                                                    int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int]))
+                                                                   * int)]))
+                                             [@closure
+                                               :int ->
+                                                  ((int -> int)[@closure
+                                                                 :int])])
+                                             *
+                                             (int ->
+                                                ((int -> bool)[@closure :int]))
+                                             * coq_msg)]))[@closure
+                                                            :((bool ->
+                                                                 ((bool ->
+                                                                    coq_sumbool)
+                                                                 [@closure
+                                                                   :bool]))
+                                                               *
+                                                               ((int ->
+                                                                   ((
+                                                                   int -> 
+                                                                    int)
+                                                                   [@closure
+                                                                    :(int *
+                                                                    (int ->
+                                                                    ((int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])))]))
+                                                               [@closure
+                                                                 :int ->
+                                                                    ((
+                                                                    int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])])
+                                                               *
+                                                               ((int ->
+                                                                   ((
+                                                                   int -> 
+                                                                    int)
+                                                                   [@closure
+                                                                    :((int ->
+                                                                    ((int ->
+                                                                    int)[@closure
+                                                                    :int])) *
+                                                                    int)]))
+                                                               [@closure
+                                                                 :int ->
+                                                                    ((
+                                                                    int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])])
+                                                               *
+                                                               (int ->
+                                                                  ((int ->
+                                                                    bool)
+                                                                  [@closure
+                                                                    :
+                                                                    int])))])
+                                     * coq_msg)]). Type variables 'u3 were replaced by unit.
+Storage initializer generated in "examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.initializer.tz"
+File "examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz" generated
+You may want to typecheck with:
+  dune-client typecheck script examples/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz
 Main contract Liquidity_eip20token
 ./examples/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq: Warning: 
 unused variable "eq_addr"
