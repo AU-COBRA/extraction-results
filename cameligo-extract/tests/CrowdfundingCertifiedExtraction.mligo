@@ -44,6 +44,7 @@ let get_contract_unit (a : address) : unit contract  =
 
 (* ConCert's call context *)
 type cctx = {
+  ctx_origin_ : address;
   ctx_from_ : address;
   ctx_contract_address_ : address;
   ctx_contract_balance_ : tez;
@@ -51,7 +52,8 @@ type cctx = {
 }
 (* a call context instance with fields filled in with required data *)
 let cctx_instance : cctx= 
-{ ctx_from_ = Tezos.sender;
+{ ctx_origin_ = Tezos.source;
+  ctx_from_ = Tezos.sender;
   ctx_contract_address_ = Tezos.self_address;
   ctx_contract_balance_ = Tezos.balance;
   ctx_amount_ = Tezos.balance

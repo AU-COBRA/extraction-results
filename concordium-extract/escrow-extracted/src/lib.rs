@@ -134,7 +134,7 @@ type ConCert_Execution_Blockchain_Amount<'a> = i64;
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
 pub enum ConCert_Execution_Blockchain_ContractCallContext<'a> {
-  build_ctx(PhantomData<&'a ()>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Amount<'a>, ConCert_Execution_Blockchain_Amount<'a>)
+  build_ctx(PhantomData<&'a ()>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Amount<'a>, ConCert_Execution_Blockchain_Amount<'a>)
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
@@ -183,7 +183,7 @@ fn closure<TArg, TRet>(&'a self, F: impl Fn(TArg) -> TRet + 'a) -> &'a dyn Fn(TA
 
 fn ConCert_Execution_Blockchain_ctx_from(&'a self, c: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
   match c {
-    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
+    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
       ctx_from
     },
   }
@@ -224,7 +224,7 @@ fn Coq_ZArith_BinIntDef_Z_eqb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn F
 
 fn ConCert_Execution_Blockchain_ctx_amount(&'a self, c: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
   match c {
-    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
+    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
       ctx_amount
     },
   }
@@ -707,7 +707,7 @@ fn Coq_ZArith_BinIntDef_Z_div__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn F
 
 fn ConCert_Execution_Blockchain_ctx_contract_balance(&'a self, c: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
   match c {
-    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
+    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
       ctx_contract_balance
     },
   }
@@ -1432,6 +1432,7 @@ fn contract_init<StateError: Default>(
         ConCert_Execution_Blockchain_ContractCallContext::build_ctx(
             PhantomData,
             Address::Account(ctx.init_origin()),
+            Address::Account(ctx.init_origin()),
             Address::Contract(ContractAddress { index: 0, subindex: 0 }),
             amount.micro_gtu as i64,
             amount.micro_gtu as i64);
@@ -1498,6 +1499,7 @@ fn contract_receive<A: HasActions, StateError: Default>(
     let cctx =
         ConCert_Execution_Blockchain_ContractCallContext::build_ctx(
             PhantomData,
+            Address::Account(ctx.invoker()),
             ctx.sender(),
             Address::Contract(ctx.self_address()),
             balance,
@@ -1634,6 +1636,7 @@ mod tests {
         let init_balance = 10;
         let slot_time = Timestamp::from_timestamp_millis(11);
         ctx.set_metadata_slot_time(slot_time);
+        ctx.set_invoker(buyer_addr);
         ctx.set_sender(Address::Account(buyer_addr));
         ctx.set_self_address(self_addr);
         ctx.set_self_balance(concordium_std::Amount::from_micro_gtu(init_balance));

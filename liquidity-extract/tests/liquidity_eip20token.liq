@@ -117,6 +117,9 @@ let ctx = (Current.time (),
 match (inner ctx setup) with Some v -> v | None -> failwith ()
 
 type storage = state
-let wrapper param (st : storage) = match receive_wrapper param st with| Some v -> v| None -> failwith ()
+let wrapper param (st : storage) = match receive_wrapper ((Current.time (),
+   (Current.sender (),
+   (Current.amount (),
+    Current.balance ()))), param) st with| Some v -> v| None -> failwith ()
 let%entry main param st = wrapper param st
 (*END*)

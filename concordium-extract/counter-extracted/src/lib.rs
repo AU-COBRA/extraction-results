@@ -134,7 +134,7 @@ type Amount<'a> = i64;
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
 pub enum ContractCallContext<'a> {
-  build_ctx(PhantomData<&'a ()>, Address<'a>, Address<'a>, Amount<'a>, Amount<'a>)
+  build_ctx(PhantomData<&'a ()>, Address<'a>, Address<'a>, Address<'a>, Amount<'a>, Amount<'a>)
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
@@ -169,7 +169,7 @@ fn closure<TArg, TRet>(&'a self, F: impl Fn(TArg) -> TRet + 'a) -> &'a dyn Fn(TA
 
 fn ctx_from(&'a self, c: &'a ContractCallContext<'a>) -> Address<'a> {
   match c {
-    &ContractCallContext::build_ctx(_, ctx_from2, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
+    &ContractCallContext::build_ctx(_, ctx_origin, ctx_from2, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
       ctx_from2
     },
   }
@@ -415,6 +415,7 @@ fn contract_init<StateError: Default>(
         ContractCallContext::build_ctx(
             PhantomData,
             Address::Account(ctx.init_origin()),
+            Address::Account(ctx.init_origin()),
             Address::Contract(ContractAddress { index: 0, subindex: 0 }),
             amount.micro_gtu as i64,
             amount.micro_gtu as i64);
@@ -481,6 +482,7 @@ fn contract_receive<A: HasActions, StateError: Default>(
     let cctx =
         ContractCallContext::build_ctx(
             PhantomData,
+            Address::Account(ctx.invoker()),
             ctx.sender(),
             Address::Contract(ctx.self_address()),
             balance,

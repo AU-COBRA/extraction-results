@@ -1592,10 +1592,9 @@ Unresolved type ((state -> (operation list * state) option)[@closure
                                                              ((int -> int)
                                                              [@closure :
                                                                int])))]))]))]). Type variables 'q9 were replaced by unit.
-./examples/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:120.18-120.104: Warning: 
+./examples/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:120.18-123.75: Warning: 
 Unresolved type ((state -> (operation list * state))[@closure
-                                      :(((timestamp * (address * (dun *
-                                         dun))) * msg option) *
+                                      :(msg option *
                                          ((((timestamp * (address * (dun *
                                              dun))) * msg option) ->
                                              ((state ->
