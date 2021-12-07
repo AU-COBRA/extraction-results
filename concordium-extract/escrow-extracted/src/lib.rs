@@ -1434,8 +1434,8 @@ fn contract_init<StateError: Default>(
             Address::Account(ctx.init_origin()),
             Address::Account(ctx.init_origin()),
             Address::Contract(ContractAddress { index: 0, subindex: 0 }),
-            amount.micro_gtu as i64,
-            amount.micro_gtu as i64);
+            amount.micro_ccd as i64,
+            amount.micro_ccd as i64);
     let res = prg.ConCert_Execution_Examples_Escrow_init(&cchain, &cctx, params);
     match res {
         Option::Some(init_state) => {
@@ -1455,7 +1455,7 @@ fn convert_actions<A: HasActions>(acts: &Coq_Init_Datatypes_list<ActionBody>) ->
       let cact =
         if let ActionBody::Transfer(Address::Account(acc), amount) = hd {
           let amount = convert::TryInto::try_into(amount).map_err(|_| ReceiveError::ConvertActions)?;
-          A::simple_transfer(&acc, concordium_std::Amount::from_micro_gtu(amount))
+          A::simple_transfer(&acc, concordium_std::Amount::from_micro_ccd(amount))
         } else {
           return Err(ReceiveError::ConvertActions) // Cannot handle call to contract through ConCert, use Concordium functions instead
         };
@@ -1492,9 +1492,9 @@ fn contract_receive<A: HasActions, StateError: Default>(
     let balance = if ctx.sender() != concordium_std::Address::Contract(ctx.self_address()) {
    // if the contract is not calling itself, we add amount to the current balance
    // as expeced by the ConCert execution model
-   (ctx.self_balance().micro_gtu + amount.micro_gtu) as i64
+   (ctx.self_balance().micro_ccd + amount.micro_ccd) as i64
     } else {
-        ctx.self_balance().micro_gtu as i64
+        ctx.self_balance().micro_ccd as i64
     };
     let cctx =
         ConCert_Execution_Blockchain_ContractCallContext::build_ctx(
@@ -1503,7 +1503,7 @@ fn contract_receive<A: HasActions, StateError: Default>(
             ctx.sender(),
             Address::Contract(ctx.self_address()),
             balance,
-            amount.micro_gtu as i64);
+            amount.micro_ccd as i64);
     let res = prg.ConCert_Execution_Examples_Escrow_receive(&cchain, &cctx, old_state, msg);
     match res {
         Option::Some((new_state, acts)) => {
@@ -1585,7 +1585,7 @@ mod tests {
 
         // call the init function
         // amount must be even for init to succeed
-        let out = contract_init(&ctx, Amount::from_micro_gtu(amount), &mut logger, &mut st);
+        let out = contract_init(&ctx, Amount::from_micro_ccd(amount), &mut logger, &mut st);
 
         let res = match out {
             Ok(res) => res,
@@ -1639,7 +1639,7 @@ mod tests {
         ctx.set_invoker(buyer_addr);
         ctx.set_sender(Address::Account(buyer_addr));
         ctx.set_self_address(self_addr);
-        ctx.set_self_balance(concordium_std::Amount::from_micro_gtu(init_balance));
+        ctx.set_self_balance(concordium_std::Amount::from_micro_ccd(init_balance));
         let mut st = ContractStateTest::open(data_st);
         let v : ConCert_Execution_Examples_Escrow_State =
             ConCert_Execution_Examples_Escrow_State::build_state
@@ -1655,7 +1655,7 @@ mod tests {
         // set up the logger so we can intercept and analyze them at the end.
         let mut logger = LogRecorder::init();
         let res: Result<ActionsTree, _> =
-            contract_receive(&ctx, Amount::from_micro_gtu(amount), &mut logger, &mut st);
+            contract_receive(&ctx, Amount::from_micro_ccd(amount), &mut logger, &mut st);
         let actions = match res {
             Err(e) => fail!("Contract receive failed, but it should not have: {:?}",e),
             Ok(actions) => actions,

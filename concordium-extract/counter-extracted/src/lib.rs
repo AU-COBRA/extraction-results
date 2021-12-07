@@ -417,8 +417,8 @@ fn contract_init<StateError: Default>(
             Address::Account(ctx.init_origin()),
             Address::Account(ctx.init_origin()),
             Address::Contract(ContractAddress { index: 0, subindex: 0 }),
-            amount.micro_gtu as i64,
-            amount.micro_gtu as i64);
+            amount.micro_ccd as i64,
+            amount.micro_ccd as i64);
     let res = prg.counter_init(&cchain, &cctx, params);
     match res {
         Option::Some(init_state) => {
@@ -438,7 +438,7 @@ fn convert_actions<A: HasActions>(acts: &List<ActionBody>) -> Result<A, ReceiveE
       let cact =
         if let ActionBody::Transfer(Address::Account(acc), amount) = hd {
           let amount = convert::TryInto::try_into(amount).map_err(|_| ReceiveError::ConvertActions)?;
-          A::simple_transfer(&acc, concordium_std::Amount::from_micro_gtu(amount))
+          A::simple_transfer(&acc, concordium_std::Amount::from_micro_ccd(amount))
         } else {
           return Err(ReceiveError::ConvertActions) // Cannot handle call to contract through ConCert, use Concordium functions instead
         };
@@ -475,9 +475,9 @@ fn contract_receive<A: HasActions, StateError: Default>(
     let balance = if ctx.sender() != concordium_std::Address::Contract(ctx.self_address()) {
    // if the contract is not calling itself, we add amount to the current balance
    // as expeced by the ConCert execution model
-   (ctx.self_balance().micro_gtu + amount.micro_gtu) as i64
+   (ctx.self_balance().micro_ccd + amount.micro_ccd) as i64
     } else {
-        ctx.self_balance().micro_gtu as i64
+        ctx.self_balance().micro_ccd as i64
     };
     let cctx =
         ContractCallContext::build_ctx(
@@ -486,7 +486,7 @@ fn contract_receive<A: HasActions, StateError: Default>(
             ctx.sender(),
             Address::Contract(ctx.self_address()),
             balance,
-            amount.micro_gtu as i64);
+            amount.micro_ccd as i64);
     let res = prg.counter_receive(&cchain, &cctx, old_state, msg);
     match res {
         Option::Some((new_state, acts)) => {
