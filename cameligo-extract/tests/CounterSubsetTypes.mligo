@@ -86,55 +86,76 @@ finalized_height_ = Tezos.level;
 let chain_height (c : chain ) = c.chain_height_
 let current_slot (c : chain ) = c.current_slot_
 let finalized_height (c : chain) = c.finalized_height_
-let test_account : address = ("tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" : address)
 
-type storage = (tez * address)
-
-type msg = 
-  Inc of tez
-| Dec of tez
+type specif_sumbool = 
+  Spec_left
+| Spec_right
 
 
-let inc_balance(st : storage) (new_balance : tez) : (tez * address) =  ((addTez st.0 new_balance), st.1)
+type counterRefinementTypes_storage = int
 
-let dec_balance(st : storage) (new_balance : tez) : (tez * address) =  ((subTez st.0 new_balance), st.1)
+type counterRefinementTypes_msg = 
+  Coun_Inc of int
+| Coun_Dec of int
 
-let counter_inner(msg : msg) (st : storage) :  (( (operation) list * storage)) option = match msg with 
-Inc (i) -> (if leTez 0tez i then Some ( (([]: (operation) list), (inc_balance st i))) else (None: (( (operation) list * storage)) option))
- | Dec (i) -> (if leTez 0tez i then Some ( (([]: (operation) list), (dec_balance st i))) else (None: (( (operation) list * storage)) option))
 
-let counter(c : chain) (ctx : cctx) (st : storage) (msg :  (msg) option) :  (( (operation) list * storage)) option = let c_ = c in 
+type 'a0 specif_sig = 
+  Spec_exist of 'a0
+
+
+let bool_bool_dec(b1 : bool) (b2 : bool) : specif_sumbool = (if b1 then fun (x : bool) -> if x then Spec_left else Spec_right else fun (x : bool) -> if x then Spec_right else Spec_left) b2
+
+let counterRefinementTypes_Transaction_none : operation list = ([]: (operation) list)
+
+let counterRefinementTypes_inc_counter(st : counterRefinementTypes_storage) (inc :  (int) specif_sig) :  (counterRefinementTypes_storage) specif_sig = Spec_exist ((addInt st (match inc with 
+Spec_exist (a) -> a)))
+
+let counterRefinementTypes_dec_counter(st : counterRefinementTypes_storage) (dec :  (int) specif_sig) :  (counterRefinementTypes_storage) specif_sig = Spec_exist ((subInt st (match dec with 
+Spec_exist (a) -> a)))
+
+let counterRefinementTypes_counter(msg : counterRefinementTypes_msg) (st : counterRefinementTypes_storage) :  ((operation list * counterRefinementTypes_storage)) option = match msg with 
+Coun_Inc (i) -> (match bool_bool_dec true (ltInt 0 i) with 
+Spec_left  -> (Some ( (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_inc_counter st (Spec_exist (i)) with 
+Spec_exist (a) -> a))))
+ | Spec_right  -> (None: ((operation list * counterRefinementTypes_storage)) option))
+ | Coun_Dec (i) -> (match bool_bool_dec true (ltInt 0 i) with 
+Spec_left  -> (Some ( (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_dec_counter st (Spec_exist (i)) with 
+Spec_exist (a) -> a))))
+ | Spec_right  -> (None: ((operation list * counterRefinementTypes_storage)) option))
+
+let cameLIGOExtractionSetup_counter_wrapper(c : chain) (ctx : cctx) (s : counterRefinementTypes_storage) (m :  (counterRefinementTypes_msg) option) :  ((operation list * counterRefinementTypes_storage)) option = let c_ = c in 
 let ctx_ = ctx in 
-match msg with 
-Some (msg0) -> (counter_inner msg0 st)
- | None  -> (None: (( (operation) list * storage)) option)
+match m with 
+Some (m0) -> (counterRefinementTypes_counter m0 s)
+ | None  -> (None: ((operation list * counterRefinementTypes_storage)) option)
 
-let init (setup : (tez * address)) : storage = 
+let init (setup : int) : counterRefinementTypes_storage = 
 
-let inner (ctx : cctx) (setup : (tez * address)) : (storage) option = 
+let inner (ctx : cctx) (setup : int) : (counterRefinementTypes_storage) option = 
 let ctx_ = ctx in 
 Some (setup) in
 let ctx = cctx_instance in
 match (inner ctx setup) with
   Some v -> v
-| None -> (failwith (""): storage)
-type init_args_ty = (tez * address)
+| None -> (failwith (""): counterRefinementTypes_storage)
+type init_args_ty = int
 let init_wrapper (args : init_args_ty) =
   init args
 
 
-type return = (operation) list * (storage option)
+type return = (operation) list * (counterRefinementTypes_storage option)
 type parameter_wrapper =
   Init of init_args_ty
-| Call of msg option
+| Call of counterRefinementTypes_msg option
 
-let wrapper (param, st : parameter_wrapper * (storage) option) : return =
+let wrapper (param, st : parameter_wrapper * (counterRefinementTypes_storage) option) : return =
   match param with  
     Init init_args -> (([]: operation list), Some (init init_args))
   | Call p -> (
     match st with
-      Some st -> (match (counter dummy_chain cctx_instance  st p) with   
+      Some st -> (match (cameLIGOExtractionSetup_counter_wrapper dummy_chain cctx_instance  st p) with   
                     Some v -> (v.0, Some v.1)
                   | None -> (failwith ("") : return))
     | None -> (failwith ("cannot call this endpoint before Init has been called"): return))
-let main (action, st : parameter_wrapper * storage option) : return = wrapper (action, st)
+
+let main (action, st : parameter_wrapper * counterRefinementTypes_storage option) : return = wrapper (action, st)
