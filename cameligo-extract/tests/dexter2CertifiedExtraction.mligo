@@ -366,72 +366,64 @@ type dexter2FA12_Msg =
 | Dext_msg_get_total_supply of dexter2FA12_getTotalSupply_param
 
 
-let common_throwIf(cond : bool) :  (unit) option = if cond then (None: (unit) option) else Some (())
+let throwIf(cond : bool) :  (unit) option = if cond then (None: (unit) option) else Some (())
 
-let dexter2CPMM_tokenPool(s : dexter2CPMM_State) : nat = s.tokenPool
+let tokenPool(s : dexter2CPMM_State) : nat = s.tokenPool
 
-let dexter2CPMM_xtzPool(s : dexter2CPMM_State) : nat = s.xtzPool
+let xtzPool(s : dexter2CPMM_State) : nat = s.xtzPool
 
-let dexter2CPMM_lqtTotal(s : dexter2CPMM_State) : nat = s.lqtTotal
+let lqtTotal(s : dexter2CPMM_State) : nat = s.lqtTotal
 
-let dexter2CPMM_selfIsUpdatingTokenPool(s : dexter2CPMM_State) : bool = s.selfIsUpdatingTokenPool
+let selfIsUpdatingTokenPool(s : dexter2CPMM_State) : bool = s.selfIsUpdatingTokenPool
 
-let dexter2CPMM_freezeBaker(s : dexter2CPMM_State) : bool = s.freezeBaker
+let freezeBaker(s : dexter2CPMM_State) : bool = s.freezeBaker
 
-let dexter2CPMM_manager(s : dexter2CPMM_State) : address = s.manager
+let manager(s : dexter2CPMM_State) : address = s.manager
 
-let dexter2CPMM_tokenAddress(s : dexter2CPMM_State) : address = s.tokenAddress
+let tokenAddress(s : dexter2CPMM_State) : address = s.tokenAddress
 
-let dexter2CPMM_tokenId(s : dexter2CPMM_State) : nat = s.tokenId
+let tokenId(s : dexter2CPMM_State) : nat = s.tokenId
 
-let dexter2CPMM_lqtAddress(s : dexter2CPMM_State) : address = s.lqtAddress
+let lqtAddress(s : dexter2CPMM_State) : address = s.lqtAddress
 
-let dexter2CPMM_set_State_selfIsUpdatingTokenPool(f : bool -> bool) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (dexter2CPMM_tokenPool r); xtzPool = (dexter2CPMM_xtzPool r); lqtTotal = (dexter2CPMM_lqtTotal r); selfIsUpdatingTokenPool = (f (dexter2CPMM_selfIsUpdatingTokenPool r)); freezeBaker = (dexter2CPMM_freezeBaker r); manager = (dexter2CPMM_manager r); tokenAddress = (dexter2CPMM_tokenAddress r); tokenId = (dexter2CPMM_tokenId r); lqtAddress = (dexter2CPMM_lqtAddress r)}: dexter2CPMM_State)
+let set_State_selfIsUpdatingTokenPool(f : bool -> bool) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (tokenPool r); xtzPool = (xtzPool r); lqtTotal = (lqtTotal r); selfIsUpdatingTokenPool = (f (selfIsUpdatingTokenPool r)); freezeBaker = (freezeBaker r); manager = (manager r); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (lqtAddress r)}: dexter2CPMM_State)
 
-let dexter2CPMM_setter_from_getter_State_selfIsUpdatingTokenPool : (bool -> bool) -> dexter2CPMM_State -> dexter2CPMM_State = dexter2CPMM_set_State_selfIsUpdatingTokenPool
+let set_State_tokenPool(f : nat -> nat) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (f (tokenPool r)); xtzPool = (xtzPool r); lqtTotal = (lqtTotal r); selfIsUpdatingTokenPool = (selfIsUpdatingTokenPool r); freezeBaker = (freezeBaker r); manager = (manager r); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (lqtAddress r)}: dexter2CPMM_State)
 
-let dexter2CPMM_set_State_tokenPool(f : nat -> nat) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (f (dexter2CPMM_tokenPool r)); xtzPool = (dexter2CPMM_xtzPool r); lqtTotal = (dexter2CPMM_lqtTotal r); selfIsUpdatingTokenPool = (dexter2CPMM_selfIsUpdatingTokenPool r); freezeBaker = (dexter2CPMM_freezeBaker r); manager = (dexter2CPMM_manager r); tokenAddress = (dexter2CPMM_tokenAddress r); tokenId = (dexter2CPMM_tokenId r); lqtAddress = (dexter2CPMM_lqtAddress r)}: dexter2CPMM_State)
-
-let dexter2CPMM_setter_from_getter_State_tokenPool : (nat -> nat) -> dexter2CPMM_State -> dexter2CPMM_State = dexter2CPMM_set_State_tokenPool
-
-let dEX2Extract_update_token_pool_internal(ctx : cctx) (state : dexter2CPMM_State) (token_pool : dexter2CPMM_update_token_pool_internal_) : dEX2Extract_result = match common_throwIf (orb (not state.selfIsUpdatingTokenPool) (not (eq_addr (ctx_from ctx) state.tokenAddress))) with 
-Some (val0) -> (match common_throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
+let update_token_pool_internal(ctx : cctx) (state : dexter2CPMM_State) (token_pool : dexter2CPMM_update_token_pool_internal_) : dEX2Extract_result = match throwIf (orb (not state.selfIsUpdatingTokenPool) (not (eq_addr (ctx_from ctx) state.tokenAddress))) with 
+Some (val0) -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
 Some (val1) -> (match match token_pool with 
 []  -> (None: (nat) option)
  | x :: xs -> (Some (x.balance)) with 
-Some (val2) -> (let new_state = dexter2CPMM_setter_from_getter_State_selfIsUpdatingTokenPool (fun (a : bool) -> false) (dexter2CPMM_setter_from_getter_State_tokenPool (fun (a : nat) -> val2) state) in 
+Some (val2) -> (let new_state = set_State_selfIsUpdatingTokenPool (fun (a : bool) -> false) (set_State_tokenPool (fun (a : nat) -> val2) state) in 
 Some ( (new_state, ([]: (operation) list))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dEX2Extract_ceildiv(n : nat) (m : nat) :  (nat) option = if eqN (moduloN n m) 0n then divN_opt n m else match divN_opt n m with 
+let ceildiv(n : nat) (m : nat) :  (nat) option = if eqN (moduloN n m) 0n then divN_opt n m else match divN_opt n m with 
 Some (val0) -> (Some ((addN val0 1n)))
  | None  -> (None: (nat) option)
 
-let dexter2CPMM_set_State_xtzPool(f : nat -> nat) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (dexter2CPMM_tokenPool r); xtzPool = (f (dexter2CPMM_xtzPool r)); lqtTotal = (dexter2CPMM_lqtTotal r); selfIsUpdatingTokenPool = (dexter2CPMM_selfIsUpdatingTokenPool r); freezeBaker = (dexter2CPMM_freezeBaker r); manager = (dexter2CPMM_manager r); tokenAddress = (dexter2CPMM_tokenAddress r); tokenId = (dexter2CPMM_tokenId r); lqtAddress = (dexter2CPMM_lqtAddress r)}: dexter2CPMM_State)
+let set_State_xtzPool(f : nat -> nat) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (tokenPool r); xtzPool = (f (xtzPool r)); lqtTotal = (lqtTotal r); selfIsUpdatingTokenPool = (selfIsUpdatingTokenPool r); freezeBaker = (freezeBaker r); manager = (manager r); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (lqtAddress r)}: dexter2CPMM_State)
 
-let dexter2CPMM_setter_from_getter_State_xtzPool : (nat -> nat) -> dexter2CPMM_State -> dexter2CPMM_State = dexter2CPMM_set_State_xtzPool
+let set_State_lqtTotal(f : nat -> nat) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (tokenPool r); xtzPool = (xtzPool r); lqtTotal = (f (lqtTotal r)); selfIsUpdatingTokenPool = (selfIsUpdatingTokenPool r); freezeBaker = (freezeBaker r); manager = (manager r); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (lqtAddress r)}: dexter2CPMM_State)
 
-let dexter2CPMM_set_State_lqtTotal(f : nat -> nat) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (dexter2CPMM_tokenPool r); xtzPool = (dexter2CPMM_xtzPool r); lqtTotal = (f (dexter2CPMM_lqtTotal r)); selfIsUpdatingTokenPool = (dexter2CPMM_selfIsUpdatingTokenPool r); freezeBaker = (dexter2CPMM_freezeBaker r); manager = (dexter2CPMM_manager r); tokenAddress = (dexter2CPMM_tokenAddress r); tokenId = (dexter2CPMM_tokenId r); lqtAddress = (dexter2CPMM_lqtAddress r)}: dexter2CPMM_State)
+let token_transfer(state : dexter2CPMM_State) (from : address) (to0 : address) (amount0 : nat) : operation = call_to_token state.tokenAddress 0n (FA2T_msg_transfer ((({from_ = from; to_ = to0; transfer_token_id = state.tokenId; amount = amount0; sender_callback_addr = (None: (address) option)}: fA2Interface_transfer) :: ([]: (fA2Interface_transfer) list))))
 
-let dexter2CPMM_setter_from_getter_State_lqtTotal : (nat -> nat) -> dexter2CPMM_State -> dexter2CPMM_State = dexter2CPMM_set_State_lqtTotal
-
-let dEX2Extract_token_transfer(state : dexter2CPMM_State) (from : address) (to0 : address) (amount0 : nat) : operation = call_to_token state.tokenAddress 0n (FA2T_msg_transfer ((({from_ = from; to_ = to0; transfer_token_id = state.tokenId; amount = amount0; sender_callback_addr = (None: (address) option)}: fA2Interface_transfer) :: ([]: (fA2Interface_transfer) list))))
-
-let dEX2Extract_mint_or_burn(state : dexter2CPMM_State) (target : address) (quantitiy : int) :  (operation) option = match common_throwIf (eq_addr state.lqtAddress ("tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU" : address)) with 
+let mint_or_burn(state : dexter2CPMM_State) (target : address) (quantitiy : int) :  (operation) option = match throwIf (eq_addr state.lqtAddress ("tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU" : address)) with 
 Some (val0) -> (Some ((call_to_token state.lqtAddress 0n (Dext_msg_mint_or_burn (({quantity = quantitiy; target = target}: dexter2FA12_mintOrBurn_param))))))
  | None  -> (None: (operation) option)
 
-let dEX2Extract_add_liquidity(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_add_liquidity_param) : dEX2Extract_result = match common_throwIf state.selfIsUpdatingTokenPool with 
-Some (val0) -> (match common_throwIf (lebN param.add_deadline (current_slot chain)) with 
+let add_liquidity(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_add_liquidity_param) : dEX2Extract_result = match throwIf state.selfIsUpdatingTokenPool with 
+Some (val0) -> (match throwIf (lebN param.add_deadline (current_slot chain)) with 
 Some (val1) -> (match divN_opt (multN (mutez_to_natural (ctx_amount ctx)) state.lqtTotal) state.xtzPool with 
-Some (val2) -> (match dEX2Extract_ceildiv (multN (mutez_to_natural (ctx_amount ctx)) state.tokenPool) state.xtzPool with 
-Some (val3) -> (match common_throwIf (ltbN param.maxTokensDeposited val3) with 
-Some (val4) -> (match common_throwIf (ltbN val2 param.minLqtMinted) with 
-Some (val5) -> (let new_state = dexter2CPMM_setter_from_getter_State_xtzPool (fun (a : nat) -> addN state.xtzPool (mutez_to_natural (ctx_amount ctx))) (dexter2CPMM_setter_from_getter_State_tokenPool (fun (a : nat) -> addN state.tokenPool val3) (dexter2CPMM_setter_from_getter_State_lqtTotal (fun (a : nat) -> addN state.lqtTotal val2) state)) in 
-let op_token = dEX2Extract_token_transfer state (ctx_from ctx) (ctx_contract_address ctx) val3 in 
-match dEX2Extract_mint_or_burn state param.owner (z_of_N val2) with 
+Some (val2) -> (match ceildiv (multN (mutez_to_natural (ctx_amount ctx)) state.tokenPool) state.xtzPool with 
+Some (val3) -> (match throwIf (ltbN param.maxTokensDeposited val3) with 
+Some (val4) -> (match throwIf (ltbN val2 param.minLqtMinted) with 
+Some (val5) -> (let new_state = set_State_xtzPool (fun (a : nat) -> addN state.xtzPool (mutez_to_natural (ctx_amount ctx))) (set_State_tokenPool (fun (a : nat) -> addN state.tokenPool val3) (set_State_lqtTotal (fun (a : nat) -> addN state.lqtTotal val2) state)) in 
+let op_token = token_transfer state (ctx_from ctx) (ctx_contract_address ctx) val3 in 
+match mint_or_burn state param.owner (z_of_N val2) with 
 Some (val6) -> (Some ( (new_state, (op_token :: (val6 :: ([]: (operation) list))))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
@@ -441,22 +433,22 @@ Some (val6) -> (Some ( (new_state, (op_token :: (val6 :: ([]: (operation) list))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dEX2Extract_sub(n : nat) (m : nat) :  (nat) option = match common_throwIf (ltbN n m) with 
+let sub(n : nat) (m : nat) :  (nat) option = match throwIf (ltbN n m) with 
 Some (val0) -> (Some ((subNTruncated n m)))
  | None  -> (None: (nat) option)
 
-let dEX2Extract_remove_liquidity(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_remove_liquidity_param) : dEX2Extract_result = match common_throwIf state.selfIsUpdatingTokenPool with 
-Some (val0) -> (match common_throwIf (lebN param.remove_deadline (current_slot chain)) with 
-Some (val1) -> (match common_throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
+let remove_liquidity(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_remove_liquidity_param) : dEX2Extract_result = match throwIf state.selfIsUpdatingTokenPool with 
+Some (val0) -> (match throwIf (lebN param.remove_deadline (current_slot chain)) with 
+Some (val1) -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
 Some (val2) -> (match divN_opt (multN param.lqtBurned state.xtzPool) state.lqtTotal with 
 Some (val3) -> (match divN_opt (multN param.lqtBurned state.tokenPool) state.lqtTotal with 
-Some (val4) -> (match common_throwIf (ltbN val3 param.minXtzWithdrawn) with 
-Some (val5) -> (match common_throwIf (ltbN val4 param.minTokensWithdrawn) with 
-Some (val6) -> (match dEX2Extract_sub state.lqtTotal param.lqtBurned with 
-Some (val7) -> (match dEX2Extract_sub state.tokenPool val4 with 
-Some (val8) -> (match dEX2Extract_sub state.xtzPool val3 with 
-Some (val9) -> (match dEX2Extract_mint_or_burn state (ctx_from ctx) (subInt 0 (z_of_N param.lqtBurned)) with 
-Some (val) -> (let op_token = dEX2Extract_token_transfer state (ctx_contract_address ctx) param.liquidity_to val4 in 
+Some (val4) -> (match throwIf (ltbN val3 param.minXtzWithdrawn) with 
+Some (val5) -> (match throwIf (ltbN val4 param.minTokensWithdrawn) with 
+Some (val6) -> (match sub state.lqtTotal param.lqtBurned with 
+Some (val7) -> (match sub state.tokenPool val4 with 
+Some (val8) -> (match sub state.xtzPool val3 with 
+Some (val9) -> (match mint_or_burn state (ctx_from ctx) (subInt 0 (z_of_N param.lqtBurned)) with 
+Some (val) -> (let op_token = token_transfer state (ctx_contract_address ctx) param.liquidity_to val4 in 
 match xtz_transfer param.liquidity_to val3 with 
 Some (val) -> (let new_state = ({tokenPool = val8; xtzPool = val9; lqtTotal = val7; selfIsUpdatingTokenPool = state.selfIsUpdatingTokenPool; freezeBaker = state.freezeBaker; manager = state.manager; tokenAddress = state.tokenAddress; tokenId = state.tokenId; lqtAddress = state.lqtAddress}: dexter2CPMM_State) in 
 Some ( (new_state, (val :: (op_token :: (val :: ([]: (operation) list)))))))
@@ -473,13 +465,13 @@ Some ( (new_state, (val :: (op_token :: (val :: ([]: (operation) list)))))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dEX2Extract_xtz_to_token(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_xtz_to_token_param) : dEX2Extract_result = match common_throwIf state.selfIsUpdatingTokenPool with 
-Some (val0) -> (match common_throwIf (lebN param.xtt_deadline (current_slot chain)) with 
-Some (val1) -> (match divN_opt (multN (multN (mutez_to_natural (ctx_amount ctx)) 518n) state.tokenPool) (addN (multN state.xtzPool 517n) (multN (mutez_to_natural (ctx_amount ctx)) 518n)) with 
-Some (val2) -> (match common_throwIf (ltbN val2 param.minTokensBought) with 
-Some (val3) -> (match dEX2Extract_sub state.tokenPool val2 with 
-Some (val4) -> (let new_state = dexter2CPMM_setter_from_getter_State_tokenPool (fun (a : nat) -> val4) (dexter2CPMM_setter_from_getter_State_xtzPool (fun (a : nat) -> addN state.xtzPool (mutez_to_natural (ctx_amount ctx))) state) in 
-let op = dEX2Extract_token_transfer state (ctx_contract_address ctx) param.tokens_to val2 in 
+let xtz_to_token(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_xtz_to_token_param) : dEX2Extract_result = match throwIf state.selfIsUpdatingTokenPool with 
+Some (val0) -> (match throwIf (lebN param.xtt_deadline (current_slot chain)) with 
+Some (val1) -> (match divN_opt (multN (multN (mutez_to_natural (ctx_amount ctx)) 997n) state.tokenPool) (addN (multN state.xtzPool 1000n) (multN (mutez_to_natural (ctx_amount ctx)) 997n)) with 
+Some (val2) -> (match throwIf (ltbN val2 param.minTokensBought) with 
+Some (val3) -> (match sub state.tokenPool val2 with 
+Some (val4) -> (let new_state = set_State_tokenPool (fun (a : nat) -> val4) (set_State_xtzPool (fun (a : nat) -> addN state.xtzPool (mutez_to_natural (ctx_amount ctx))) state) in 
+let op = token_transfer state (ctx_contract_address ctx) param.tokens_to val2 in 
 Some ( (new_state, (op :: ([]: (operation) list)))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
@@ -487,15 +479,15 @@ Some ( (new_state, (op :: ([]: (operation) list)))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dEX2Extract_token_to_xtz(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_token_to_xtz_param) : dEX2Extract_result = match common_throwIf state.selfIsUpdatingTokenPool with 
-Some (val0) -> (match common_throwIf (lebN param.ttx_deadline (current_slot chain)) with 
-Some (val1) -> (match common_throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
-Some (val2) -> (match divN_opt (multN (multN param.tokensSold 518n) state.xtzPool) (addN (multN state.tokenPool 517n) (multN param.tokensSold 518n)) with 
-Some (val3) -> (match common_throwIf (ltbN val3 param.minXtzBought) with 
-Some (val4) -> (match dEX2Extract_sub state.xtzPool val3 with 
-Some (val5) -> (let op_token = dEX2Extract_token_transfer state (ctx_from ctx) (ctx_contract_address ctx) param.tokensSold in 
+let token_to_xtz(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_token_to_xtz_param) : dEX2Extract_result = match throwIf state.selfIsUpdatingTokenPool with 
+Some (val0) -> (match throwIf (lebN param.ttx_deadline (current_slot chain)) with 
+Some (val1) -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
+Some (val2) -> (match divN_opt (multN (multN param.tokensSold 997n) state.xtzPool) (addN (multN state.tokenPool 1000n) (multN param.tokensSold 997n)) with 
+Some (val3) -> (match throwIf (ltbN val3 param.minXtzBought) with 
+Some (val4) -> (match sub state.xtzPool val3 with 
+Some (val5) -> (let op_token = token_transfer state (ctx_from ctx) (ctx_contract_address ctx) param.tokensSold in 
 match xtz_transfer param.xtz_to val3 with 
-Some (val6) -> (let new_state = dexter2CPMM_setter_from_getter_State_xtzPool (fun (a : nat) -> val5) (dexter2CPMM_setter_from_getter_State_tokenPool (fun (a : nat) -> addN state.tokenPool param.tokensSold) state) in 
+Some (val6) -> (let new_state = set_State_xtzPool (fun (a : nat) -> val5) (set_State_tokenPool (fun (a : nat) -> addN state.tokenPool param.tokensSold) state) in 
 Some ( (new_state, (op_token :: (val6 :: ([]: (operation) list))))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
@@ -505,66 +497,60 @@ Some ( (new_state, (op_token :: (val6 :: ([]: (operation) list))))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dexter2CPMM_set_State_freezeBaker(f : bool -> bool) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (dexter2CPMM_tokenPool r); xtzPool = (dexter2CPMM_xtzPool r); lqtTotal = (dexter2CPMM_lqtTotal r); selfIsUpdatingTokenPool = (dexter2CPMM_selfIsUpdatingTokenPool r); freezeBaker = (f (dexter2CPMM_freezeBaker r)); manager = (dexter2CPMM_manager r); tokenAddress = (dexter2CPMM_tokenAddress r); tokenId = (dexter2CPMM_tokenId r); lqtAddress = (dexter2CPMM_lqtAddress r)}: dexter2CPMM_State)
+let set_State_freezeBaker(f : bool -> bool) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (tokenPool r); xtzPool = (xtzPool r); lqtTotal = (lqtTotal r); selfIsUpdatingTokenPool = (selfIsUpdatingTokenPool r); freezeBaker = (f (freezeBaker r)); manager = (manager r); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (lqtAddress r)}: dexter2CPMM_State)
 
-let dexter2CPMM_setter_from_getter_State_freezeBaker : (bool -> bool) -> dexter2CPMM_State -> dexter2CPMM_State = dexter2CPMM_set_State_freezeBaker
+let set_delegate_call :  (operation) list = ([]: (operation) list)
 
-let dEX2Extract_set_delegate_call :  (operation) list = ([]: (operation) list)
-
-let dEX2Extract_set_baker(ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_set_baker_param) : dEX2Extract_result = match common_throwIf state.selfIsUpdatingTokenPool with 
-Some (val0) -> (match common_throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
-Some (val1) -> (match common_throwIf (not (eq_addr (ctx_from ctx) state.manager)) with 
-Some (val2) -> (match common_throwIf state.freezeBaker with 
-Some (val3) -> (Some ( ((dexter2CPMM_setter_from_getter_State_freezeBaker (fun (a : bool) -> param.freezeBaker_) state), dEX2Extract_set_delegate_call)))
+let set_baker(ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_set_baker_param) : dEX2Extract_result = match throwIf state.selfIsUpdatingTokenPool with 
+Some (val0) -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
+Some (val1) -> (match throwIf (not (eq_addr (ctx_from ctx) state.manager)) with 
+Some (val2) -> (match throwIf state.freezeBaker with 
+Some (val3) -> (Some ( ((set_State_freezeBaker (fun (a : bool) -> param.freezeBaker_) state), set_delegate_call)))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dexter2CPMM_set_State_manager(f : address -> address) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (dexter2CPMM_tokenPool r); xtzPool = (dexter2CPMM_xtzPool r); lqtTotal = (dexter2CPMM_lqtTotal r); selfIsUpdatingTokenPool = (dexter2CPMM_selfIsUpdatingTokenPool r); freezeBaker = (dexter2CPMM_freezeBaker r); manager = (f (dexter2CPMM_manager r)); tokenAddress = (dexter2CPMM_tokenAddress r); tokenId = (dexter2CPMM_tokenId r); lqtAddress = (dexter2CPMM_lqtAddress r)}: dexter2CPMM_State)
+let set_State_manager(f : address -> address) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (tokenPool r); xtzPool = (xtzPool r); lqtTotal = (lqtTotal r); selfIsUpdatingTokenPool = (selfIsUpdatingTokenPool r); freezeBaker = (freezeBaker r); manager = (f (manager r)); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (lqtAddress r)}: dexter2CPMM_State)
 
-let dexter2CPMM_setter_from_getter_State_manager : (address -> address) -> dexter2CPMM_State -> dexter2CPMM_State = dexter2CPMM_set_State_manager
-
-let dEX2Extract_set_manager(ctx : cctx) (state : dexter2CPMM_State) (new_manager : address) : dEX2Extract_result = match common_throwIf state.selfIsUpdatingTokenPool with 
-Some (val0) -> (match common_throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
-Some (val1) -> (match common_throwIf (not (eq_addr (ctx_from ctx) state.manager)) with 
-Some (val2) -> (Some ( ((dexter2CPMM_setter_from_getter_State_manager (fun (a : address) -> new_manager) state), ([]: (operation) list))))
+let set_manager(ctx : cctx) (state : dexter2CPMM_State) (new_manager : address) : dEX2Extract_result = match throwIf state.selfIsUpdatingTokenPool with 
+Some (val0) -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
+Some (val1) -> (match throwIf (not (eq_addr (ctx_from ctx) state.manager)) with 
+Some (val2) -> (Some ( ((set_State_manager (fun (a : address) -> new_manager) state), ([]: (operation) list))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dexter2CPMM_set_State_lqtAddress(f : address -> address) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (dexter2CPMM_tokenPool r); xtzPool = (dexter2CPMM_xtzPool r); lqtTotal = (dexter2CPMM_lqtTotal r); selfIsUpdatingTokenPool = (dexter2CPMM_selfIsUpdatingTokenPool r); freezeBaker = (dexter2CPMM_freezeBaker r); manager = (dexter2CPMM_manager r); tokenAddress = (dexter2CPMM_tokenAddress r); tokenId = (dexter2CPMM_tokenId r); lqtAddress = (f (dexter2CPMM_lqtAddress r))}: dexter2CPMM_State)
+let set_State_lqtAddress(f : address -> address) (r : dexter2CPMM_State) : dexter2CPMM_State = ({tokenPool = (tokenPool r); xtzPool = (xtzPool r); lqtTotal = (lqtTotal r); selfIsUpdatingTokenPool = (selfIsUpdatingTokenPool r); freezeBaker = (freezeBaker r); manager = (manager r); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (f (lqtAddress r))}: dexter2CPMM_State)
 
-let dexter2CPMM_setter_from_getter_State_lqtAddress : (address -> address) -> dexter2CPMM_State -> dexter2CPMM_State = dexter2CPMM_set_State_lqtAddress
-
-let dEX2Extract_set_lqt_address(ctx : cctx) (state : dexter2CPMM_State) (new_lqt_address : address) : dEX2Extract_result = match common_throwIf state.selfIsUpdatingTokenPool with 
-Some (val0) -> (match common_throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
-Some (val1) -> (match common_throwIf (not (eq_addr (ctx_from ctx) state.manager)) with 
-Some (val2) -> (match common_throwIf (not (eq_addr state.lqtAddress ("tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU" : address))) with 
-Some (val3) -> (Some ( ((dexter2CPMM_setter_from_getter_State_lqtAddress (fun (a : address) -> new_lqt_address) state), ([]: (operation) list))))
+let set_lqt_address(ctx : cctx) (state : dexter2CPMM_State) (new_lqt_address : address) : dEX2Extract_result = match throwIf state.selfIsUpdatingTokenPool with 
+Some (val0) -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
+Some (val1) -> (match throwIf (not (eq_addr (ctx_from ctx) state.manager)) with 
+Some (val2) -> (match throwIf (not (eq_addr state.lqtAddress ("tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU" : address))) with 
+Some (val3) -> (Some ( ((set_State_lqtAddress (fun (a : address) -> new_lqt_address) state), ([]: (operation) list))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dEX2Extract_update_token_pool(ctx : cctx) (state : dexter2CPMM_State) : dEX2Extract_result = match common_throwIf (not (eq_addr (ctx_from ctx) (ctx_origin ctx))) with 
-Some (val0) -> (match common_throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
-Some (val1) -> (match common_throwIf state.selfIsUpdatingTokenPool with 
+let update_token_pool(ctx : cctx) (state : dexter2CPMM_State) : dEX2Extract_result = match throwIf (not (eq_addr (ctx_from ctx) (ctx_origin ctx))) with 
+Some (val0) -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
+Some (val1) -> (match throwIf state.selfIsUpdatingTokenPool with 
 Some (val2) -> (let balance_of_request = ({owner = (ctx_contract_address ctx); bal_req_token_id = state.tokenId}: fA2Interface_balance_of_request) in 
 let balance_of_param = ({bal_requests = (balance_of_request :: ([]: (fA2Interface_balance_of_request) list)); bal_callback = ({blob = (None: ( (fA2Interface_balance_of_response) list) option)}:  ( (fA2Interface_balance_of_response) list) fA2Interface_callback)}: fA2Interface_balance_of_param) in 
 let op = call_to_token state.tokenAddress 0n (FA2T_msg_balance_of (balance_of_param)) in 
-Some ( ((dexter2CPMM_setter_from_getter_State_selfIsUpdatingTokenPool (fun (a : bool) -> true) state), (op :: ([]: (operation) list)))))
+Some ( ((set_State_selfIsUpdatingTokenPool (fun (a : bool) -> true) state), (op :: ([]: (operation) list)))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dEX2Extract_token_to_token(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_token_to_token_param) : dEX2Extract_result = match common_throwIf state.selfIsUpdatingTokenPool with 
-Some (val0) -> (match common_throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
-Some (val1) -> (match common_throwIf (lebN param.ttt_deadline (current_slot chain)) with 
-Some (val2) -> (match divN_opt (multN (multN param.tokensSold_ 518n) state.xtzPool) (addN (multN state.tokenPool 517n) (multN param.tokensSold_ 518n)) with 
-Some (val3) -> (match dEX2Extract_sub state.xtzPool val3 with 
-Some (val4) -> (let new_state = dexter2CPMM_setter_from_getter_State_xtzPool (fun (a : nat) -> val4) (dexter2CPMM_setter_from_getter_State_tokenPool (fun (a : nat) -> addN state.tokenPool param.tokensSold_) state) in 
-let op1 = dEX2Extract_token_transfer state (ctx_from ctx) (ctx_contract_address ctx) param.tokensSold_ in 
+let token_to_token(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_token_to_token_param) : dEX2Extract_result = match throwIf state.selfIsUpdatingTokenPool with 
+Some (val0) -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
+Some (val1) -> (match throwIf (lebN param.ttt_deadline (current_slot chain)) with 
+Some (val2) -> (match divN_opt (multN (multN param.tokensSold_ 997n) state.xtzPool) (addN (multN state.tokenPool 1000n) (multN param.tokensSold_ 997n)) with 
+Some (val3) -> (match sub state.xtzPool val3 with 
+Some (val4) -> (let new_state = set_State_xtzPool (fun (a : nat) -> val4) (set_State_tokenPool (fun (a : nat) -> addN state.tokenPool param.tokensSold_) state) in 
+let op1 = token_transfer state (ctx_from ctx) (ctx_contract_address ctx) param.tokensSold_ in 
 let op2 = call_to_token param.outputDexterContract val3 (FA2T_other_msg ((Dext_XtzToToken (({tokens_to = param.to_; minTokensBought = param.minTokensBought_; xtt_deadline = param.ttt_deadline}: dexter2CPMM_xtz_to_token_param))))) in 
 Some ( (new_state, (op1 :: (op2 :: ([]: (operation) list))))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
@@ -573,31 +559,31 @@ Some ( (new_state, (op1 :: (op2 :: ([]: (operation) list))))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dEX2Extract_default_(ctx : cctx) (state : dexter2CPMM_State) : dEX2Extract_result = match common_throwIf state.selfIsUpdatingTokenPool with 
-Some (val0) -> (let new_state = dexter2CPMM_setter_from_getter_State_xtzPool (fun (a : nat) -> addN state.xtzPool (mutez_to_natural (ctx_amount ctx))) state in 
+let default_(ctx : cctx) (state : dexter2CPMM_State) : dEX2Extract_result = match throwIf state.selfIsUpdatingTokenPool with 
+Some (val0) -> (let new_state = set_State_xtzPool (fun (a : nat) -> addN state.xtzPool (mutez_to_natural (ctx_amount ctx))) state in 
 Some ( (new_state, ([]: (operation) list))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option)
 
-let dEX2Extract_receive(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg :  (dEX2Extract_Msg) option) : dEX2Extract_result = match maybe_msg with 
+let receive(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg :  (dEX2Extract_Msg) option) : dEX2Extract_result = match maybe_msg with 
 Some (m) -> (match m with 
-FA2T_receive_balance_of_param (responses) -> (dEX2Extract_update_token_pool_internal ctx state responses)
+FA2T_receive_balance_of_param (responses) -> (update_token_pool_internal ctx state responses)
  | FA2T_receive_total_supply_param (l) -> (None: ((dexter2CPMM_State *  (operation) list)) option)
  | FA2T_receive_metadata_callback (l) -> (None: ((dexter2CPMM_State *  (operation) list)) option)
  | FA2T_receive_is_operator (i) -> (None: ((dexter2CPMM_State *  (operation) list)) option)
  | FA2T_receive_permissions_descri (p) -> (None: ((dexter2CPMM_State *  (operation) list)) option)
  | FA2T_other_msg (d) -> (match d with 
-Dext_AddLiquidity (param) -> (dEX2Extract_add_liquidity chain ctx state param)
- | Dext_RemoveLiquidity (param) -> (dEX2Extract_remove_liquidity chain ctx state param)
- | Dext_XtzToToken (param) -> (dEX2Extract_xtz_to_token chain ctx state param)
- | Dext_TokenToXtz (param) -> (dEX2Extract_token_to_xtz chain ctx state param)
- | Dext_SetBaker (param) -> (dEX2Extract_set_baker ctx state param)
- | Dext_SetManager (param) -> (dEX2Extract_set_manager ctx state param)
- | Dext_SetLqtAddress (param) -> (dEX2Extract_set_lqt_address ctx state param)
- | Dext_UpdateTokenPool  -> (dEX2Extract_update_token_pool ctx state)
- | Dext_TokenToToken (param) -> (dEX2Extract_token_to_token chain ctx state param)))
- | None  -> (dEX2Extract_default_ ctx state)
+Dext_AddLiquidity (param) -> (add_liquidity chain ctx state param)
+ | Dext_RemoveLiquidity (param) -> (remove_liquidity chain ctx state param)
+ | Dext_XtzToToken (param) -> (xtz_to_token chain ctx state param)
+ | Dext_TokenToXtz (param) -> (token_to_xtz chain ctx state param)
+ | Dext_SetBaker (param) -> (set_baker ctx state param)
+ | Dext_SetManager (param) -> (set_manager ctx state param)
+ | Dext_SetLqtAddress (param) -> (set_lqt_address ctx state param)
+ | Dext_UpdateTokenPool  -> (update_token_pool ctx state)
+ | Dext_TokenToToken (param) -> (token_to_token chain ctx state param)))
+ | None  -> (default_ ctx state)
 
-let dexter2Extract_receive_(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg :  (dEX2Extract_Msg) option) :  (( (operation) list * dexter2CPMM_State)) option = match dEX2Extract_receive chain ctx state maybe_msg with 
+let receive_(chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg :  (dEX2Extract_Msg) option) :  (( (operation) list * dexter2CPMM_State)) option = match receive chain ctx state maybe_msg with 
 Some (x) -> (Some ( (x.1, x.0)))
  | None  -> (None: (( (operation) list * dexter2CPMM_State)) option)
 
@@ -625,7 +611,7 @@ let wrapper (param, st : parameter_wrapper * (dexter2CPMM_State) option) : retur
     Init init_args -> (([]: operation list), Some (init init_args))
   | Call p -> (
     match st with
-      Some st -> (match (dexter2Extract_receive_ dummy_chain cctx_instance  st p) with   
+      Some st -> (match (receive_ dummy_chain cctx_instance  st p) with   
                     Some v -> (v.0, Some v.1)
                   | None -> (failwith ("") : return))
     | None -> (failwith ("cannot call this endpoint before Init has been called"): return))
