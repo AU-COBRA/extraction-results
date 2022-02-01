@@ -338,23 +338,23 @@ quantity : int;
 target : address
 }
 
-type 'a0 dexter2FA12_callback = {
-blob :  ('a0) option
+type dexter2FA12_callback = {
+return_addr : address
 }
 
 type dexter2FA12_getAllowance_param = {
 request : (address * address);
-allowance_callback :  (nat) dexter2FA12_callback
+allowance_callback : dexter2FA12_callback
 }
 
 type dexter2FA12_getBalance_param = {
 owner_ : address;
-balance_callback :  (nat) dexter2FA12_callback
+balance_callback : dexter2FA12_callback
 }
 
 type dexter2FA12_getTotalSupply_param = {
 request_ : unit;
-supply_callback :  (nat) dexter2FA12_callback
+supply_callback : dexter2FA12_callback
 }
 
 type dexter2FA12_Msg = 

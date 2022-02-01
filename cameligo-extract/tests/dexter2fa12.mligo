@@ -136,23 +136,23 @@ quantity : int;
 target : address
 }
 
-type 'a0 dexter2FA12_callback = {
-blob :  ('a0) option
+type dexter2FA12_callback = {
+return_addr : address
 }
 
 type dexter2FA12_getAllowance_param = {
 request : (address * address);
-allowance_callback :  (nat) dexter2FA12_callback
+allowance_callback : dexter2FA12_callback
 }
 
 type dexter2FA12_getBalance_param = {
 owner_ : address;
-balance_callback :  (nat) dexter2FA12_callback
+balance_callback : dexter2FA12_callback
 }
 
 type dexter2FA12_getTotalSupply_param = {
 request_ : unit;
-supply_callback :  (nat) dexter2FA12_callback
+supply_callback : dexter2FA12_callback
 }
 
 type dexter2FA12_Msg = 
@@ -241,24 +241,26 @@ Some ((setter_from_getter_State_total_supply (fun (a : nat) -> total_supply_) (s
  | None  -> (None: (dexter2FA12_State) option))
  | None  -> (None: (dexter2FA12_State) option)
 
+let callback_addr(c : dexter2FA12_callback) : address = c.return_addr
+
 let receive_allowance_(n : nat) :  (unit) dexter2FA12_FA12ReceiverMsg = Dext_receive_allowance (n)
 
-let try_get_allowance(sender0 : address) (param : dexter2FA12_getAllowance_param) (state : dexter2FA12_State) :  (operation) list = let value = match Map.find_opt param.request state.allowances with 
+let try_get_allowance(param : dexter2FA12_getAllowance_param) (state : dexter2FA12_State) :  (operation) list = let value = match Map.find_opt param.request state.allowances with 
 Some (v) -> v
  | None  -> 0n in 
-(mk_callback sender0 (receive_allowance_ value)) :: ([]: (operation) list)
+(mk_callback (callback_addr param.allowance_callback) (receive_allowance_ value)) :: ([]: (operation) list)
 
 let receive_balance_of_(n : nat) :  (unit) dexter2FA12_FA12ReceiverMsg = Dext_receive_balance_of (n)
 
-let try_get_balance(sender0 : address) (param : dexter2FA12_getBalance_param) (state : dexter2FA12_State) :  (operation) list = let value = match Map.find_opt param.owner_ state.tokens with 
+let try_get_balance(param : dexter2FA12_getBalance_param) (state : dexter2FA12_State) :  (operation) list = let value = match Map.find_opt param.owner_ state.tokens with 
 Some (v) -> v
  | None  -> 0n in 
-(mk_callback sender0 (receive_balance_of_ value)) :: ([]: (operation) list)
+(mk_callback (callback_addr param.balance_callback) (receive_balance_of_ value)) :: ([]: (operation) list)
 
 let receive_total_supply_(n : nat) :  (unit) dexter2FA12_FA12ReceiverMsg = Dext_receive_total_supply (n)
 
-let try_get_total_supply(sender0 : address) (state : dexter2FA12_State) :  (operation) list = let value = state.total_supply in 
-(mk_callback sender0 (receive_total_supply_ value)) :: ([]: (operation) list)
+let try_get_total_supply(param : dexter2FA12_getTotalSupply_param) (state : dexter2FA12_State) :  (operation) list = let value = state.total_supply in 
+(mk_callback (callback_addr param.supply_callback) (receive_total_supply_ value)) :: ([]: (operation) list)
 
 let receive(ctx : cctx) (state : dexter2FA12_State) (maybe_msg :  (dexter2FA12_Msg) option) :  ((dexter2FA12_State *  (operation) list)) option = let sender0 = ctx_from ctx in 
 let without_actions = fun (o :  (dexter2FA12_State) option) -> match o with 
@@ -271,9 +273,9 @@ Some (m) -> (match m with
 Dext_msg_transfer (param) -> (without_actions (try_transfer sender0 param state))
  | Dext_msg_approve (param) -> (without_actions (try_approve sender0 param state))
  | Dext_msg_mint_or_burn (param) -> (without_actions (try_mint_or_burn sender0 param state))
- | Dext_msg_get_allowance (param) -> (without_statechange (try_get_allowance sender0 param state))
- | Dext_msg_get_balance (param) -> (without_statechange (try_get_balance sender0 param state))
- | Dext_msg_get_total_supply (param) -> (without_statechange (try_get_total_supply sender0 state)))
+ | Dext_msg_get_allowance (param) -> (without_statechange (try_get_allowance param state))
+ | Dext_msg_get_balance (param) -> (without_statechange (try_get_balance param state))
+ | Dext_msg_get_total_supply (param) -> (without_statechange (try_get_total_supply param state)))
  | None  -> (None: ((dexter2FA12_State *  (operation) list)) option))
  | None  -> (None: ((dexter2FA12_State *  (operation) list)) option)
 
