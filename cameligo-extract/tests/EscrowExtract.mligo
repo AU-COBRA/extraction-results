@@ -139,6 +139,14 @@ Build_state (last_action, next_step, seller, buyer, seller_withdrawable, buyer_w
 let buyer_withdrawable(s : state) : tez = match s with 
 Build_state (last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) -> buyer_withdrawable
 
+let set_State_last_action(f : nat -> nat) (r : state) : state = Build_state ((f (last_action r)), (next_step r), (seller r), (buyer r), (seller_withdrawable r), (buyer_withdrawable r))
+
+let set_State_next_step(f : nextStep -> nextStep) (r : state) : state = Build_state ((last_action r), (f (next_step r)), (seller r), (buyer r), (seller_withdrawable r), (buyer_withdrawable r))
+
+let set_State_seller_withdrawable(f : tez -> tez) (r : state) : state = Build_state ((last_action r), (next_step r), (seller r), (buyer r), (f (seller_withdrawable r)), (buyer_withdrawable r))
+
+let set_State_buyer_withdrawable(f : tez -> tez) (r : state) : state = Build_state ((last_action r), (next_step r), (seller r), (buyer r), (seller_withdrawable r), (f (buyer_withdrawable r)))
+
 let receive(chain : chain) (ctx : cctx) (state : state) (msg :  (msg) option) :  ((state *  (operation) list)) option = match msg with 
 Some (m) -> (match m with 
 Commit_money  -> (match next_step state with 
@@ -146,7 +154,7 @@ Buyer_commit  -> (let item_price = divTez (subTez (ctx_contract_balance ctx) (ct
 let expected = multTez item_price 2tez in 
 match if eq_addr (ctx_from ctx) (buyer state) then Some (()) else (None: (unit) option) with 
 Some (val0) -> (match if eqTez (ctx_amount ctx) expected then Some (()) else (None: (unit) option) with 
-Some (val1) -> (Some ( ((Build_state ((current_slot chain), (next_step (Build_state ((last_action state), Buyer_confirm, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller (Build_state ((last_action state), Buyer_confirm, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (buyer (Build_state ((last_action state), Buyer_confirm, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller_withdrawable (Build_state ((last_action state), Buyer_confirm, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (buyer_withdrawable (Build_state ((last_action state), Buyer_confirm, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))))), ([]: (operation) list))))
+Some (val1) -> (Some ( ((set_State_last_action (fun (a : nat) -> current_slot chain) (set_State_next_step (fun (a : nextStep) -> Buyer_confirm) state)), ([]: (operation) list))))
  | None  -> (None: ((state *  (operation) list)) option))
  | None  -> (None: ((state *  (operation) list)) option))
  | Buyer_confirm  -> (None: ((state *  (operation) list)) option)
@@ -157,7 +165,7 @@ Buyer_commit  -> (None: ((state *  (operation) list)) option)
  | Buyer_confirm  -> (let item_price = divTez (ctx_contract_balance ctx) 4tez in 
 match if eq_addr (ctx_from ctx) (buyer state) then Some (()) else (None: (unit) option) with 
 Some (val0) -> (match if eqTez (ctx_amount ctx) 0tez then Some (()) else (None: (unit) option) with 
-Some (val1) -> (let new_state = Build_state ((last_action (Build_state ((last_action (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (next_step (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (buyer (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller_withdrawable (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), item_price))), (next_step (Build_state ((last_action (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (next_step (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (buyer (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller_withdrawable (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), item_price))), (seller (Build_state ((last_action (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (next_step (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (buyer (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller_withdrawable (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), item_price))), (buyer (Build_state ((last_action (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (next_step (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (buyer (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller_withdrawable (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), item_price))), (multTez item_price 3tez), (buyer_withdrawable (Build_state ((last_action (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (next_step (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (buyer (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), (seller_withdrawable (Build_state ((last_action state), Withdrawals, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state)))), item_price)))) in 
+Some (val1) -> (let new_state = set_State_seller_withdrawable (fun (a : tez) -> multTez item_price 3tez) (set_State_buyer_withdrawable (fun (a : tez) -> item_price) (set_State_next_step (fun (a : nextStep) -> Withdrawals) state)) in 
 Some ( (new_state, ([]: (operation) list))))
  | None  -> (None: ((state *  (operation) list)) option))
  | None  -> (None: ((state *  (operation) list)) option))
@@ -168,17 +176,17 @@ Buyer_commit  -> (match if eqTez (ctx_amount ctx) 0tez then Some (()) else (None
 Some (val0) -> (match if ltbN (addN (last_action state) 50n) (current_slot chain) then (None: (unit) option) else Some (()) with 
 Some (val1) -> (match if eq_addr (ctx_from ctx) (seller state) then Some (()) else (None: (unit) option) with 
 Some (val2) -> (let balance0 = ctx_contract_balance ctx in 
-Some ( ((Build_state ((last_action state), No_next_step, (seller state), (buyer state), (seller_withdrawable state), (buyer_withdrawable state))), (Tezos.transaction unit balance0 (get_contract_unit (seller state)) :: ([]: (operation) list)))))
+Some ( ((set_State_next_step (fun (a : nextStep) -> No_next_step) state), (Tezos.transaction unit balance0 (get_contract_unit (seller state)) :: ([]: (operation) list)))))
  | None  -> (None: ((state *  (operation) list)) option))
  | None  -> (None: ((state *  (operation) list)) option))
  | None  -> (None: ((state *  (operation) list)) option))
  | Buyer_confirm  -> (None: ((state *  (operation) list)) option)
  | Withdrawals  -> (match if eqTez (ctx_amount ctx) 0tez then Some (()) else (None: (unit) option) with 
 Some (val0) -> (let from = ctx_from ctx in 
-match if eq_addr from (buyer state) then Some ( ((buyer_withdrawable state), (Build_state ((last_action state), (next_step state), (seller state), (buyer state), (seller_withdrawable state), 0tez)))) else if eq_addr from (seller state) then Some ( ((seller_withdrawable state), (Build_state ((last_action state), (next_step state), (seller state), (buyer state), 0tez, (buyer_withdrawable state))))) else (None: ((tez * state)) option) with 
+match if eq_addr from (buyer state) then Some ( ((buyer_withdrawable state), (set_State_buyer_withdrawable (fun (a : tez) -> 0tez) state))) else if eq_addr from (seller state) then Some ( ((seller_withdrawable state), (set_State_seller_withdrawable (fun (a : tez) -> 0tez) state))) else (None: ((tez * state)) option) with 
 Some (val1) -> (match val1 with 
  (to_pay, new_state) -> (match if gtbTez to_pay 0tez then Some (()) else (None: (unit) option) with 
-Some (val2) -> (let new_state0 = if andb (eqTez (buyer_withdrawable new_state) 0tez) (eqTez (seller_withdrawable new_state) 0tez) then Build_state ((last_action new_state), No_next_step, (seller new_state), (buyer new_state), (seller_withdrawable new_state), (buyer_withdrawable new_state)) else new_state in 
+Some (val2) -> (let new_state0 = if andb (eqTez (buyer_withdrawable new_state) 0tez) (eqTez (seller_withdrawable new_state) 0tez) then set_State_next_step (fun (a : nextStep) -> No_next_step) new_state else new_state in 
 Some ( (new_state0, (Tezos.transaction unit to_pay (get_contract_unit (ctx_from ctx)) :: ([]: (operation) list)))))
  | None  -> (None: ((state *  (operation) list)) option)))
  | None  -> (None: ((state *  (operation) list)) option))
