@@ -281,7 +281,8 @@ transfer_descr_operator : address
 }
 
 type 'a0 fA2Interface_callback = {
-blob :  ('a0) option
+blob :  ('a0) option;
+return_addr : address
 }
 
 type fA2Interface_balance_of_param = {
@@ -537,7 +538,7 @@ let update_token_pool(ctx : cctx) (state : dexter2CPMM_State) : dEX2Extract_resu
 Some (val0) -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
 Some (val1) -> (match throwIf state.selfIsUpdatingTokenPool with 
 Some (val2) -> (let balance_of_request = ({owner = (ctx_contract_address ctx); bal_req_token_id = state.tokenId}: fA2Interface_balance_of_request) in 
-let balance_of_param = ({bal_requests = (balance_of_request :: ([]: (fA2Interface_balance_of_request) list)); bal_callback = ({blob = (None: ( (fA2Interface_balance_of_response) list) option)}:  ( (fA2Interface_balance_of_response) list) fA2Interface_callback)}: fA2Interface_balance_of_param) in 
+let balance_of_param = ({bal_requests = (balance_of_request :: ([]: (fA2Interface_balance_of_request) list)); bal_callback = ({blob = (None: ( (fA2Interface_balance_of_response) list) option); return_addr = (ctx_contract_address ctx)}:  ( (fA2Interface_balance_of_response) list) fA2Interface_callback)}: fA2Interface_balance_of_param) in 
 let op = call_to_token state.tokenAddress 0n (FA2T_msg_balance_of (balance_of_param)) in 
 Some ( ((set_State_selfIsUpdatingTokenPool (fun (a : bool) -> true) state), (op :: ([]: (operation) list)))))
  | None  -> (None: ((dexter2CPMM_State *  (operation) list)) option))
