@@ -23,8 +23,8 @@ safe_pred n =
      S m ->
        \heq h -> Exist m) () ()
 
-conCert_Extraction_Examples_ElmExtractExamples_ElmExamples_safe_pred_partial_cert_pass : () -> Sig Nat
-conCert_Extraction_Examples_ElmExtractExamples_ElmExamples_safe_pred_partial_cert_pass not_zero =
+conCert_Extraction_Tests_ElmExtractExamples_ElmExamples_safe_pred_partial_cert_pass : () -> Sig Nat
+conCert_Extraction_Tests_ElmExtractExamples_ElmExamples_safe_pred_partial_cert_pass not_zero =
   safe_pred (S O)
-main = Html.text (Debug.toString (Expect.equal (conCert_Extraction_Examples_ElmExtractExamples_ElmExamples_safe_pred_partial_cert_pass ()) (Exist O)))
-suite = Test.test (Debug.toString 1)(\ _ -> Expect.equal (conCert_Extraction_Examples_ElmExtractExamples_ElmExamples_safe_pred_partial_cert_pass ()) (Exist O))
+main = Html.text (Debug.toString (Expect.equal (conCert_Extraction_Tests_ElmExtractExamples_ElmExamples_safe_pred_partial_cert_pass ()) (Exist O)))
+suite = Test.test (Debug.toString 1)(\ _ -> Expect.equal (conCert_Extraction_Tests_ElmExtractExamples_ElmExamples_safe_pred_partial_cert_pass ()) (Exist O))

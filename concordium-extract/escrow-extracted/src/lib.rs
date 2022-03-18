@@ -138,12 +138,12 @@ pub enum ConCert_Execution_Blockchain_ContractCallContext<'a> {
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
-pub enum ConCert_Execution_Examples_Escrow_Setup<'a> {
+pub enum ConCert_Examples_Escrow_Escrow_Setup<'a> {
   build_setup(PhantomData<&'a ()>, ConCert_Execution_Blockchain_Address<'a>)
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
-pub enum ConCert_Execution_Examples_Escrow_NextStep<'a> {
+pub enum ConCert_Examples_Escrow_Escrow_NextStep<'a> {
   buyer_commit(PhantomData<&'a ()>),
   buyer_confirm(PhantomData<&'a ()>),
   withdrawals(PhantomData<&'a ()>),
@@ -151,12 +151,12 @@ pub enum ConCert_Execution_Examples_Escrow_NextStep<'a> {
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
-pub enum ConCert_Execution_Examples_Escrow_State<'a> {
-  build_state(PhantomData<&'a ()>, u64, &'a ConCert_Execution_Examples_Escrow_NextStep<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Amount<'a>, ConCert_Execution_Blockchain_Amount<'a>)
+pub enum ConCert_Examples_Escrow_Escrow_State<'a> {
+  build_state(PhantomData<&'a ()>, u64, &'a ConCert_Examples_Escrow_Escrow_NextStep<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Amount<'a>, ConCert_Execution_Blockchain_Amount<'a>)
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
-pub enum ConCert_Execution_Examples_Escrow_Msg<'a> {
+pub enum ConCert_Examples_Escrow_Escrow_Msg<'a> {
   commit_money(PhantomData<&'a ()>),
   confirm_item_received(PhantomData<&'a ()>),
   withdraw(PhantomData<&'a ()>)
@@ -195,16 +195,16 @@ fn ConCert_Execution_Blockchain_ctx_from__curried(&'a self) -> &'a dyn Fn(&'a Co
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_setup_buyer(&'a self, s: &'a ConCert_Execution_Examples_Escrow_Setup<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_setup_buyer(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
   match s {
-    &ConCert_Execution_Examples_Escrow_Setup::build_setup(_, setup_buyer) => {
+    &ConCert_Examples_Escrow_Escrow_Setup::build_setup(_, setup_buyer) => {
       setup_buyer
     },
   }
 }
-fn ConCert_Execution_Examples_Escrow_setup_buyer__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_Setup<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_setup_buyer__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
   self.closure(move |s| {
-    self.ConCert_Execution_Examples_Escrow_setup_buyer(
+    self.ConCert_Examples_Escrow_Escrow_setup_buyer(
       s)
   })
 }
@@ -258,12 +258,12 @@ fn ConCert_Execution_Blockchain_current_slot__curried(&'a self) -> &'a dyn Fn(&'
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_init(&'a self, chain: &'a ConCert_Execution_Blockchain_Chain<'a>, ctx: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>, setup: &'a ConCert_Execution_Examples_Escrow_Setup<'a>) -> Option<&'a ConCert_Execution_Examples_Escrow_State<'a>> {
+fn ConCert_Examples_Escrow_Escrow_init(&'a self, chain: &'a ConCert_Execution_Blockchain_Chain<'a>, ctx: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>, setup: &'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> Option<&'a ConCert_Examples_Escrow_Escrow_State<'a>> {
   let seller =
     self.ConCert_Execution_Blockchain_ctx_from(
       ctx);
   let buyer =
-    self.ConCert_Execution_Examples_Escrow_setup_buyer(
+    self.ConCert_Examples_Escrow_Escrow_setup_buyer(
       setup);
   match match self.ConCert_Execution_Blockchain_address_eqb()(
                 buyer)(
@@ -304,12 +304,12 @@ fn ConCert_Execution_Examples_Escrow_init(&'a self, chain: &'a ConCert_Execution
             Some(val3) => {
               Some(
                 self.alloc(
-                  ConCert_Execution_Examples_Escrow_State::build_state(
+                  ConCert_Examples_Escrow_Escrow_State::build_state(
                     PhantomData,
                     self.ConCert_Execution_Blockchain_current_slot(
                       chain),
                     self.alloc(
-                      ConCert_Execution_Examples_Escrow_NextStep::buyer_commit(
+                      ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(
                         PhantomData)),
                     seller,
                     buyer,
@@ -331,11 +331,11 @@ fn ConCert_Execution_Examples_Escrow_init(&'a self, chain: &'a ConCert_Execution
     },
   }
 }
-fn ConCert_Execution_Examples_Escrow_init__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_Setup<'a>) -> Option<&'a ConCert_Execution_Examples_Escrow_State<'a>> {
+fn ConCert_Examples_Escrow_Escrow_init__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> Option<&'a ConCert_Examples_Escrow_Escrow_State<'a>> {
   self.closure(move |chain| {
     self.closure(move |ctx| {
       self.closure(move |setup| {
-        self.ConCert_Execution_Examples_Escrow_init(
+        self.ConCert_Examples_Escrow_Escrow_init(
           chain,
           ctx,
           setup)
@@ -344,16 +344,16 @@ fn ConCert_Execution_Examples_Escrow_init__curried(&'a self) -> &'a dyn Fn(&'a C
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_next_step(&'a self, s: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_NextStep<'a> {
+fn ConCert_Examples_Escrow_Escrow_next_step(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_NextStep<'a> {
   match s {
-    &ConCert_Execution_Examples_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
+    &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       next_step
     },
   }
 }
-fn ConCert_Execution_Examples_Escrow_next_step__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_NextStep<'a> {
+fn ConCert_Examples_Escrow_Escrow_next_step__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_NextStep<'a> {
   self.closure(move |s| {
-    self.ConCert_Execution_Examples_Escrow_next_step(
+    self.ConCert_Examples_Escrow_Escrow_next_step(
       s)
   })
 }
@@ -719,178 +719,178 @@ fn ConCert_Execution_Blockchain_ctx_contract_balance__curried(&'a self) -> &'a d
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_buyer(&'a self, s: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_buyer(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
   match s {
-    &ConCert_Execution_Examples_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
+    &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       buyer
     },
   }
 }
-fn ConCert_Execution_Examples_Escrow_buyer__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_buyer__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
   self.closure(move |s| {
-    self.ConCert_Execution_Examples_Escrow_buyer(
+    self.ConCert_Examples_Escrow_Escrow_buyer(
       s)
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_last_action(&'a self, s: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> u64 {
+fn ConCert_Examples_Escrow_Escrow_last_action(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> u64 {
   match s {
-    &ConCert_Execution_Examples_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
+    &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       last_action
     },
   }
 }
-fn ConCert_Execution_Examples_Escrow_last_action__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> u64 {
+fn ConCert_Examples_Escrow_Escrow_last_action__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> u64 {
   self.closure(move |s| {
-    self.ConCert_Execution_Examples_Escrow_last_action(
+    self.ConCert_Examples_Escrow_Escrow_last_action(
       s)
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_seller(&'a self, s: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_seller(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
   match s {
-    &ConCert_Execution_Examples_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
+    &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       seller
     },
   }
 }
-fn ConCert_Execution_Examples_Escrow_seller__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_seller__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
   self.closure(move |s| {
-    self.ConCert_Execution_Examples_Escrow_seller(
+    self.ConCert_Examples_Escrow_Escrow_seller(
       s)
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_seller_withdrawable(&'a self, s: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Examples_Escrow_Escrow_seller_withdrawable(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
   match s {
-    &ConCert_Execution_Examples_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
+    &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       seller_withdrawable
     },
   }
 }
-fn ConCert_Execution_Examples_Escrow_seller_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Examples_Escrow_Escrow_seller_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
   self.closure(move |s| {
-    self.ConCert_Execution_Examples_Escrow_seller_withdrawable(
+    self.ConCert_Examples_Escrow_Escrow_seller_withdrawable(
       s)
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_buyer_withdrawable(&'a self, s: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Examples_Escrow_Escrow_buyer_withdrawable(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
   match s {
-    &ConCert_Execution_Examples_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
+    &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       buyer_withdrawable
     },
   }
 }
-fn ConCert_Execution_Examples_Escrow_buyer_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Examples_Escrow_Escrow_buyer_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
   self.closure(move |s| {
-    self.ConCert_Execution_Examples_Escrow_buyer_withdrawable(
+    self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
       s)
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_set_State_last_action(&'a self, f: &'a dyn Fn(u64) -> u64, r: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_last_action(&'a self, f: &'a dyn Fn(u64) -> u64, r: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.alloc(
-    ConCert_Execution_Examples_Escrow_State::build_state(
+    ConCert_Examples_Escrow_Escrow_State::build_state(
       PhantomData,
-      hint_app(f)(self.ConCert_Execution_Examples_Escrow_last_action(
+      hint_app(f)(self.ConCert_Examples_Escrow_Escrow_last_action(
                     r)),
-      self.ConCert_Execution_Examples_Escrow_next_step(
+      self.ConCert_Examples_Escrow_Escrow_next_step(
         r),
-      self.ConCert_Execution_Examples_Escrow_seller(
+      self.ConCert_Examples_Escrow_Escrow_seller(
         r),
-      self.ConCert_Execution_Examples_Escrow_buyer(
+      self.ConCert_Examples_Escrow_Escrow_buyer(
         r),
-      self.ConCert_Execution_Examples_Escrow_seller_withdrawable(
+      self.ConCert_Examples_Escrow_Escrow_seller_withdrawable(
         r),
-      self.ConCert_Execution_Examples_Escrow_buyer_withdrawable(
+      self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
         r)))
 }
-fn ConCert_Execution_Examples_Escrow_set_State_last_action__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(u64) -> u64) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_last_action__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(u64) -> u64) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.closure(move |f| {
     self.closure(move |r| {
-      self.ConCert_Execution_Examples_Escrow_set_State_last_action(
+      self.ConCert_Examples_Escrow_Escrow_set_State_last_action(
         f,
         r)
     })
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_set_State_next_step(&'a self, f: &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_NextStep<'a>) -> &'a ConCert_Execution_Examples_Escrow_NextStep<'a>, r: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_next_step(&'a self, f: &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_NextStep<'a>) -> &'a ConCert_Examples_Escrow_Escrow_NextStep<'a>, r: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.alloc(
-    ConCert_Execution_Examples_Escrow_State::build_state(
+    ConCert_Examples_Escrow_Escrow_State::build_state(
       PhantomData,
-      self.ConCert_Execution_Examples_Escrow_last_action(
+      self.ConCert_Examples_Escrow_Escrow_last_action(
         r),
-      hint_app(f)(self.ConCert_Execution_Examples_Escrow_next_step(
+      hint_app(f)(self.ConCert_Examples_Escrow_Escrow_next_step(
                     r)),
-      self.ConCert_Execution_Examples_Escrow_seller(
+      self.ConCert_Examples_Escrow_Escrow_seller(
         r),
-      self.ConCert_Execution_Examples_Escrow_buyer(
+      self.ConCert_Examples_Escrow_Escrow_buyer(
         r),
-      self.ConCert_Execution_Examples_Escrow_seller_withdrawable(
+      self.ConCert_Examples_Escrow_Escrow_seller_withdrawable(
         r),
-      self.ConCert_Execution_Examples_Escrow_buyer_withdrawable(
+      self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
         r)))
 }
-fn ConCert_Execution_Examples_Escrow_set_State_next_step__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_NextStep<'a>) -> &'a ConCert_Execution_Examples_Escrow_NextStep<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_next_step__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_NextStep<'a>) -> &'a ConCert_Examples_Escrow_Escrow_NextStep<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.closure(move |f| {
     self.closure(move |r| {
-      self.ConCert_Execution_Examples_Escrow_set_State_next_step(
+      self.ConCert_Examples_Escrow_Escrow_set_State_next_step(
         f,
         r)
     })
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_set_State_seller_withdrawable(&'a self, f: &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>, r: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable(&'a self, f: &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>, r: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.alloc(
-    ConCert_Execution_Examples_Escrow_State::build_state(
+    ConCert_Examples_Escrow_Escrow_State::build_state(
       PhantomData,
-      self.ConCert_Execution_Examples_Escrow_last_action(
+      self.ConCert_Examples_Escrow_Escrow_last_action(
         r),
-      self.ConCert_Execution_Examples_Escrow_next_step(
+      self.ConCert_Examples_Escrow_Escrow_next_step(
         r),
-      self.ConCert_Execution_Examples_Escrow_seller(
+      self.ConCert_Examples_Escrow_Escrow_seller(
         r),
-      self.ConCert_Execution_Examples_Escrow_buyer(
+      self.ConCert_Examples_Escrow_Escrow_buyer(
         r),
-      hint_app(f)(self.ConCert_Execution_Examples_Escrow_seller_withdrawable(
+      hint_app(f)(self.ConCert_Examples_Escrow_Escrow_seller_withdrawable(
                     r)),
-      self.ConCert_Execution_Examples_Escrow_buyer_withdrawable(
+      self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
         r)))
 }
-fn ConCert_Execution_Examples_Escrow_set_State_seller_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.closure(move |f| {
     self.closure(move |r| {
-      self.ConCert_Execution_Examples_Escrow_set_State_seller_withdrawable(
+      self.ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable(
         f,
         r)
     })
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_set_State_buyer_withdrawable(&'a self, f: &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>, r: &'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable(&'a self, f: &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>, r: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.alloc(
-    ConCert_Execution_Examples_Escrow_State::build_state(
+    ConCert_Examples_Escrow_Escrow_State::build_state(
       PhantomData,
-      self.ConCert_Execution_Examples_Escrow_last_action(
+      self.ConCert_Examples_Escrow_Escrow_last_action(
         r),
-      self.ConCert_Execution_Examples_Escrow_next_step(
+      self.ConCert_Examples_Escrow_Escrow_next_step(
         r),
-      self.ConCert_Execution_Examples_Escrow_seller(
+      self.ConCert_Examples_Escrow_Escrow_seller(
         r),
-      self.ConCert_Execution_Examples_Escrow_buyer(
+      self.ConCert_Examples_Escrow_Escrow_buyer(
         r),
-      self.ConCert_Execution_Examples_Escrow_seller_withdrawable(
+      self.ConCert_Examples_Escrow_Escrow_seller_withdrawable(
         r),
-      hint_app(f)(self.ConCert_Execution_Examples_Escrow_buyer_withdrawable(
+      hint_app(f)(self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
                     r))))
 }
-fn ConCert_Execution_Examples_Escrow_set_State_buyer_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a ConCert_Execution_Examples_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.closure(move |f| {
     self.closure(move |r| {
-      self.ConCert_Execution_Examples_Escrow_set_State_buyer_withdrawable(
+      self.ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable(
         f,
         r)
     })
@@ -941,14 +941,14 @@ fn Coq_Init_Datatypes_andb__curried(&'a self) -> &'a dyn Fn(bool) -> &'a dyn Fn(
   })
 }
 
-fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execution_Blockchain_Chain<'a>, ctx: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>, state: &'a ConCert_Execution_Examples_Escrow_State<'a>, msg: Option<&'a ConCert_Execution_Examples_Escrow_Msg<'a>>) -> Option<__pair<&'a ConCert_Execution_Examples_Escrow_State<'a>, &'a Coq_Init_Datatypes_list<'a, ActionBody<'a>>>> {
+fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution_Blockchain_Chain<'a>, ctx: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>, state: &'a ConCert_Examples_Escrow_Escrow_State<'a>, msg: Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Option<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Coq_Init_Datatypes_list<'a, ActionBody<'a>>>> {
   match msg {
     Some(m) => {
       match m {
-        &ConCert_Execution_Examples_Escrow_Msg::commit_money(_) => {
-          match self.ConCert_Execution_Examples_Escrow_next_step(
+        &ConCert_Examples_Escrow_Escrow_Msg::commit_money(_) => {
+          match self.ConCert_Examples_Escrow_Escrow_next_step(
                   state) {
-            &ConCert_Execution_Examples_Escrow_NextStep::buyer_commit(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(_) => {
               let item_price =
                 self.Coq_ZArith_BinIntDef_Z_div(
                   self.Coq_ZArith_BinIntDef_Z_sub(
@@ -968,7 +968,7 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
               match match self.ConCert_Execution_Blockchain_address_eqb()(
                             self.ConCert_Execution_Blockchain_ctx_from(
                               ctx))(
-                            self.ConCert_Execution_Examples_Escrow_buyer(
+                            self.ConCert_Examples_Escrow_Escrow_buyer(
                               state)) {
                       true => {
                         Some(
@@ -994,15 +994,15 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                     Some(val2) => {
                       Some(
                         __mk_pair(
-                          self.ConCert_Execution_Examples_Escrow_set_State_last_action(
+                          self.ConCert_Examples_Escrow_Escrow_set_State_last_action(
                             self.closure(move |x| {
                               self.ConCert_Execution_Blockchain_current_slot(
                                 chain)
                             }),
-                            self.ConCert_Execution_Examples_Escrow_set_State_next_step(
+                            self.ConCert_Examples_Escrow_Escrow_set_State_next_step(
                               self.closure(move |x| {
                                 self.alloc(
-                                  ConCert_Execution_Examples_Escrow_NextStep::buyer_confirm(
+                                  ConCert_Examples_Escrow_Escrow_NextStep::buyer_confirm(
                                     PhantomData))
                               }),
                               state)),
@@ -1020,24 +1020,24 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                 },
               }
             },
-            &ConCert_Execution_Examples_Escrow_NextStep::buyer_confirm(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::buyer_confirm(_) => {
               None
             },
-            &ConCert_Execution_Examples_Escrow_NextStep::withdrawals(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::withdrawals(_) => {
               None
             },
-            &ConCert_Execution_Examples_Escrow_NextStep::no_next_step(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::no_next_step(_) => {
               None
             },
           }
         },
-        &ConCert_Execution_Examples_Escrow_Msg::confirm_item_received(_) => {
-          match self.ConCert_Execution_Examples_Escrow_next_step(
+        &ConCert_Examples_Escrow_Escrow_Msg::confirm_item_received(_) => {
+          match self.ConCert_Examples_Escrow_Escrow_next_step(
                   state) {
-            &ConCert_Execution_Examples_Escrow_NextStep::buyer_commit(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(_) => {
               None
             },
-            &ConCert_Execution_Examples_Escrow_NextStep::buyer_confirm(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::buyer_confirm(_) => {
               let item_price =
                 self.Coq_ZArith_BinIntDef_Z_div(
                   self.ConCert_Execution_Blockchain_ctx_contract_balance(
@@ -1049,7 +1049,7 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
               match match self.ConCert_Execution_Blockchain_address_eqb()(
                             self.ConCert_Execution_Blockchain_ctx_from(
                               ctx))(
-                            self.ConCert_Execution_Examples_Escrow_buyer(
+                            self.ConCert_Examples_Escrow_Escrow_buyer(
                               state)) {
                       true => {
                         Some(
@@ -1074,7 +1074,7 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                         } {
                     Some(val2) => {
                       let new_state =
-                        self.ConCert_Execution_Examples_Escrow_set_State_seller_withdrawable(
+                        self.ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable(
                           self.closure(move |x| {
                             self.Coq_ZArith_BinIntDef_Z_mul(
                               item_price,
@@ -1082,14 +1082,14 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                                 __pos_onebit(
                                   1)))
                           }),
-                          self.ConCert_Execution_Examples_Escrow_set_State_buyer_withdrawable(
+                          self.ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable(
                             self.closure(move |x| {
                               item_price
                             }),
-                            self.ConCert_Execution_Examples_Escrow_set_State_next_step(
+                            self.ConCert_Examples_Escrow_Escrow_set_State_next_step(
                               self.closure(move |x| {
                                 self.alloc(
-                                  ConCert_Execution_Examples_Escrow_NextStep::withdrawals(
+                                  ConCert_Examples_Escrow_Escrow_NextStep::withdrawals(
                                     PhantomData))
                               }),
                               state)));
@@ -1110,18 +1110,18 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                 },
               }
             },
-            &ConCert_Execution_Examples_Escrow_NextStep::withdrawals(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::withdrawals(_) => {
               None
             },
-            &ConCert_Execution_Examples_Escrow_NextStep::no_next_step(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::no_next_step(_) => {
               None
             },
           }
         },
-        &ConCert_Execution_Examples_Escrow_Msg::withdraw(_) => {
-          match self.ConCert_Execution_Examples_Escrow_next_step(
+        &ConCert_Examples_Escrow_Escrow_Msg::withdraw(_) => {
+          match self.ConCert_Examples_Escrow_Escrow_next_step(
                   state) {
-            &ConCert_Execution_Examples_Escrow_NextStep::buyer_commit(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(_) => {
               match match self.Coq_ZArith_BinIntDef_Z_eqb(
                             self.ConCert_Execution_Blockchain_ctx_amount(
                               ctx),
@@ -1137,7 +1137,7 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                 Some(val) => {
                   match match self.Coq_Init_Nat_ltb(
                                 self.Coq_Init_Nat_add(
-                                  self.ConCert_Execution_Examples_Escrow_last_action(
+                                  self.ConCert_Examples_Escrow_Escrow_last_action(
                                     state),
                                   __nat_succ(
                                     __nat_succ(
@@ -1204,7 +1204,7 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                       match match self.ConCert_Execution_Blockchain_address_eqb()(
                                     self.ConCert_Execution_Blockchain_ctx_from(
                                       ctx))(
-                                    self.ConCert_Execution_Examples_Escrow_seller(
+                                    self.ConCert_Examples_Escrow_Escrow_seller(
                                       state)) {
                               true => {
                                 Some(
@@ -1220,10 +1220,10 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                               ctx);
                           Some(
                             __mk_pair(
-                              self.ConCert_Execution_Examples_Escrow_set_State_next_step(
+                              self.ConCert_Examples_Escrow_Escrow_set_State_next_step(
                                 self.closure(move |x| {
                                   self.alloc(
-                                    ConCert_Execution_Examples_Escrow_NextStep::no_next_step(
+                                    ConCert_Examples_Escrow_Escrow_NextStep::no_next_step(
                                       PhantomData))
                                 }),
                                 state),
@@ -1231,7 +1231,7 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                                 Coq_Init_Datatypes_list::cons(
                                   PhantomData,
                                   ActionBody::Transfer(
-                                    self.ConCert_Execution_Examples_Escrow_seller(
+                                    self.ConCert_Examples_Escrow_Escrow_seller(
                                       state),
                                     balance),
                                   self.alloc(
@@ -1253,10 +1253,10 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                 },
               }
             },
-            &ConCert_Execution_Examples_Escrow_NextStep::buyer_confirm(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::buyer_confirm(_) => {
               None
             },
-            &ConCert_Execution_Examples_Escrow_NextStep::withdrawals(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::withdrawals(_) => {
               match match self.Coq_ZArith_BinIntDef_Z_eqb(
                             self.ConCert_Execution_Blockchain_ctx_amount(
                               ctx),
@@ -1275,14 +1275,14 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                       ctx);
                   match match self.ConCert_Execution_Blockchain_address_eqb()(
                                 from)(
-                                self.ConCert_Execution_Examples_Escrow_buyer(
+                                self.ConCert_Examples_Escrow_Escrow_buyer(
                                   state)) {
                           true => {
                             Some(
                               __mk_pair(
-                                self.ConCert_Execution_Examples_Escrow_buyer_withdrawable(
+                                self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
                                   state),
-                                self.ConCert_Execution_Examples_Escrow_set_State_buyer_withdrawable(
+                                self.ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable(
                                   self.closure(move |x| {
                                     0
                                   }),
@@ -1291,14 +1291,14 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                           false => {
                             match self.ConCert_Execution_Blockchain_address_eqb()(
                                     from)(
-                                    self.ConCert_Execution_Examples_Escrow_seller(
+                                    self.ConCert_Examples_Escrow_Escrow_seller(
                                       state)) {
                               true => {
                                 Some(
                                   __mk_pair(
-                                    self.ConCert_Execution_Examples_Escrow_seller_withdrawable(
+                                    self.ConCert_Examples_Escrow_Escrow_seller_withdrawable(
                                       state),
-                                    self.ConCert_Execution_Examples_Escrow_set_State_seller_withdrawable(
+                                    self.ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable(
                                       self.closure(move |x| {
                                         0
                                       }),
@@ -1328,18 +1328,18 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                               let new_state2 =
                                 match __andb!(
                                         self.Coq_ZArith_BinIntDef_Z_eqb(
-                                          self.ConCert_Execution_Examples_Escrow_buyer_withdrawable(
+                                          self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
                                             new_state),
                                           0),
                                         self.Coq_ZArith_BinIntDef_Z_eqb(
-                                          self.ConCert_Execution_Examples_Escrow_seller_withdrawable(
+                                          self.ConCert_Examples_Escrow_Escrow_seller_withdrawable(
                                             new_state),
                                           0)) {
                                   true => {
-                                    self.ConCert_Execution_Examples_Escrow_set_State_next_step(
+                                    self.ConCert_Examples_Escrow_Escrow_set_State_next_step(
                                       self.closure(move |x| {
                                         self.alloc(
-                                          ConCert_Execution_Examples_Escrow_NextStep::no_next_step(
+                                          ConCert_Examples_Escrow_Escrow_NextStep::no_next_step(
                                             PhantomData))
                                       }),
                                       new_state)
@@ -1379,7 +1379,7 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
                 },
               }
             },
-            &ConCert_Execution_Examples_Escrow_NextStep::no_next_step(_) => {
+            &ConCert_Examples_Escrow_Escrow_NextStep::no_next_step(_) => {
               None
             },
           }
@@ -1391,12 +1391,12 @@ fn ConCert_Execution_Examples_Escrow_receive(&'a self, chain: &'a ConCert_Execut
     },
   }
 }
-fn ConCert_Execution_Examples_Escrow_receive__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Examples_Escrow_State<'a>) -> &'a dyn Fn(Option<&'a ConCert_Execution_Examples_Escrow_Msg<'a>>) -> Option<__pair<&'a ConCert_Execution_Examples_Escrow_State<'a>, &'a Coq_Init_Datatypes_list<'a, ActionBody<'a>>>> {
+fn ConCert_Examples_Escrow_Escrow_receive__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a dyn Fn(Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Option<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Coq_Init_Datatypes_list<'a, ActionBody<'a>>>> {
   self.closure(move |chain| {
     self.closure(move |ctx| {
       self.closure(move |state| {
         self.closure(move |msg| {
-          self.ConCert_Execution_Examples_Escrow_receive(
+          self.ConCert_Examples_Escrow_Escrow_receive(
             chain,
             ctx,
             state,
@@ -1436,7 +1436,7 @@ fn contract_init<StateError: Default>(
             Address::Contract(ContractAddress { index: 0, subindex: 0 }),
             amount.micro_ccd as i64,
             amount.micro_ccd as i64);
-    let res = prg.ConCert_Execution_Examples_Escrow_init(&cchain, &cctx, params);
+    let res = prg.ConCert_Examples_Escrow_Escrow_init(&cchain, &cctx, params);
     match res {
         Option::Some(init_state) => {
             match init_state.concert_serial(state) {
@@ -1464,7 +1464,7 @@ fn convert_actions<A: HasActions>(acts: &Coq_Init_Datatypes_list<ActionBody>) ->
   }
 }
 
-#[receive(contract = "escrow", name = "ConCert_Execution_Examples_Escrow_receive", payable, enable_logger, low_level)]
+#[receive(contract = "escrow", name = "ConCert_Examples_Escrow_Escrow_receive", payable, enable_logger, low_level)]
 fn contract_receive<A: HasActions, StateError: Default>(
     ctx: &impl HasReceiveContext<()>,
     amount: concordium_std::Amount,
@@ -1504,7 +1504,7 @@ fn contract_receive<A: HasActions, StateError: Default>(
             Address::Contract(ctx.self_address()),
             balance,
             amount.micro_ccd as i64);
-    let res = prg.ConCert_Execution_Examples_Escrow_receive(&cchain, &cctx, old_state, msg);
+    let res = prg.ConCert_Examples_Escrow_Escrow_receive(&cchain, &cctx, old_state, msg);
     match res {
         Option::Some((new_state, acts)) => {
             state.truncate(0);
@@ -1534,7 +1534,7 @@ mod tests {
     fn test_read_init_data() {
         let buyer_addr = AccountAddress([0u8; 32]);
         let setup =
-            ConCert_Execution_Examples_Escrow_Setup::build_setup(PhantomData,
+            ConCert_Examples_Escrow_Escrow_Setup::build_setup(PhantomData,
                                                                  Address::Account(buyer_addr));
         match std::fs::File::create("escrow_init_data.bin") {
             Ok(mut f) => {
@@ -1545,7 +1545,7 @@ mod tests {
                             Ok(v) => {
                                 let prg = Program::new();
                                 let mut cur = Cursor::new(v);
-                                match <ConCert_Execution_Examples_Escrow_Setup>::concert_deserial(&mut cur, &prg.__alloc) {
+                                match <ConCert_Examples_Escrow_Escrow_Setup>::concert_deserial(&mut cur, &prg.__alloc) {
                                     Ok(p) => {
                                         claim_eq!(p, setup, "Wrong deserial result");
                                     },
@@ -1571,7 +1571,7 @@ mod tests {
         let mut st = ContractStateTest::open(data);
         let mut ctx = InitContextTest::empty();
         let setup =
-            ConCert_Execution_Examples_Escrow_Setup::build_setup(PhantomData,
+            ConCert_Examples_Escrow_Escrow_Setup::build_setup(PhantomData,
                                                                  Address::Account(buyer_addr));
         let param_bytes = concert_std::to_bytes(&setup);
         ctx.set_parameter(&param_bytes);
@@ -1594,12 +1594,12 @@ mod tests {
         claim_eq!(res, ());
         let arena = bumpalo::Bump::new();
         st.seek(SeekFrom::Start(0)).expect("Seek failed");
-        let deserial_state : ConCert_Execution_Examples_Escrow_State = <_>::concert_deserial(&mut st, &arena).expect("Deserialisation failed");
+        let deserial_state : ConCert_Examples_Escrow_Escrow_State = <_>::concert_deserial(&mut st, &arena).expect("Deserialisation failed");
         let res =  match deserial_state {
-            ConCert_Execution_Examples_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
+            ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
                 claim_eq!(last_action, slot_time.timestamp_millis(), "Wrong last_action:{:?}",last_action);
                 match next_step {
-                    ConCert_Execution_Examples_Escrow_NextStep::buyer_commit(PhantomData) => (),
+                    ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(PhantomData) => (),
                     _ => fail!("Wrong next_step"),
                 }
                 match seller {
@@ -1625,7 +1625,7 @@ mod tests {
         let mut ctx = ReceiveContextTest::empty();
         let prg = Program::new();
         let mut data : Vec<u8> = Vec::new();
-        let params = Option::Some(&ConCert_Execution_Examples_Escrow_Msg::commit_money(PhantomData));
+        let params = Option::Some(&ConCert_Examples_Escrow_Escrow_Msg::commit_money(PhantomData));
         params.concert_serial(&mut data).expect("Serialisation failed");
         ctx.set_parameter(&data);
         let data_st : Vec<u8> = Vec::new();
@@ -1641,11 +1641,11 @@ mod tests {
         ctx.set_self_address(self_addr);
         ctx.set_self_balance(concordium_std::Amount::from_micro_ccd(init_balance));
         let mut st = ContractStateTest::open(data_st);
-        let v : ConCert_Execution_Examples_Escrow_State =
-            ConCert_Execution_Examples_Escrow_State::build_state
+        let v : ConCert_Examples_Escrow_Escrow_State =
+            ConCert_Examples_Escrow_Escrow_State::build_state
             (PhantomData,
              0,
-             &ConCert_Execution_Examples_Escrow_NextStep::buyer_commit(PhantomData),
+             &ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(PhantomData),
              Address::Account(seller_addr),
              Address::Account(buyer_addr),
              0,
@@ -1663,12 +1663,12 @@ mod tests {
         claim_eq!(actions, ActionsTree::Accept, "Contract receive produced incorrect actions.");
         let arena = bumpalo::Bump::new();
         st.seek(SeekFrom::Start(0)).expect("Seek failed");
-        let deserial_state : ConCert_Execution_Examples_Escrow_State = <_>::concert_deserial(&mut st, &arena).expect("Deserialisation failed");
+        let deserial_state : ConCert_Examples_Escrow_Escrow_State = <_>::concert_deserial(&mut st, &arena).expect("Deserialisation failed");
         let res =  match deserial_state {
-            ConCert_Execution_Examples_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
+            ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
                 claim_eq!(last_action, slot_time.timestamp_millis(), "Wrong last_action:{:?}",last_action);
                 match next_step {
-                    ConCert_Execution_Examples_Escrow_NextStep::buyer_confirm(PhantomData) => (),
+                    ConCert_Examples_Escrow_Escrow_NextStep::buyer_confirm(PhantomData) => (),
                     _ => fail!("Wrong next_step"),
                 }
                 match seller {

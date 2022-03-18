@@ -61,8 +61,8 @@ type Msg
   | Confirm_item_received
   | Withdraw
 
-conCert_Execution_Examples_Escrow_next_step : State -> NextStep
-conCert_Execution_Examples_Escrow_next_step s =
+conCert_Examples_Escrow_Escrow_next_step : State -> NextStep
+conCert_Examples_Escrow_Escrow_next_step s =
   case s of
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       next_step
@@ -449,8 +449,8 @@ coq_ZArith_BinIntDef_Z_div a b =
 type Monad m
   = Build_monad (() -> () -> m) (() -> () -> m -> (() -> m) -> m)
 
-conCert_Execution_Examples_Escrow_buyer : State -> Int
-conCert_Execution_Examples_Escrow_buyer s =
+conCert_Examples_Escrow_Escrow_buyer : State -> Int
+conCert_Examples_Escrow_Escrow_buyer s =
   case s of
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       buyer
@@ -511,45 +511,45 @@ coq_ZArith_BinIntDef_Z_eqb x y =
         Zneg q ->
           coq_PArith_BinPosDef_Pos_eqb p q
 
-conCert_Execution_Examples_Escrow_last_action : State -> Nat
-conCert_Execution_Examples_Escrow_last_action s =
+conCert_Examples_Escrow_Escrow_last_action : State -> Nat
+conCert_Examples_Escrow_Escrow_last_action s =
   case s of
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       last_action
 
-conCert_Execution_Examples_Escrow_seller : State -> Int
-conCert_Execution_Examples_Escrow_seller s =
+conCert_Examples_Escrow_Escrow_seller : State -> Int
+conCert_Examples_Escrow_Escrow_seller s =
   case s of
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       seller
 
-conCert_Execution_Examples_Escrow_seller_withdrawable : State -> Z
-conCert_Execution_Examples_Escrow_seller_withdrawable s =
+conCert_Examples_Escrow_Escrow_seller_withdrawable : State -> Z
+conCert_Examples_Escrow_Escrow_seller_withdrawable s =
   case s of
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       seller_withdrawable
 
-conCert_Execution_Examples_Escrow_buyer_withdrawable : State -> Z
-conCert_Execution_Examples_Escrow_buyer_withdrawable s =
+conCert_Examples_Escrow_Escrow_buyer_withdrawable : State -> Z
+conCert_Examples_Escrow_Escrow_buyer_withdrawable s =
   case s of
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       buyer_withdrawable
 
-conCert_Execution_Examples_Escrow_set_State_last_action : (Nat -> Nat) -> State -> State
-conCert_Execution_Examples_Escrow_set_State_last_action f r =
-  Build_state (f (conCert_Execution_Examples_Escrow_last_action r)) (conCert_Execution_Examples_Escrow_next_step r) (conCert_Execution_Examples_Escrow_seller r) (conCert_Execution_Examples_Escrow_buyer r) (conCert_Execution_Examples_Escrow_seller_withdrawable r) (conCert_Execution_Examples_Escrow_buyer_withdrawable r)
+conCert_Examples_Escrow_Escrow_set_State_last_action : (Nat -> Nat) -> State -> State
+conCert_Examples_Escrow_Escrow_set_State_last_action f r =
+  Build_state (f (conCert_Examples_Escrow_Escrow_last_action r)) (conCert_Examples_Escrow_Escrow_next_step r) (conCert_Examples_Escrow_Escrow_seller r) (conCert_Examples_Escrow_Escrow_buyer r) (conCert_Examples_Escrow_Escrow_seller_withdrawable r) (conCert_Examples_Escrow_Escrow_buyer_withdrawable r)
 
-conCert_Execution_Examples_Escrow_set_State_next_step : (NextStep -> NextStep) -> State -> State
-conCert_Execution_Examples_Escrow_set_State_next_step f r =
-  Build_state (conCert_Execution_Examples_Escrow_last_action r) (f (conCert_Execution_Examples_Escrow_next_step r)) (conCert_Execution_Examples_Escrow_seller r) (conCert_Execution_Examples_Escrow_buyer r) (conCert_Execution_Examples_Escrow_seller_withdrawable r) (conCert_Execution_Examples_Escrow_buyer_withdrawable r)
+conCert_Examples_Escrow_Escrow_set_State_next_step : (NextStep -> NextStep) -> State -> State
+conCert_Examples_Escrow_Escrow_set_State_next_step f r =
+  Build_state (conCert_Examples_Escrow_Escrow_last_action r) (f (conCert_Examples_Escrow_Escrow_next_step r)) (conCert_Examples_Escrow_Escrow_seller r) (conCert_Examples_Escrow_Escrow_buyer r) (conCert_Examples_Escrow_Escrow_seller_withdrawable r) (conCert_Examples_Escrow_Escrow_buyer_withdrawable r)
 
-conCert_Execution_Examples_Escrow_set_State_seller_withdrawable : (Z -> Z) -> State -> State
-conCert_Execution_Examples_Escrow_set_State_seller_withdrawable f r =
-  Build_state (conCert_Execution_Examples_Escrow_last_action r) (conCert_Execution_Examples_Escrow_next_step r) (conCert_Execution_Examples_Escrow_seller r) (conCert_Execution_Examples_Escrow_buyer r) (f (conCert_Execution_Examples_Escrow_seller_withdrawable r)) (conCert_Execution_Examples_Escrow_buyer_withdrawable r)
+conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable : (Z -> Z) -> State -> State
+conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable f r =
+  Build_state (conCert_Examples_Escrow_Escrow_last_action r) (conCert_Examples_Escrow_Escrow_next_step r) (conCert_Examples_Escrow_Escrow_seller r) (conCert_Examples_Escrow_Escrow_buyer r) (f (conCert_Examples_Escrow_Escrow_seller_withdrawable r)) (conCert_Examples_Escrow_Escrow_buyer_withdrawable r)
 
-conCert_Execution_Examples_Escrow_set_State_buyer_withdrawable : (Z -> Z) -> State -> State
-conCert_Execution_Examples_Escrow_set_State_buyer_withdrawable f r =
-  Build_state (conCert_Execution_Examples_Escrow_last_action r) (conCert_Execution_Examples_Escrow_next_step r) (conCert_Execution_Examples_Escrow_seller r) (conCert_Execution_Examples_Escrow_buyer r) (conCert_Execution_Examples_Escrow_seller_withdrawable r) (f (conCert_Execution_Examples_Escrow_buyer_withdrawable r))
+conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable : (Z -> Z) -> State -> State
+conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable f r =
+  Build_state (conCert_Examples_Escrow_Escrow_last_action r) (conCert_Examples_Escrow_Escrow_next_step r) (conCert_Examples_Escrow_Escrow_seller r) (conCert_Examples_Escrow_Escrow_buyer r) (conCert_Examples_Escrow_Escrow_seller_withdrawable r) (f (conCert_Examples_Escrow_Escrow_buyer_withdrawable r))
 
 coq_Init_Nat_leb : Nat -> Nat -> Bool
 coq_Init_Nat_leb n m =
@@ -593,13 +593,13 @@ coq_Init_Datatypes_andb b1 b2 =
     False ->
       False
 
-conCert_Execution_Examples_Escrow_receive : ConCertChain -> ConCertCallContext -> State -> Option Msg -> Option (Prod State (List ConCertAction))
-conCert_Execution_Examples_Escrow_receive chain ctx state msg =
+conCert_Examples_Escrow_Escrow_receive : ConCertChain -> ConCertCallContext -> State -> Option Msg -> Option (Prod State (List ConCertAction))
+conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
   case msg of
     Some m ->
       case m of
         Commit_money ->
-          case conCert_Execution_Examples_Escrow_next_step state of
+          case conCert_Examples_Escrow_Escrow_next_step state of
             Buyer_commit ->
               let
                 item_price =
@@ -609,7 +609,7 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
                 expected =
                   coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XO XH))
               in
-              case (case Order.eq (ctx_from ctx) (conCert_Execution_Examples_Escrow_buyer state) of
+              case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
                       True ->
                         Some Tt
                       False ->
@@ -621,7 +621,7 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
                                  False ->
                                    None) of
                            Some val2 ->
-                             (\x2 -> Some (Pair ((\x3 -> x3) conCert_Execution_Examples_Escrow_set_State_last_action (\x3 -> current_slot chain) ((\x3 -> x3) conCert_Execution_Examples_Escrow_set_State_next_step (\x3 -> Buyer_confirm) state)) Nil)) val2
+                             (\x2 -> Some (Pair ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_last_action (\x3 -> current_slot chain) ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_next_step (\x3 -> Buyer_confirm) state)) Nil)) val2
                            None ->
                              None) val
                 None ->
@@ -633,7 +633,7 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
             No_next_step ->
               None
         Confirm_item_received ->
-          case conCert_Execution_Examples_Escrow_next_step state of
+          case conCert_Examples_Escrow_Escrow_next_step state of
             Buyer_commit ->
               None
             Buyer_confirm ->
@@ -641,7 +641,7 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
                 item_price =
                   coq_ZArith_BinIntDef_Z_div (ctx_contract_balance ctx) (Zpos (XO (XO XH)))
               in
-              case (case Order.eq (ctx_from ctx) (conCert_Execution_Examples_Escrow_buyer state) of
+              case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
                       True ->
                         Some Tt
                       False ->
@@ -655,7 +655,7 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
                            Some val2 ->
                              (\x2 -> let
                                        new_state =
-                                         (\x3 -> x3) conCert_Execution_Examples_Escrow_set_State_seller_withdrawable (\x3 -> coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XI XH))) ((\x3 -> x3) conCert_Execution_Examples_Escrow_set_State_buyer_withdrawable (\x3 -> item_price) ((\x3 -> x3) conCert_Execution_Examples_Escrow_set_State_next_step (\x3 -> Withdrawals) state))
+                                         (\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x3 -> coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XI XH))) ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x3 -> item_price) ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_next_step (\x3 -> Withdrawals) state))
                                      in
                                      Some (Pair new_state Nil)) val2
                            None ->
@@ -667,7 +667,7 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
             No_next_step ->
               None
         Withdraw ->
-          case conCert_Execution_Examples_Escrow_next_step state of
+          case conCert_Examples_Escrow_Escrow_next_step state of
             Buyer_commit ->
               case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) Z0 of
                       True ->
@@ -675,13 +675,13 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
                       False ->
                         None) of
                 Some val ->
-                  (\x -> case (case coq_Init_Nat_ltb (coq_Init_Nat_add (conCert_Execution_Examples_Escrow_last_action state) (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S O))))))))))))))))))))))))))))))))))))))))))))))))))) (current_slot chain) of
+                  (\x -> case (case coq_Init_Nat_ltb (coq_Init_Nat_add (conCert_Examples_Escrow_Escrow_last_action state) (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S O))))))))))))))))))))))))))))))))))))))))))))))))))) (current_slot chain) of
                                  True ->
                                    None
                                  False ->
                                    Some Tt) of
                            Some val2 ->
-                             (\x2 -> case (case Order.eq (ctx_from ctx) (conCert_Execution_Examples_Escrow_seller state) of
+                             (\x2 -> case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_seller state) of
                                              True ->
                                                Some Tt
                                              False ->
@@ -691,7 +691,7 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
                                                    balance =
                                                      ctx_contract_balance ctx
                                                  in
-                                                 Some (Pair ((\x4 -> x4) conCert_Execution_Examples_Escrow_set_State_next_step (\x4 -> No_next_step) state) (Cons (Act_transfer (conCert_Execution_Examples_Escrow_seller state) balance) Nil))) val3
+                                                 Some (Pair ((\x4 -> x4) conCert_Examples_Escrow_Escrow_set_State_next_step (\x4 -> No_next_step) state) (Cons (Act_transfer (conCert_Examples_Escrow_Escrow_seller state) balance) Nil))) val3
                                        None ->
                                          None) val2
                            None ->
@@ -711,13 +711,13 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
                            from =
                              ctx_from ctx
                          in
-                         case (case Order.eq from (conCert_Execution_Examples_Escrow_buyer state) of
+                         case (case Order.eq from (conCert_Examples_Escrow_Escrow_buyer state) of
                                  True ->
-                                   Some (Pair (conCert_Execution_Examples_Escrow_buyer_withdrawable state) ((\x2 -> x2) conCert_Execution_Examples_Escrow_set_State_buyer_withdrawable (\x2 -> Z0) state))
+                                   Some (Pair (conCert_Examples_Escrow_Escrow_buyer_withdrawable state) ((\x2 -> x2) conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x2 -> Z0) state))
                                  False ->
-                                   case Order.eq from (conCert_Execution_Examples_Escrow_seller state) of
+                                   case Order.eq from (conCert_Examples_Escrow_Escrow_seller state) of
                                      True ->
-                                       Some (Pair (conCert_Execution_Examples_Escrow_seller_withdrawable state) ((\x2 -> x2) conCert_Execution_Examples_Escrow_set_State_seller_withdrawable (\x2 -> Z0) state))
+                                       Some (Pair (conCert_Examples_Escrow_Escrow_seller_withdrawable state) ((\x2 -> x2) conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x2 -> Z0) state))
                                      False ->
                                        None) of
                            Some val2 ->
@@ -731,9 +731,9 @@ conCert_Execution_Examples_Escrow_receive chain ctx state msg =
                                            Some val3 ->
                                              (\x3 -> let
                                                        new_state2 =
-                                                         case coq_Init_Datatypes_andb (coq_ZArith_BinIntDef_Z_eqb (conCert_Execution_Examples_Escrow_buyer_withdrawable new_state) Z0) (coq_ZArith_BinIntDef_Z_eqb (conCert_Execution_Examples_Escrow_seller_withdrawable new_state) Z0) of
+                                                         case coq_Init_Datatypes_andb (coq_ZArith_BinIntDef_Z_eqb (conCert_Examples_Escrow_Escrow_buyer_withdrawable new_state) Z0) (coq_ZArith_BinIntDef_Z_eqb (conCert_Examples_Escrow_Escrow_seller_withdrawable new_state) Z0) of
                                                            True ->
-                                                             (\x4 -> x4) conCert_Execution_Examples_Escrow_set_State_next_step (\x4 -> No_next_step) new_state
+                                                             (\x4 -> x4) conCert_Examples_Escrow_Escrow_set_State_next_step (\x4 -> No_next_step) new_state
                                                            False ->
                                                              new_state
                                                      in
