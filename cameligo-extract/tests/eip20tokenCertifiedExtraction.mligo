@@ -10,7 +10,7 @@
 [@inline] let eqInt (i : int) (j : int) = i = j
 
 [@inline] let addTez (n : tez) (m : tez) = n + m
-[@inline] let subTez (n : tez) (m : tez) = n - m
+[@inline] let subTez (n : tez) (m : tez) : tez option = n - m
 [@inline] let leTez (a : tez ) (b : tez ) = a <= b
 [@inline] let ltTez (a : tez ) (b : tez ) =  a < b
 [@inline] let gtbTez (a : tez ) (b : tez ) =  a > b
@@ -94,7 +94,7 @@ type setup =
 
 
 type state = 
-  Build_state of (tokenValue *  (address, tokenValue) map *  (address,  (address, tokenValue) map) map)
+  Build_state of (tokenValue * (address, tokenValue) map * (address, (address, tokenValue) map) map)
 
 
 type msg = 
@@ -103,68 +103,79 @@ type msg =
 | Approve of (address * tokenValue)
 
 
-let init_amount(s : setup) : tokenValue = match s with 
+let init_amount (s : setup) : tokenValue = 
+match s with 
 Build_setup (owner, init_amount) -> init_amount
 
-let owner(s : setup) : address = match s with 
+let owner (s : setup) : address = 
+match s with 
 Build_setup (owner, init_amount) -> owner
 
-let balances(s : state) :  (address, tokenValue) map = match s with 
+let balances (s : state) : (address, tokenValue) map = 
+match s with 
 Build_state (total_supply, balances, allowances) -> balances
 
-let increment_balance(m :  (address, tokenValue) map) (addr : address) (inc : tokenValue) :  (address, tokenValue) map = match Map.find_opt addr m with 
-Some (old) -> (Map.add addr (addInt old inc) m)
+let increment_balance (m : (address, tokenValue) map) (addr : address) (inc : tokenValue) : (address, tokenValue) map = 
+match Map.find_opt addr m with 
+Some old -> (Map.add addr (addInt old inc) m)
  | None  -> (Map.add addr inc m)
 
-let total_supply(s : state) : tokenValue = match s with 
+let total_supply (s : state) : tokenValue = 
+match s with 
 Build_state (total_supply, balances, allowances) -> total_supply
 
-let allowances(s : state) :  (address,  (address, tokenValue) map) map = match s with 
+let allowances (s : state) : (address, (address, tokenValue) map) map = 
+match s with 
 Build_state (total_supply, balances, allowances) -> allowances
 
-let try_transfer(from : address) (to0 : address) (amount0 : tokenValue) (state : state) :  (state) option = let from_balance = match Map.find_opt from (balances state) with 
-Some (v) -> v
+let try_transfer (from : address) (to0 : address) (amount0 : tokenValue) (state : state) : state option = 
+let from_balance = match Map.find_opt from (balances state) with 
+Some v -> v
  | None  -> 0 in 
-if ltInt from_balance amount0 then (None: (state) option) else let new_balances = Map.add from (subIntTruncated from_balance amount0) (balances state) in 
+if ltInt from_balance amount0 then (None:state option) else let new_balances = Map.add from (subIntTruncated from_balance amount0) (balances state) in 
 let new_balances0 = increment_balance new_balances to0 amount0 in 
-Some ((Build_state ((total_supply state), new_balances0, (allowances state))))
+Some (Build_state ((total_supply state), new_balances0, (allowances state)))
 
-let try_transfer_from(delegate : address) (from : address) (to0 : address) (amount0 : tokenValue) (state : state) :  (state) option = match Map.find_opt from (allowances state) with 
-Some (val0) -> (match Map.find_opt delegate val0 with 
-Some (val1) -> (let from_balance = match Map.find_opt from (balances state) with 
-Some (v) -> v
+let try_transfer_from (delegate : address) (from : address) (to0 : address) (amount0 : tokenValue) (state : state) : state option = 
+match Map.find_opt from (allowances state) with 
+Some val0 -> (match Map.find_opt delegate val0 with 
+Some val1 -> (let from_balance = match Map.find_opt from (balances state) with 
+Some v -> v
  | None  -> 0 in 
-if orb (ltInt val1 amount0) (ltInt from_balance amount0) then (None: (state) option) else let new_allowances = Map.add delegate (subIntTruncated val1 amount0) val0 in 
+if orb (ltInt val1 amount0) (ltInt from_balance amount0) then (None:state option) else let new_allowances = Map.add delegate (subIntTruncated val1 amount0) val0 in 
 let new_balances = Map.add from (subIntTruncated from_balance amount0) (balances state) in 
 let new_balances0 = increment_balance new_balances to0 amount0 in 
-Some ((Build_state ((total_supply (Build_state ((total_supply state), new_balances0, (allowances state)))), (balances (Build_state ((total_supply state), new_balances0, (allowances state)))), (Map.add from new_allowances (allowances (Build_state ((total_supply state), new_balances0, (allowances state)))))))))
- | None  -> (None: (state) option))
- | None  -> (None: (state) option)
+Some (Build_state ((total_supply (Build_state ((total_supply state), new_balances0, (allowances state)))), (balances (Build_state ((total_supply state), new_balances0, (allowances state)))), (Map.add from new_allowances (allowances (Build_state ((total_supply state), new_balances0, (allowances state))))))))
+ | None  -> (None:state option))
+ | None  -> (None:state option)
 
-let try_approve(caller : address) (delegate : address) (amount0 : tokenValue) (state : state) :  (state) option = match Map.find_opt caller (allowances state) with 
-Some (caller_allowances) -> (Some ((Build_state ((total_supply state), (balances state), (Map.add caller (Map.add delegate amount0 caller_allowances) (allowances state))))))
- | None  -> (Some ((Build_state ((total_supply state), (balances state), (Map.add caller (Map.add delegate amount0 (Map.empty:  (address, tokenValue) map)) (allowances state))))))
+let try_approve (caller : address) (delegate : address) (amount0 : tokenValue) (state : state) : state option = 
+match Map.find_opt caller (allowances state) with 
+Some caller_allowances -> (Some (Build_state ((total_supply state), (balances state), (Map.add caller (Map.add delegate amount0 caller_allowances) (allowances state)))))
+ | None  -> (Some (Build_state ((total_supply state), (balances state), (Map.add caller (Map.add delegate amount0 (Map.empty: (address, tokenValue) map)) (allowances state)))))
 
-let receive(ctx : cctx) (state : state) (maybe_msg :  (msg) option) :  ((state *  (operation) list)) option = let sender0 = ctx_from ctx in 
-let without_actions = fun (o :  (state) option) -> match o with 
-Some (a) -> (Some ( (a, ([]: (operation) list))))
- | None  -> (None: ((state *  (operation) list)) option) in 
-if gtbTez (ctx_amount ctx) 0tez then (None: ((state *  (operation) list)) option) else match maybe_msg with 
-Some (m) -> (match m with 
+let receive (ctx : cctx) (state : state) (maybe_msg : msg option) : (state * operation list) option = 
+let sender0 = ctx_from ctx in 
+let without_actions = fun (o : state option) -> match o with 
+Some a -> (Some (a, ([]:operation list)))
+ | None  -> (None:(state * operation list) option) in 
+if gtbTez (ctx_amount ctx) 0tez then (None:(state * operation list) option) else match maybe_msg with 
+Some m -> (match m with 
 Transfer (to0, amount0) -> (without_actions (try_transfer sender0 to0 amount0 state))
  | Transfer_from (from, to0, amount0) -> (without_actions (try_transfer_from sender0 from to0 amount0 state))
  | Approve (delegate, amount0) -> (without_actions (try_approve sender0 delegate amount0 state)))
- | None  -> (None: ((state *  (operation) list)) option)
+ | None  -> (None:(state * operation list) option)
 
-let receive_(chain : chain) (ctx : cctx) (state : state) (maybe_msg :  (msg) option) :  (( (operation) list * state)) option = match receive ctx state maybe_msg with 
-Some (x) -> (Some ( (x.1, x.0)))
- | None  -> (None: (( (operation) list * state)) option)
+let receive_ (chain : chain) (ctx : cctx) (state : state) (maybe_msg : msg option) : (operation list * state) option = 
+match receive ctx state maybe_msg with 
+Some x -> (Some (x.1, x.0))
+ | None  -> (None:(operation list * state) option)
 
 let init (setup : setup) : state = 
 
-let inner (ctx : cctx) (setup : setup) : (state) option = 
+let inner (ctx : cctx) (setup : setup) :state option = 
 let ctx_ = ctx in 
-Some ((Build_state ((init_amount setup), (Map.add (owner setup) (init_amount setup) (Map.empty:  (address, tokenValue) map)), (Map.empty:  (address,  (address, tokenValue) map) map)))) in
+Some (Build_state ((init_amount setup), (Map.add (owner setup) (init_amount setup) (Map.empty: (address, tokenValue) map)), (Map.empty: (address, (address, tokenValue) map) map))) in
 let ctx = cctx_instance in
 match (inner ctx setup) with
   Some v -> v

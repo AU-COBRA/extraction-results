@@ -10,7 +10,7 @@
 [@inline] let eqInt (i : int) (j : int) = i = j
 
 [@inline] let addTez (n : tez) (m : tez) = n + m
-[@inline] let subTez (n : tez) (m : tez) = n - m
+[@inline] let subTez (n : tez) (m : tez) : tez option = n - m
 [@inline] let leTez (a : tez ) (b : tez ) = a <= b
 [@inline] let ltTez (a : tez ) (b : tez ) =  a < b
 [@inline] let gtbTez (a : tez ) (b : tez ) =  a > b
@@ -88,37 +88,41 @@ let current_slot (c : chain ) = c.current_slot_
 let finalized_height (c : chain) = c.finalized_height_
 let test_account : address = ("tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" : address)
 
-type storage = (tez * address)
+type storage = (int * address)
 
 type msg = 
-  Inc of tez
-| Dec of tez
+  Inc of int
+| Dec of int
 
 
-let inc_balance(st : storage) (new_balance : tez) : (tez * address) =  ((addTez st.0 new_balance), st.1)
+let inc_balance (st : storage) (new_balance : int) : (int * address) = 
+((addInt st.0 new_balance), st.1)
 
-let dec_balance(st : storage) (new_balance : tez) : (tez * address) =  ((subTez st.0 new_balance), st.1)
+let dec_balance (st : storage) (new_balance : int) : (int * address) = 
+((subInt st.0 new_balance), st.1)
 
-let counter_inner(msg : msg) (st : storage) :  (( (operation) list * storage)) option = match msg with 
-Inc (i) -> (if leTez 0tez i then Some ( (([]: (operation) list), (inc_balance st i))) else (None: (( (operation) list * storage)) option))
- | Dec (i) -> (if leTez 0tez i then Some ( (([]: (operation) list), (dec_balance st i))) else (None: (( (operation) list * storage)) option))
+let counter_inner (msg : msg) (st : storage) : (operation list * storage) option = 
+match msg with 
+Inc i -> (if leInt 0 i then Some (([]:operation list), (inc_balance st i)) else (None:(operation list * storage) option))
+ | Dec i -> (if leInt 0 i then Some (([]:operation list), (dec_balance st i)) else (None:(operation list * storage) option))
 
-let counter(c : chain) (ctx : cctx) (st : storage) (msg :  (msg) option) :  (( (operation) list * storage)) option = let c_ = c in 
+let counter (c : chain) (ctx : cctx) (st : storage) (msg : msg option) : (operation list * storage) option = 
+let c_ = c in 
 let ctx_ = ctx in 
 match msg with 
-Some (msg0) -> (counter_inner msg0 st)
- | None  -> (None: (( (operation) list * storage)) option)
+Some msg0 -> (counter_inner msg0 st)
+ | None  -> (None:(operation list * storage) option)
 
-let init (setup : (tez * address)) : storage = 
+let init (setup : (int * address)) : storage = 
 
-let inner (ctx : cctx) (setup : (tez * address)) : (storage) option = 
+let inner (ctx : cctx) (setup : (int * address)) :storage option = 
 let ctx_ = ctx in 
-Some (setup) in
+Some setup in
 let ctx = cctx_instance in
 match (inner ctx setup) with
   Some v -> v
 | None -> (failwith (""): storage)
-type init_args_ty = (tez * address)
+type init_args_ty = (int * address)
 let init_wrapper (args : init_args_ty) =
   init args
 

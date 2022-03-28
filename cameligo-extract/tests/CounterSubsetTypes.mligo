@@ -10,7 +10,7 @@
 [@inline] let eqInt (i : int) (j : int) = i = j
 
 [@inline] let addTez (n : tez) (m : tez) = n + m
-[@inline] let subTez (n : tez) (m : tez) = n - m
+[@inline] let subTez (n : tez) (m : tez) : tez option = n - m
 [@inline] let leTez (a : tez ) (b : tez ) = a <= b
 [@inline] let ltTez (a : tez ) (b : tez ) =  a < b
 [@inline] let gtbTez (a : tez ) (b : tez ) =  a > b
@@ -99,41 +99,47 @@ type counterRefinementTypes_msg =
 | Coun_Dec of int
 
 
-type 'a0 specif_sig = 
-  Spec_exist of 'a0
+type 'a specif_sig = 
+  Spec_exist of 'a
 
 
-let bool_bool_dec(b1 : bool) (b2 : bool) : specif_sumbool = (if b1 then fun (x : bool) -> if x then Spec_left else Spec_right else fun (x : bool) -> if x then Spec_right else Spec_left) b2
+let bool_bool_dec (b1 : bool) (b2 : bool) : specif_sumbool = 
+(if b1 then fun (x : bool) -> if x then Spec_left else Spec_right else fun (x : bool) -> if x then Spec_right else Spec_left) b2
 
-let counterRefinementTypes_Transaction_none : operation list = ([]: (operation) list)
+let counterRefinementTypes_Transaction_none  : operation list = 
+([]:operation list)
 
-let counterRefinementTypes_inc_counter(st : counterRefinementTypes_storage) (inc :  (int) specif_sig) :  (counterRefinementTypes_storage) specif_sig = Spec_exist ((addInt st (match inc with 
-Spec_exist (a) -> a)))
+let counterRefinementTypes_inc_counter (st : counterRefinementTypes_storage) (inc : int specif_sig) : counterRefinementTypes_storage specif_sig = 
+Spec_exist (addInt st (match inc with 
+Spec_exist a -> a))
 
-let counterRefinementTypes_dec_counter(st : counterRefinementTypes_storage) (dec :  (int) specif_sig) :  (counterRefinementTypes_storage) specif_sig = Spec_exist ((subInt st (match dec with 
-Spec_exist (a) -> a)))
+let counterRefinementTypes_dec_counter (st : counterRefinementTypes_storage) (dec : int specif_sig) : counterRefinementTypes_storage specif_sig = 
+Spec_exist (subInt st (match dec with 
+Spec_exist a -> a))
 
-let counterRefinementTypes_counter(msg : counterRefinementTypes_msg) (st : counterRefinementTypes_storage) :  ((operation list * counterRefinementTypes_storage)) option = match msg with 
-Coun_Inc (i) -> (match bool_bool_dec true (ltInt 0 i) with 
-Spec_left  -> (Some ( (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_inc_counter st (Spec_exist (i)) with 
-Spec_exist (a) -> a))))
- | Spec_right  -> (None: ((operation list * counterRefinementTypes_storage)) option))
- | Coun_Dec (i) -> (match bool_bool_dec true (ltInt 0 i) with 
-Spec_left  -> (Some ( (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_dec_counter st (Spec_exist (i)) with 
-Spec_exist (a) -> a))))
- | Spec_right  -> (None: ((operation list * counterRefinementTypes_storage)) option))
+let counterRefinementTypes_counter (msg : counterRefinementTypes_msg) (st : counterRefinementTypes_storage) : (operation list * counterRefinementTypes_storage) option = 
+match msg with 
+Coun_Inc i -> (match bool_bool_dec true (ltInt 0 i) with 
+Spec_left  -> (Some (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_inc_counter st (Spec_exist i) with 
+Spec_exist a -> a)))
+ | Spec_right  -> (None:(operation list * counterRefinementTypes_storage) option))
+ | Coun_Dec i -> (match bool_bool_dec true (ltInt 0 i) with 
+Spec_left  -> (Some (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_dec_counter st (Spec_exist i) with 
+Spec_exist a -> a)))
+ | Spec_right  -> (None:(operation list * counterRefinementTypes_storage) option))
 
-let cameLIGOExtractionSetup_counter_wrapper(c : chain) (ctx : cctx) (s : counterRefinementTypes_storage) (m :  (counterRefinementTypes_msg) option) :  ((operation list * counterRefinementTypes_storage)) option = let c_ = c in 
+let cameLIGOExtractionSetup_counter_wrapper (c : chain) (ctx : cctx) (s : counterRefinementTypes_storage) (m : counterRefinementTypes_msg option) : (operation list * counterRefinementTypes_storage) option = 
+let c_ = c in 
 let ctx_ = ctx in 
 match m with 
-Some (m0) -> (counterRefinementTypes_counter m0 s)
- | None  -> (None: ((operation list * counterRefinementTypes_storage)) option)
+Some m0 -> (counterRefinementTypes_counter m0 s)
+ | None  -> (None:(operation list * counterRefinementTypes_storage) option)
 
 let init (setup : int) : counterRefinementTypes_storage = 
 
-let inner (ctx : cctx) (setup : int) : (counterRefinementTypes_storage) option = 
+let inner (ctx : cctx) (setup : int) :counterRefinementTypes_storage option = 
 let ctx_ = ctx in 
-Some (setup) in
+Some setup in
 let ctx = cctx_instance in
 match (inner ctx setup) with
   Some v -> v

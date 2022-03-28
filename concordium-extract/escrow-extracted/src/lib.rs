@@ -358,33 +358,22 @@ fn ConCert_Examples_Escrow_Escrow_next_step__curried(&'a self) -> &'a dyn Fn(&'a
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_add(&'a self, a: i64, b: i64) -> i64 { a.checked_add(b).unwrap() }
-fn Coq_ZArith_BinIntDef_Z_add__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
-  self.closure(move |x| {
-    self.closure(move |y| {
-      self.Coq_ZArith_BinIntDef_Z_add(
-        x,
-        y)
-    })
-  })
-}
-
-fn Coq_ZArith_BinIntDef_Z_mul(&'a self, a: i64, b: i64) -> i64 { a.checked_mul(b).unwrap() }
-fn Coq_ZArith_BinIntDef_Z_mul__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
-  self.closure(move |x| {
-    self.closure(move |y| {
-      self.Coq_ZArith_BinIntDef_Z_mul(
-        x,
-        y)
-    })
-  })
-}
-
 fn Coq_ZArith_BinIntDef_Z_ltb(&'a self, a: i64, b: i64) -> bool { a < b }
 fn Coq_ZArith_BinIntDef_Z_ltb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> bool {
   self.closure(move |x| {
     self.closure(move |y| {
       self.Coq_ZArith_BinIntDef_Z_ltb(
+        x,
+        y)
+    })
+  })
+}
+
+fn Coq_ZArith_BinIntDef_Z_add(&'a self, a: i64, b: i64) -> i64 { a.checked_add(b).unwrap() }
+fn Coq_ZArith_BinIntDef_Z_add__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
+  self.closure(move |x| {
+    self.closure(move |y| {
+      self.Coq_ZArith_BinIntDef_Z_add(
         x,
         y)
     })
@@ -420,6 +409,56 @@ fn Coq_ZArith_BinIntDef_Z_sub__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn F
       self.Coq_ZArith_BinIntDef_Z_sub(
         m,
         n)
+    })
+  })
+}
+
+fn ConCert_Examples_Escrow_Escrow_subAmountOption(&'a self, n: ConCert_Execution_Blockchain_Amount<'a>, m: ConCert_Execution_Blockchain_Amount<'a>) -> Option<ConCert_Execution_Blockchain_Amount<'a>> {
+  match self.Coq_ZArith_BinIntDef_Z_ltb(
+          n,
+          m) {
+    true => {
+      None
+    },
+    false => {
+      Some(
+        self.Coq_ZArith_BinIntDef_Z_sub(
+          n,
+          m))
+    },
+  }
+}
+fn ConCert_Examples_Escrow_Escrow_subAmountOption__curried(&'a self) -> &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> Option<ConCert_Execution_Blockchain_Amount<'a>> {
+  self.closure(move |n| {
+    self.closure(move |m| {
+      self.ConCert_Examples_Escrow_Escrow_subAmountOption(
+        n,
+        m)
+    })
+  })
+}
+
+fn ConCert_Execution_Blockchain_ctx_contract_balance(&'a self, c: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+  match c {
+    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
+      ctx_contract_balance
+    },
+  }
+}
+fn ConCert_Execution_Blockchain_ctx_contract_balance__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+  self.closure(move |c| {
+    self.ConCert_Execution_Blockchain_ctx_contract_balance(
+      c)
+  })
+}
+
+fn Coq_ZArith_BinIntDef_Z_mul(&'a self, a: i64, b: i64) -> i64 { a.checked_mul(b).unwrap() }
+fn Coq_ZArith_BinIntDef_Z_mul__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
+  self.closure(move |x| {
+    self.closure(move |y| {
+      self.Coq_ZArith_BinIntDef_Z_mul(
+        x,
+        y)
     })
   })
 }
@@ -705,20 +744,6 @@ fn Coq_ZArith_BinIntDef_Z_div__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn F
   })
 }
 
-fn ConCert_Execution_Blockchain_ctx_contract_balance(&'a self, c: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
-  match c {
-    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
-      ctx_contract_balance
-    },
-  }
-}
-fn ConCert_Execution_Blockchain_ctx_contract_balance__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
-  self.closure(move |c| {
-    self.ConCert_Execution_Blockchain_ctx_contract_balance(
-      c)
-  })
-}
-
 fn ConCert_Examples_Escrow_Escrow_buyer(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
   match s {
     &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
@@ -949,40 +974,29 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
           match self.ConCert_Examples_Escrow_Escrow_next_step(
                   state) {
             &ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(_) => {
-              let item_price =
-                self.Coq_ZArith_BinIntDef_Z_div(
-                  self.Coq_ZArith_BinIntDef_Z_sub(
-                    self.ConCert_Execution_Blockchain_ctx_contract_balance(
-                      ctx),
-                    self.ConCert_Execution_Blockchain_ctx_amount(
-                      ctx)),
-                  __Z_frompos(
-                    __pos_zerobit(
-                      1)));
-              let expected =
-                self.Coq_ZArith_BinIntDef_Z_mul(
-                  item_price,
-                  __Z_frompos(
-                    __pos_zerobit(
-                      1)));
-              match match self.ConCert_Execution_Blockchain_address_eqb()(
-                            self.ConCert_Execution_Blockchain_ctx_from(
-                              ctx))(
-                            self.ConCert_Examples_Escrow_Escrow_buyer(
-                              state)) {
-                      true => {
-                        Some(
-                          ())
-                      },
-                      false => {
-                        None
-                      },
-                    } {
+              match self.ConCert_Examples_Escrow_Escrow_subAmountOption(
+                      self.ConCert_Execution_Blockchain_ctx_contract_balance(
+                        ctx),
+                      self.ConCert_Execution_Blockchain_ctx_amount(
+                        ctx)) {
                 Some(val) => {
-                  match match self.Coq_ZArith_BinIntDef_Z_eqb(
-                                self.ConCert_Execution_Blockchain_ctx_amount(
-                                  ctx),
-                                expected) {
+                  let item_price =
+                    self.Coq_ZArith_BinIntDef_Z_div(
+                      val,
+                      __Z_frompos(
+                        __pos_zerobit(
+                          1)));
+                  let expected =
+                    self.Coq_ZArith_BinIntDef_Z_mul(
+                      item_price,
+                      __Z_frompos(
+                        __pos_zerobit(
+                          1)));
+                  match match self.ConCert_Execution_Blockchain_address_eqb()(
+                                self.ConCert_Execution_Blockchain_ctx_from(
+                                  ctx))(
+                                self.ConCert_Examples_Escrow_Escrow_buyer(
+                                  state)) {
                           true => {
                             Some(
                               ())
@@ -992,23 +1006,41 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                           },
                         } {
                     Some(val2) => {
-                      Some(
-                        __mk_pair(
-                          self.ConCert_Examples_Escrow_Escrow_set_State_last_action(
-                            self.closure(move |x| {
-                              self.ConCert_Execution_Blockchain_current_slot(
-                                chain)
-                            }),
-                            self.ConCert_Examples_Escrow_Escrow_set_State_next_step(
-                              self.closure(move |x| {
-                                self.alloc(
-                                  ConCert_Examples_Escrow_Escrow_NextStep::buyer_confirm(
-                                    PhantomData))
-                              }),
-                              state)),
-                          self.alloc(
-                            Coq_Init_Datatypes_list::nil(
-                              PhantomData))))
+                      match match self.Coq_ZArith_BinIntDef_Z_eqb(
+                                    self.ConCert_Execution_Blockchain_ctx_amount(
+                                      ctx),
+                                    expected) {
+                              true => {
+                                Some(
+                                  ())
+                              },
+                              false => {
+                                None
+                              },
+                            } {
+                        Some(val3) => {
+                          Some(
+                            __mk_pair(
+                              self.ConCert_Examples_Escrow_Escrow_set_State_last_action(
+                                self.closure(move |x| {
+                                  self.ConCert_Execution_Blockchain_current_slot(
+                                    chain)
+                                }),
+                                self.ConCert_Examples_Escrow_Escrow_set_State_next_step(
+                                  self.closure(move |x| {
+                                    self.alloc(
+                                      ConCert_Examples_Escrow_Escrow_NextStep::buyer_confirm(
+                                        PhantomData))
+                                  }),
+                                  state)),
+                              self.alloc(
+                                Coq_Init_Datatypes_list::nil(
+                                  PhantomData))))
+                        },
+                        None => {
+                          None
+                        },
+                      }
                     },
                     None => {
                       None

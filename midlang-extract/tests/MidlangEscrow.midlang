@@ -67,6 +67,94 @@ conCert_Examples_Escrow_Escrow_next_step s =
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       next_step
 
+type Monad m
+  = Build_monad (() -> () -> m) (() -> () -> m -> (() -> m) -> m)
+
+type Comparison
+  = Eq
+  | Lt
+  | Gt
+
+coq_PArith_BinPosDef_Pos_compare_cont : Comparison -> Positive -> Positive -> Comparison
+coq_PArith_BinPosDef_Pos_compare_cont r x y =
+  case x of
+    XI p ->
+      case y of
+        XI q ->
+          coq_PArith_BinPosDef_Pos_compare_cont r p q
+        XO q ->
+          coq_PArith_BinPosDef_Pos_compare_cont Gt p q
+        XH ->
+          Gt
+    XO p ->
+      case y of
+        XI q ->
+          coq_PArith_BinPosDef_Pos_compare_cont Lt p q
+        XO q ->
+          coq_PArith_BinPosDef_Pos_compare_cont r p q
+        XH ->
+          Gt
+    XH ->
+      case y of
+        XI q ->
+          Lt
+        XO q ->
+          Lt
+        XH ->
+          r
+
+coq_PArith_BinPosDef_Pos_compare : Positive -> Positive -> Comparison
+coq_PArith_BinPosDef_Pos_compare =
+  coq_PArith_BinPosDef_Pos_compare_cont Eq
+
+coq_Init_Datatypes_CompOpp : Comparison -> Comparison
+coq_Init_Datatypes_CompOpp r =
+  case r of
+    Eq ->
+      Eq
+    Lt ->
+      Gt
+    Gt ->
+      Lt
+
+coq_ZArith_BinIntDef_Z_compare : Z -> Z -> Comparison
+coq_ZArith_BinIntDef_Z_compare x y =
+  case x of
+    Z0 ->
+      case y of
+        Z0 ->
+          Eq
+        Zpos y2 ->
+          Lt
+        Zneg y2 ->
+          Gt
+    Zpos x2 ->
+      case y of
+        Z0 ->
+          Gt
+        Zpos y2 ->
+          coq_PArith_BinPosDef_Pos_compare x2 y2
+        Zneg y2 ->
+          Gt
+    Zneg x2 ->
+      case y of
+        Z0 ->
+          Lt
+        Zpos y2 ->
+          Lt
+        Zneg y2 ->
+          coq_Init_Datatypes_CompOpp (coq_PArith_BinPosDef_Pos_compare x2 y2)
+
+coq_ZArith_BinIntDef_Z_ltb : Z -> Z -> Bool
+coq_ZArith_BinIntDef_Z_ltb x y =
+  case coq_ZArith_BinIntDef_Z_compare x y of
+    Eq ->
+      False
+    Lt ->
+      True
+    Gt ->
+      False
+
 coq_PArith_BinPosDef_Pos_succ : Positive -> Positive
 coq_PArith_BinPosDef_Pos_succ x =
   case x of
@@ -225,6 +313,28 @@ coq_ZArith_BinIntDef_Z_add x y =
         Zneg y2 ->
           Zneg (coq_PArith_BinPosDef_Pos_add x2 y2)
 
+coq_ZArith_BinIntDef_Z_opp : Z -> Z
+coq_ZArith_BinIntDef_Z_opp x =
+  case x of
+    Z0 ->
+      Z0
+    Zpos x2 ->
+      Zneg x2
+    Zneg x2 ->
+      Zpos x2
+
+coq_ZArith_BinIntDef_Z_sub : Z -> Z -> Z
+coq_ZArith_BinIntDef_Z_sub m n =
+  coq_ZArith_BinIntDef_Z_add m (coq_ZArith_BinIntDef_Z_opp n)
+
+conCert_Examples_Escrow_Escrow_subAmountOption : Z -> Z -> Option Z
+conCert_Examples_Escrow_Escrow_subAmountOption n m =
+  case coq_ZArith_BinIntDef_Z_ltb n m of
+    True ->
+      None
+    False ->
+      Some (coq_ZArith_BinIntDef_Z_sub n m)
+
 coq_PArith_BinPosDef_Pos_mul : Positive -> Positive -> Positive
 coq_PArith_BinPosDef_Pos_mul x y =
   case x of
@@ -256,105 +366,6 @@ coq_ZArith_BinIntDef_Z_mul x y =
           Zneg (coq_PArith_BinPosDef_Pos_mul x2 y2)
         Zneg y2 ->
           Zpos (coq_PArith_BinPosDef_Pos_mul x2 y2)
-
-type Comparison
-  = Eq
-  | Lt
-  | Gt
-
-coq_PArith_BinPosDef_Pos_compare_cont : Comparison -> Positive -> Positive -> Comparison
-coq_PArith_BinPosDef_Pos_compare_cont r x y =
-  case x of
-    XI p ->
-      case y of
-        XI q ->
-          coq_PArith_BinPosDef_Pos_compare_cont r p q
-        XO q ->
-          coq_PArith_BinPosDef_Pos_compare_cont Gt p q
-        XH ->
-          Gt
-    XO p ->
-      case y of
-        XI q ->
-          coq_PArith_BinPosDef_Pos_compare_cont Lt p q
-        XO q ->
-          coq_PArith_BinPosDef_Pos_compare_cont r p q
-        XH ->
-          Gt
-    XH ->
-      case y of
-        XI q ->
-          Lt
-        XO q ->
-          Lt
-        XH ->
-          r
-
-coq_PArith_BinPosDef_Pos_compare : Positive -> Positive -> Comparison
-coq_PArith_BinPosDef_Pos_compare =
-  coq_PArith_BinPosDef_Pos_compare_cont Eq
-
-coq_Init_Datatypes_CompOpp : Comparison -> Comparison
-coq_Init_Datatypes_CompOpp r =
-  case r of
-    Eq ->
-      Eq
-    Lt ->
-      Gt
-    Gt ->
-      Lt
-
-coq_ZArith_BinIntDef_Z_compare : Z -> Z -> Comparison
-coq_ZArith_BinIntDef_Z_compare x y =
-  case x of
-    Z0 ->
-      case y of
-        Z0 ->
-          Eq
-        Zpos y2 ->
-          Lt
-        Zneg y2 ->
-          Gt
-    Zpos x2 ->
-      case y of
-        Z0 ->
-          Gt
-        Zpos y2 ->
-          coq_PArith_BinPosDef_Pos_compare x2 y2
-        Zneg y2 ->
-          Gt
-    Zneg x2 ->
-      case y of
-        Z0 ->
-          Lt
-        Zpos y2 ->
-          Lt
-        Zneg y2 ->
-          coq_Init_Datatypes_CompOpp (coq_PArith_BinPosDef_Pos_compare x2 y2)
-
-coq_ZArith_BinIntDef_Z_ltb : Z -> Z -> Bool
-coq_ZArith_BinIntDef_Z_ltb x y =
-  case coq_ZArith_BinIntDef_Z_compare x y of
-    Eq ->
-      False
-    Lt ->
-      True
-    Gt ->
-      False
-
-coq_ZArith_BinIntDef_Z_opp : Z -> Z
-coq_ZArith_BinIntDef_Z_opp x =
-  case x of
-    Z0 ->
-      Z0
-    Zpos x2 ->
-      Zneg x2
-    Zneg x2 ->
-      Zpos x2
-
-coq_ZArith_BinIntDef_Z_sub : Z -> Z -> Z
-coq_ZArith_BinIntDef_Z_sub m n =
-  coq_ZArith_BinIntDef_Z_add m (coq_ZArith_BinIntDef_Z_opp n)
 
 coq_ZArith_BinIntDef_Z_leb : Z -> Z -> Bool
 coq_ZArith_BinIntDef_Z_leb x y =
@@ -445,9 +456,6 @@ coq_ZArith_BinIntDef_Z_div a b =
   case coq_ZArith_BinIntDef_Z_div_eucl a b of
     Pair q x ->
       q
-
-type Monad m
-  = Build_monad (() -> () -> m) (() -> () -> m -> (() -> m) -> m)
 
 conCert_Examples_Escrow_Escrow_buyer : State -> Int
 conCert_Examples_Escrow_Escrow_buyer s =
@@ -601,29 +609,33 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
         Commit_money ->
           case conCert_Examples_Escrow_Escrow_next_step state of
             Buyer_commit ->
-              let
-                item_price =
-                  coq_ZArith_BinIntDef_Z_div (coq_ZArith_BinIntDef_Z_sub (ctx_contract_balance ctx) (ctx_amount ctx)) (Zpos (XO XH))
-              in
-              let
-                expected =
-                  coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XO XH))
-              in
-              case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
-                      True ->
-                        Some Tt
-                      False ->
-                        None) of
+              case conCert_Examples_Escrow_Escrow_subAmountOption (ctx_contract_balance ctx) (ctx_amount ctx) of
                 Some val ->
-                  (\x -> case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) expected of
-                                 True ->
-                                   Some Tt
-                                 False ->
-                                   None) of
-                           Some val2 ->
-                             (\x2 -> Some (Pair ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_last_action (\x3 -> current_slot chain) ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_next_step (\x3 -> Buyer_confirm) state)) Nil)) val2
-                           None ->
-                             None) val
+                  (\diff_ -> let
+                               item_price =
+                                 coq_ZArith_BinIntDef_Z_div diff_ (Zpos (XO XH))
+                             in
+                             let
+                               expected =
+                                 coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XO XH))
+                             in
+                             case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
+                                     True ->
+                                       Some Tt
+                                     False ->
+                                       None) of
+                               Some val2 ->
+                                 (\x -> case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) expected of
+                                                True ->
+                                                  Some Tt
+                                                False ->
+                                                  None) of
+                                          Some val3 ->
+                                            (\x2 -> Some (Pair ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_last_action (\x3 -> current_slot chain) ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_next_step (\x3 -> Buyer_confirm) state)) Nil)) val3
+                                          None ->
+                                            None) val2
+                               None ->
+                                 None) val
                 None ->
                   None
             Buyer_confirm ->

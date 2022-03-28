@@ -10,7 +10,7 @@
 [@inline] let eqInt (i : int) (j : int) = i = j
 
 [@inline] let addTez (n : tez) (m : tez) = n + m
-[@inline] let subTez (n : tez) (m : tez) = n - m
+[@inline] let subTez (n : tez) (m : tez) : tez option = n - m
 [@inline] let leTez (a : tez ) (b : tez ) = a <= b
 [@inline] let ltTez (a : tez ) (b : tez ) =  a < b
 [@inline] let gtbTez (a : tez ) (b : tez ) =  a > b
@@ -92,7 +92,7 @@ type value =
 | ZVal of int
 
 
-type storage =  (value) list
+type storage = value list
 
 type op = 
   Add
@@ -113,106 +113,113 @@ type instruction =
 | IOp of op
 
 
-type params = ( (instruction) list * (string * int,value) map)
+type params = (instruction list * (string * int,value) map)
 
-let continue_(i : int) : bool = eqInt i 0
+let continue_ (i : int) : bool = 
+eqInt i 0
 
-let bool_to_cond(b : bool) : int = if b then 0 else 1
+let bool_to_cond (b : bool) : int = 
+if b then 0 else 1
 
-let flip(i : int) : int = if eqInt i 0 then 1 else if eqInt i 1 then 0 else i
+let flip (i : int) : int = 
+if eqInt i 0 then 1 else if eqInt i 1 then 0 else i
 
-let reset_decrement(i : int) : int = if leInt i 1 then 0 else subInt i 1
+let reset_decrement (i : int) : int = 
+if leInt i 1 then 0 else subInt i 1
 
-let interp : (string * int,value) map ->  (instruction) list ->  (value) list -> int ->  ( (value) list) option = let rec interp (ext, insts, s, cond : (string * int,value) map *  (instruction) list *  (value) list * int) :  ( (value) list) option = 
+let interp  : (string * int,value) map -> instruction list -> value list -> int -> value list option = 
+let rec interp (ext : (string * int,value) map) (insts : instruction list) (s : value list) (cond : int) : value list option = 
 match insts with 
-[]  -> (Some (s))
+[]  -> (Some s)
  | hd :: inst0 -> (match hd with 
-IPushZ (i) -> (if continue_ cond then interp (ext, inst0, ((ZVal (i)) :: s), cond) else interp (ext, inst0, s, cond))
- | IPushB (b) -> (if continue_ cond then interp (ext, inst0, ((BVal (b)) :: s), cond) else interp (ext, inst0, s, cond))
- | IObs (p) -> (if continue_ cond then match Map.find_opt p ext with 
-Some (v) -> (interp (ext, inst0, (v :: s), cond))
- | None  -> (None: ( (value) list) option) else interp (ext, inst0, s, cond))
+IPushZ i -> (if continue_ cond then interp ext inst0 ((ZVal i) :: s) cond else interp ext inst0 s cond)
+ | IPushB b -> (if continue_ cond then interp ext inst0 ((BVal b) :: s) cond else interp ext inst0 s cond)
+ | IObs p -> (if continue_ cond then match Map.find_opt p ext with 
+Some v -> (interp ext inst0 (v :: s) cond)
+ | None  -> (None:value list option) else interp ext inst0 s cond)
  | IIf  -> (if eqInt cond 0 then match s with 
-[]  -> (None: ( (value) list) option)
+[]  -> (None:value list option)
  | v :: s0 -> (match v with 
-BVal (b) -> (interp (ext, inst0, s0, (bool_to_cond b)))
- | ZVal (z) -> (None: ( (value) list) option)) else interp (ext, inst0, s, (addInt 1 cond)))
- | IElse  -> (interp (ext, inst0, s, (flip cond)))
- | IEndIf  -> (interp (ext, inst0, s, (reset_decrement cond)))
- | IOp (op) -> (if continue_ cond then match op with 
+BVal b -> (interp ext inst0 s0 (bool_to_cond b))
+ | ZVal z -> (None:value list option)) else interp ext inst0 s (addInt 1 cond))
+ | IElse  -> (interp ext inst0 s (flip cond))
+ | IEndIf  -> (interp ext inst0 s (reset_decrement cond))
+ | IOp op -> (if continue_ cond then match op with 
 Add  -> (match s with 
-[]  -> (None: ( (value) list) option)
+[]  -> (None:value list option)
  | v :: l -> (match v with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (i) -> (match l with 
-[]  -> (None: ( (value) list) option)
+BVal b -> (None:value list option)
+ | ZVal i -> (match l with 
+[]  -> (None:value list option)
  | v0 :: s0 -> (match v0 with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (j) -> (interp (ext, inst0, ((ZVal ((addInt i j))) :: s0), cond))))))
+BVal b -> (None:value list option)
+ | ZVal j -> (interp ext inst0 ((ZVal (addInt i j)) :: s0) cond)))))
  | Sub  -> (match s with 
-[]  -> (None: ( (value) list) option)
+[]  -> (None:value list option)
  | v :: l -> (match v with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (i) -> (match l with 
-[]  -> (None: ( (value) list) option)
+BVal b -> (None:value list option)
+ | ZVal i -> (match l with 
+[]  -> (None:value list option)
  | v0 :: s0 -> (match v0 with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (j) -> (interp (ext, inst0, ((ZVal ((subInt i j))) :: s0), cond))))))
+BVal b -> (None:value list option)
+ | ZVal j -> (interp ext inst0 ((ZVal (subInt i j)) :: s0) cond)))))
  | Mult  -> (match s with 
-[]  -> (None: ( (value) list) option)
+[]  -> (None:value list option)
  | v :: l -> (match v with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (i) -> (match l with 
-[]  -> (None: ( (value) list) option)
+BVal b -> (None:value list option)
+ | ZVal i -> (match l with 
+[]  -> (None:value list option)
  | v0 :: s0 -> (match v0 with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (j) -> (interp (ext, inst0, ((ZVal ((multInt i j))) :: s0), cond))))))
+BVal b -> (None:value list option)
+ | ZVal j -> (interp ext inst0 ((ZVal (multInt i j)) :: s0) cond)))))
  | Lt  -> (match s with 
-[]  -> (None: ( (value) list) option)
+[]  -> (None:value list option)
  | v :: l -> (match v with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (i) -> (match l with 
-[]  -> (None: ( (value) list) option)
+BVal b -> (None:value list option)
+ | ZVal i -> (match l with 
+[]  -> (None:value list option)
  | v0 :: s0 -> (match v0 with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (j) -> (interp (ext, inst0, ((BVal ((ltInt i j))) :: s0), cond))))))
+BVal b -> (None:value list option)
+ | ZVal j -> (interp ext inst0 ((BVal (ltInt i j)) :: s0) cond)))))
  | Le  -> (match s with 
-[]  -> (None: ( (value) list) option)
+[]  -> (None:value list option)
  | v :: l -> (match v with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (i) -> (match l with 
-[]  -> (None: ( (value) list) option)
+BVal b -> (None:value list option)
+ | ZVal i -> (match l with 
+[]  -> (None:value list option)
  | v0 :: s0 -> (match v0 with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (j) -> (interp (ext, inst0, ((BVal ((leInt i j))) :: s0), cond))))))
+BVal b -> (None:value list option)
+ | ZVal j -> (interp ext inst0 ((BVal (leInt i j)) :: s0) cond)))))
  | Equal  -> (match s with 
-[]  -> (None: ( (value) list) option)
+[]  -> (None:value list option)
  | v :: l -> (match v with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (i) -> (match l with 
-[]  -> (None: ( (value) list) option)
+BVal b -> (None:value list option)
+ | ZVal i -> (match l with 
+[]  -> (None:value list option)
  | v0 :: s0 -> (match v0 with 
-BVal (b) -> (None: ( (value) list) option)
- | ZVal (j) -> (interp (ext, inst0, ((BVal ((eqInt i j))) :: s0), cond)))))) else interp (ext, inst0, s, cond)))
- in fun (ext : (string * int,value) map) (insts :  (instruction) list) (s :  (value) list) (cond : int) -> interp (ext, insts, s, cond)
+BVal b -> (None:value list option)
+ | ZVal j -> (interp ext inst0 ((BVal (eqInt i j)) :: s0) cond))))) else interp ext inst0 s cond))
+ in (interp : (string * int,value) map -> instruction list -> value list -> int -> value list option)
 
-let receive(p : params) (s :  (value) list) :  (( (operation) list * storage)) option = let s0 = s in 
-match interp p.1 p.0 ([]: (value) list) 0 with 
-Some (v) -> (Some ( (([]: (operation) list), v)))
- | None  -> (None: (( (operation) list * storage)) option)
+let receive (p : params) (s : value list) : (operation list * storage) option = 
+let s0 = s in 
+match interp p.1 p.0 ([]:value list) 0 with 
+Some v -> (Some (([]:operation list), v))
+ | None  -> (None:(operation list * storage) option)
 
-let receive_(c : chain) (ctx : cctx) (s : storage) (msg :  (params) option) :  (( (operation) list * storage)) option = let c_ = c in 
+let receive_ (c : chain) (ctx : cctx) (s : storage) (msg : params option) : (operation list * storage) option = 
+let c_ = c in 
 let ctx_ = ctx in 
 match msg with 
-Some (msg0) -> (receive msg0 s)
- | None  -> (None: (( (operation) list * storage)) option)
+Some msg0 -> (receive msg0 s)
+ | None  -> (None:(operation list * storage) option)
 
 let init (setup : unit) : storage = 
 
-let inner (ctx : cctx) (setup : unit) : (storage) option = 
+let inner (ctx : cctx) (setup : unit) :storage option = 
 let ctx0 = ctx in 
 let setup0 = setup in 
-Some (([]: (value) list)) in
+Some ([]:value list) in
 let ctx = cctx_instance in
 match (inner ctx setup) with
   Some v -> v
