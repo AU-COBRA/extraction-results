@@ -284,7 +284,7 @@ let try_get_total_supply (param : dexter2FA12_getTotalSupply_param) (state : dex
 let value = state.total_supply in 
 (mk_callback (callback_addr param.supply_callback) (receive_total_supply_ value)) :: ([]:operation list)
 
-let receive (ctx : cctx) (state : dexter2FA12_State) (maybe_msg : dexter2FA12_Msg option) : (dexter2FA12_State * operation list) option = 
+let receive_lqt (ctx : cctx) (state : dexter2FA12_State) (maybe_msg : dexter2FA12_Msg option) : (dexter2FA12_State * operation list) option = 
 let sender0 = ctx_from ctx in 
 let without_actions = fun (o : dexter2FA12_State option) -> match o with 
 Some a -> (Some (a, ([]:operation list)))
@@ -303,7 +303,7 @@ Dext_msg_transfer param -> (without_actions (try_transfer sender0 param state))
  | None  -> (None:(dexter2FA12_State * operation list) option)
 
 let receive_ (chain : chain) (ctx : cctx) (state : dexter2FA12_State) (maybe_msg : dexter2FA12_Msg option) : (operation list * dexter2FA12_State) option = 
-match receive ctx state maybe_msg with 
+match receive_lqt ctx state maybe_msg with 
 Some x -> (Some (x.1, x.0))
  | None  -> (None:(operation list * dexter2FA12_State) option)
 

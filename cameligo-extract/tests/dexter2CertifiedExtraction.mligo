@@ -224,7 +224,7 @@ ttx_deadline : nat
 }
 
 type dexter2CPMM_set_baker_param = {
-baker : address option;
+baker : key_hash option;
 freezeBaker_ : bool
 }
 
@@ -248,7 +248,7 @@ type dexter2CPMM_DexterMsg =
 | Dext_TokenToToken of dexter2CPMM_token_to_token_param
 
 
-type dEX2Extract_Msg = dexter2CPMM_DexterMsg fA2Token_FA2ReceiverMsg
+type dexter2CPMM_Msg = dexter2CPMM_DexterMsg fA2Token_FA2ReceiverMsg
 
 type dEX2Extract_result = (dexter2CPMM_State * operation list) option
 
@@ -524,15 +524,12 @@ Some (new_state, (op_token :: (val6 :: ([]:operation list)))))
 let set_State_freezeBaker (f : bool -> bool) (r : dexter2CPMM_State) : dexter2CPMM_State = 
 ({tokenPool = (tokenPool r); xtzPool = (xtzPool r); lqtTotal = (lqtTotal r); selfIsUpdatingTokenPool = (selfIsUpdatingTokenPool r); freezeBaker = (f (freezeBaker r)); manager = (manager r); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (lqtAddress r)}: dexter2CPMM_State)
 
-let set_delegate_call  : operation list = 
-([]:operation list)
-
 let set_baker (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_set_baker_param) : dEX2Extract_result = 
 match throwIf state.selfIsUpdatingTokenPool with 
 Some val0 -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
 Some val1 -> (match throwIf (not (eq_addr (ctx_from ctx) state.manager)) with 
 Some val2 -> (match throwIf state.freezeBaker with 
-Some val3 -> (Some ((set_State_freezeBaker (fun (a : bool) -> param.freezeBaker_) state), set_delegate_call))
+Some val3 -> (Some ((set_State_freezeBaker (fun (a : bool) -> param.freezeBaker_) state), ((fun (x : key_hash option) -> [Tezos.set_delegate x]) param.baker)))
  | None  -> (None:(dexter2CPMM_State * operation list) option))
  | None  -> (None:(dexter2CPMM_State * operation list) option))
  | None  -> (None:(dexter2CPMM_State * operation list) option))
@@ -598,7 +595,7 @@ Some val0 -> (let new_state = set_State_xtzPool (fun (a : nat) -> addN state.xtz
 Some (new_state, ([]:operation list)))
  | None  -> (None:(dexter2CPMM_State * operation list) option)
 
-let receive (chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg : dEX2Extract_Msg option) : dEX2Extract_result = 
+let receive_cpmm (chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg : dexter2CPMM_Msg option) : dEX2Extract_result = 
 match maybe_msg with 
 Some m -> (match m with 
 FA2T_receive_balance_of_param responses -> (update_token_pool_internal ctx state responses)
@@ -618,8 +615,8 @@ Dext_AddLiquidity param -> (add_liquidity chain ctx state param)
  | Dext_TokenToToken param -> (token_to_token chain ctx state param)))
  | None  -> (default_ ctx state)
 
-let receive_ (chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg : dEX2Extract_Msg option) : (operation list * dexter2CPMM_State) option = 
-match receive chain ctx state maybe_msg with 
+let receive_ (chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg : dexter2CPMM_Msg option) : (operation list * dexter2CPMM_State) option = 
+match receive_cpmm chain ctx state maybe_msg with 
 Some x -> (Some (x.1, x.0))
  | None  -> (None:(operation list * dexter2CPMM_State) option)
 
@@ -640,7 +637,7 @@ let init_wrapper (args : init_args_ty) =
 type return = (operation) list * (dexter2CPMM_State option)
 type parameter_wrapper =
   Init of init_args_ty
-| Call of dEX2Extract_Msg option
+| Call of dexter2CPMM_Msg option
 
 let wrapper (param, st : parameter_wrapper * (dexter2CPMM_State) option) : return =
   match param with  
