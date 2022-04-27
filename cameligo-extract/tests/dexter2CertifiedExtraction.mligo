@@ -323,40 +323,33 @@ type fA2Token_Msg =
 | FA2T_msg_create_tokens of fA2Interface_token_id
 
 
-type dexter2FA12_transfer_param = {
-from : address;
-to : address;
-value : nat
-}
+type dexter2FA12_transfer_param = 
+  Dext_build_transfer_param of (address * address * nat)
 
-type dexter2FA12_approve_param = {
-spender : address;
-value_ : nat
-}
 
-type dexter2FA12_mintOrBurn_param = {
-quantity : int;
-target : address
-}
+type dexter2FA12_approve_param = 
+  Dext_build_approve_param of (address * nat)
 
-type dexter2FA12_callback = {
-return_addr : address
-}
 
-type dexter2FA12_getAllowance_param = {
-request : (address * address);
-allowance_callback : dexter2FA12_callback
-}
+type dexter2FA12_mintOrBurn_param = 
+  Dext_build_mintOrBurn_param of (int * address)
 
-type dexter2FA12_getBalance_param = {
-owner_ : address;
-balance_callback : dexter2FA12_callback
-}
 
-type dexter2FA12_getTotalSupply_param = {
-request_ : unit;
-supply_callback : dexter2FA12_callback
-}
+type dexter2FA12_callback = 
+  Dext_Build_callback of address
+
+
+type dexter2FA12_getAllowance_param = 
+  Dext_build_getAllowance_param of ((address * address) * dexter2FA12_callback)
+
+
+type dexter2FA12_getBalance_param = 
+  Dext_build_getBalance_param of (address * dexter2FA12_callback)
+
+
+type dexter2FA12_getTotalSupply_param = 
+  Dext_build_getTotalSupply_param of (unit * dexter2FA12_callback)
+
 
 type dexter2FA12_Msg = 
   Dext_msg_transfer of dexter2FA12_transfer_param
@@ -431,7 +424,7 @@ call_to_token state.tokenAddress 0n (FA2T_msg_transfer (({from_ = from; to_ = to
 
 let mint_or_burn (state : dexter2CPMM_State) (target : address) (quantitiy : int) : operation option = 
 match throwIf (eq_addr state.lqtAddress ("tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU" : address)) with 
-Some val0 -> (Some (call_to_token state.lqtAddress 0n (Dext_msg_mint_or_burn ({quantity = quantitiy; target = target}: dexter2FA12_mintOrBurn_param))))
+Some val0 -> (Some (call_to_token state.lqtAddress 0n (Dext_msg_mint_or_burn (Dext_build_mintOrBurn_param (quantitiy, target)))))
  | None  -> (None:operation option)
 
 let add_liquidity (chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_add_liquidity_param) : dEX2Extract_result = 

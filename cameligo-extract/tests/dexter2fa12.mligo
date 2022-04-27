@@ -107,53 +107,41 @@ let xtz_transfer (to_ : address) (amount_ : nat) : operation option =
 
 let subNTruncated (n : nat) (m : nat) : nat = if n < m then 0n else abs (n-m)
 
-type dexter2FA12_Setup = {
-admin_ : address;
-lqt_provider : address;
-initial_pool : nat
-}
+type dexter2FA12_Setup = 
+  Dext_build_setup of (address * address * nat)
 
-type dexter2FA12_State = {
-tokens : (address, nat) map;
-allowances : ((address * address), nat) map;
-admin : address;
-total_supply : nat
-}
 
-type dexter2FA12_transfer_param = {
-from : address;
-to : address;
-value : nat
-}
+type dexter2FA12_State = 
+  Dext_build_state of ((address, nat) map * ((address * address), nat) map * address * nat)
 
-type dexter2FA12_approve_param = {
-spender : address;
-value_ : nat
-}
 
-type dexter2FA12_mintOrBurn_param = {
-quantity : int;
-target : address
-}
+type dexter2FA12_transfer_param = 
+  Dext_build_transfer_param of (address * address * nat)
 
-type dexter2FA12_callback = {
-return_addr : address
-}
 
-type dexter2FA12_getAllowance_param = {
-request : (address * address);
-allowance_callback : dexter2FA12_callback
-}
+type dexter2FA12_approve_param = 
+  Dext_build_approve_param of (address * nat)
 
-type dexter2FA12_getBalance_param = {
-owner_ : address;
-balance_callback : dexter2FA12_callback
-}
 
-type dexter2FA12_getTotalSupply_param = {
-request_ : unit;
-supply_callback : dexter2FA12_callback
-}
+type dexter2FA12_mintOrBurn_param = 
+  Dext_build_mintOrBurn_param of (int * address)
+
+
+type dexter2FA12_callback = 
+  Dext_Build_callback of address
+
+
+type dexter2FA12_getAllowance_param = 
+  Dext_build_getAllowance_param of ((address * address) * dexter2FA12_callback)
+
+
+type dexter2FA12_getBalance_param = 
+  Dext_build_getBalance_param of (address * dexter2FA12_callback)
+
+
+type dexter2FA12_getTotalSupply_param = 
+  Dext_build_getTotalSupply_param of (unit * dexter2FA12_callback)
+
 
 type dexter2FA12_Msg = 
   Dext_msg_transfer of dexter2FA12_transfer_param
@@ -171,118 +159,186 @@ type 'a dexter2FA12_FA12ReceiverMsg =
 | Dext_other_msg of 'a
 
 
+let lqt_provider (s : dexter2FA12_Setup) : address = 
+match s with 
+Dext_build_setup (admin_, lqt_provider, initial_pool) -> lqt_provider
+
+let initial_pool (s : dexter2FA12_Setup) : nat = 
+match s with 
+Dext_build_setup (admin_, lqt_provider, initial_pool) -> initial_pool
+
+let admin_ (s : dexter2FA12_Setup) : address = 
+match s with 
+Dext_build_setup (admin_, lqt_provider, initial_pool) -> admin_
+
 let throwIf (cond : bool) : unit option = 
 if cond then (None:unit option) else Some ()
+
+let allowances (s : dexter2FA12_State) : ((address * address), nat) map = 
+match s with 
+Dext_build_state (tokens, allowances, admin, total_supply) -> allowances
+
+let tokens (s : dexter2FA12_State) : (address, nat) map = 
+match s with 
+Dext_build_state (tokens, allowances, admin, total_supply) -> tokens
+
+let from (t : dexter2FA12_transfer_param) : address = 
+match t with 
+Dext_build_transfer_param (from, to0, value) -> from
+
+let value (t : dexter2FA12_transfer_param) : nat = 
+match t with 
+Dext_build_transfer_param (from, to0, value) -> value
 
 let maybe (n : nat) : nat option = 
 if eqN n 0n then (None:nat option) else Some n
 
-let tokens (s : dexter2FA12_State) : (address, nat) map = 
-s.tokens
-
-let allowances (s : dexter2FA12_State) : ((address * address), nat) map = 
-s.allowances
+let to (t : dexter2FA12_transfer_param) : address = 
+match t with 
+Dext_build_transfer_param (from, to0, value) -> to0
 
 let admin (s : dexter2FA12_State) : address = 
-s.admin
+match s with 
+Dext_build_state (tokens, allowances, admin, total_supply) -> admin
 
 let total_supply (s : dexter2FA12_State) : nat = 
-s.total_supply
+match s with 
+Dext_build_state (tokens, allowances, admin, total_supply) -> total_supply
 
 let set_State_allowances (f : ((address * address), nat) map -> ((address * address), nat) map) (r : dexter2FA12_State) : dexter2FA12_State = 
-({tokens = (tokens r); allowances = (f (allowances r)); admin = (admin r); total_supply = (total_supply r)}: dexter2FA12_State)
+Dext_build_state ((tokens r), (f (allowances r)), (admin r), (total_supply r))
 
 let setter_from_getter_State_allowances  : (((address * address), nat) map -> ((address * address), nat) map) -> dexter2FA12_State -> dexter2FA12_State = 
 set_State_allowances
 
 let set_State_tokens (f : (address, nat) map -> (address, nat) map) (r : dexter2FA12_State) : dexter2FA12_State = 
-({tokens = (f (tokens r)); allowances = (allowances r); admin = (admin r); total_supply = (total_supply r)}: dexter2FA12_State)
+Dext_build_state ((f (tokens r)), (allowances r), (admin r), (total_supply r))
 
 let setter_from_getter_State_tokens  : ((address, nat) map -> (address, nat) map) -> dexter2FA12_State -> dexter2FA12_State = 
 set_State_tokens
 
 let try_transfer (sender : address) (param : dexter2FA12_transfer_param) (state : dexter2FA12_State) : dexter2FA12_State option = 
-let allowances_ = state.allowances in 
-let tokens_ = state.tokens in 
-match if eq_addr sender param.from then Some allowances_ else let allowance_key = (param.from, sender) in 
+let allowances_ = allowances state in 
+let tokens_ = tokens state in 
+match if eq_addr sender (from param) then Some allowances_ else let allowance_key = ((from param), sender) in 
 let authorized_value = match Map.find_opt allowance_key allowances_ with 
 Some v -> v
  | None  -> 0n in 
-match throwIf (ltbN authorized_value param.value) with 
-Some val0 -> (Some (Map.update allowance_key (maybe (subNTruncated authorized_value param.value)) allowances_))
+match throwIf (ltbN authorized_value (value param)) with 
+Some val0 -> (Some (Map.update allowance_key (maybe (subNTruncated authorized_value (value param))) allowances_))
  | None  -> (None:((address * address), nat) map option) with 
-Some val0 -> (match let from_balance = match Map.find_opt param.from tokens_ with 
+Some val0 -> (match let from_balance = match Map.find_opt (from param) tokens_ with 
 Some v -> v
  | None  -> 0n in 
-match throwIf (ltbN from_balance param.value) with 
-Some val1 -> (Some (Map.update param.from (maybe (subNTruncated from_balance param.value)) tokens_))
+match throwIf (ltbN from_balance (value param)) with 
+Some val1 -> (Some (Map.update (from param) (maybe (subNTruncated from_balance (value param))) tokens_))
  | None  -> (None:(address, nat) map option) with 
-Some val1 -> (let tokens_0 = let to_balance = match Map.find_opt param.to val1 with 
+Some val1 -> (let tokens_0 = let to_balance = match Map.find_opt (to param) val1 with 
 Some v -> v
  | None  -> 0n in 
-Map.update param.to (maybe (addN to_balance param.value)) val1 in 
+Map.update (to param) (maybe (addN to_balance (value param))) val1 in 
 Some (setter_from_getter_State_allowances (fun (a : ((address * address), nat) map) -> val0) (setter_from_getter_State_tokens (fun (a : (address, nat) map) -> tokens_0) state)))
  | None  -> (None:dexter2FA12_State option))
  | None  -> (None:dexter2FA12_State option)
 
+let spender (a : dexter2FA12_approve_param) : address = 
+match a with 
+Dext_build_approve_param (spender, value_) -> spender
+
+let value_ (a : dexter2FA12_approve_param) : nat = 
+match a with 
+Dext_build_approve_param (spender, value_) -> value_
+
 let try_approve (sender : address) (param : dexter2FA12_approve_param) (state : dexter2FA12_State) : dexter2FA12_State option = 
-let allowances_ = state.allowances in 
-let allowance_key = (sender, param.spender) in 
+let allowances_ = allowances state in 
+let allowance_key = (sender, (spender param)) in 
 let previous_value = match Map.find_opt allowance_key allowances_ with 
 Some v -> v
  | None  -> 0n in 
-match throwIf (andb (ltbN 0n previous_value) (ltbN 0n param.value_)) with 
-Some val0 -> (let allowances_0 = Map.update allowance_key (maybe param.value_) allowances_ in 
+match throwIf (andb (ltbN 0n previous_value) (ltbN 0n (value_ param))) with 
+Some val0 -> (let allowances_0 = Map.update allowance_key (maybe (value_ param)) allowances_ in 
 Some (setter_from_getter_State_allowances (fun (a : ((address * address), nat) map) -> allowances_0) state))
  | None  -> (None:dexter2FA12_State option)
 
+let target (m : dexter2FA12_mintOrBurn_param) : address = 
+match m with 
+Dext_build_mintOrBurn_param (quantity, target) -> target
+
+let quantity (m : dexter2FA12_mintOrBurn_param) : int = 
+match m with 
+Dext_build_mintOrBurn_param (quantity, target) -> quantity
+
 let set_State_total_supply (f : nat -> nat) (r : dexter2FA12_State) : dexter2FA12_State = 
-({tokens = (tokens r); allowances = (allowances r); admin = (admin r); total_supply = (f (total_supply r))}: dexter2FA12_State)
+Dext_build_state ((tokens r), (allowances r), (admin r), (f (total_supply r)))
 
 let setter_from_getter_State_total_supply  : (nat -> nat) -> dexter2FA12_State -> dexter2FA12_State = 
 set_State_total_supply
 
 let try_mint_or_burn (sender : address) (param : dexter2FA12_mintOrBurn_param) (state : dexter2FA12_State) : dexter2FA12_State option = 
-match throwIf (not (eq_addr sender state.admin)) with 
-Some val0 -> (let tokens_ = state.tokens in 
-let old_balance = match Map.find_opt param.target tokens_ with 
+match throwIf (not (eq_addr sender (admin state))) with 
+Some val0 -> (let tokens_ = tokens state in 
+let old_balance = match Map.find_opt (target param) tokens_ with 
 Some v -> v
  | None  -> 0n in 
-let new_balance = addInt (z_of_N old_balance) param.quantity in 
+let new_balance = addInt (z_of_N old_balance) (quantity param) in 
 match throwIf (ltInt new_balance 0) with 
-Some val1 -> (let tokens_0 = Map.update param.target (maybe (abs new_balance)) tokens_ in 
-let total_supply_ = abs (addInt (z_of_N state.total_supply) param.quantity) in 
+Some val1 -> (let tokens_0 = Map.update (target param) (maybe (abs new_balance)) tokens_ in 
+let total_supply_ = abs (addInt (z_of_N (total_supply state)) (quantity param)) in 
 Some (setter_from_getter_State_total_supply (fun (a : nat) -> total_supply_) (setter_from_getter_State_tokens (fun (a : (address, nat) map) -> tokens_0) state)))
  | None  -> (None:dexter2FA12_State option))
  | None  -> (None:dexter2FA12_State option)
 
+let request (g : dexter2FA12_getAllowance_param) : (address * address) = 
+match g with 
+Dext_build_getAllowance_param (request, allowance_callback) -> request
+
+let return_addr (c : dexter2FA12_callback) : address = 
+match c with 
+Dext_Build_callback return_addr -> return_addr
+
 let callback_addr (c : dexter2FA12_callback) : address = 
-c.return_addr
+return_addr c
+
+let allowance_callback (g : dexter2FA12_getAllowance_param) : dexter2FA12_callback = 
+match g with 
+Dext_build_getAllowance_param (request, allowance_callback) -> allowance_callback
 
 let receive_allowance_ (n : nat) : unit dexter2FA12_FA12ReceiverMsg = 
 Dext_receive_allowance n
 
 let try_get_allowance (param : dexter2FA12_getAllowance_param) (state : dexter2FA12_State) : operation list = 
-let value = match Map.find_opt param.request state.allowances with 
+let value = match Map.find_opt (request param) (allowances state) with 
 Some v -> v
  | None  -> 0n in 
-(mk_callback (callback_addr param.allowance_callback) (receive_allowance_ value)) :: ([]:operation list)
+(mk_callback (callback_addr (allowance_callback param)) (receive_allowance_ value)) :: ([]:operation list)
+
+let owner_ (g : dexter2FA12_getBalance_param) : address = 
+match g with 
+Dext_build_getBalance_param (owner_, balance_callback) -> owner_
+
+let balance_callback (g : dexter2FA12_getBalance_param) : dexter2FA12_callback = 
+match g with 
+Dext_build_getBalance_param (owner_, balance_callback) -> balance_callback
 
 let receive_balance_of_ (n : nat) : unit dexter2FA12_FA12ReceiverMsg = 
 Dext_receive_balance_of n
 
 let try_get_balance (param : dexter2FA12_getBalance_param) (state : dexter2FA12_State) : operation list = 
-let value = match Map.find_opt param.owner_ state.tokens with 
+let value = match Map.find_opt (owner_ param) (tokens state) with 
 Some v -> v
  | None  -> 0n in 
-(mk_callback (callback_addr param.balance_callback) (receive_balance_of_ value)) :: ([]:operation list)
+(mk_callback (callback_addr (balance_callback param)) (receive_balance_of_ value)) :: ([]:operation list)
+
+let supply_callback (g : dexter2FA12_getTotalSupply_param) : dexter2FA12_callback = 
+match g with 
+Dext_build_getTotalSupply_param (request_, supply_callback) -> supply_callback
 
 let receive_total_supply_ (n : nat) : unit dexter2FA12_FA12ReceiverMsg = 
 Dext_receive_total_supply n
 
 let try_get_total_supply (param : dexter2FA12_getTotalSupply_param) (state : dexter2FA12_State) : operation list = 
-let value = state.total_supply in 
-(mk_callback (callback_addr param.supply_callback) (receive_total_supply_ value)) :: ([]:operation list)
+let value = total_supply state in 
+(mk_callback (callback_addr (supply_callback param)) (receive_total_supply_ value)) :: ([]:operation list)
 
 let receive_lqt (ctx : cctx) (state : dexter2FA12_State) (maybe_msg : dexter2FA12_Msg option) : (dexter2FA12_State * operation list) option = 
 let sender0 = ctx_from ctx in 
@@ -311,7 +367,7 @@ let init (setup : dexter2FA12_Setup) : dexter2FA12_State =
 
 let inner (ctx : cctx) (setup : dexter2FA12_Setup) :dexter2FA12_State option = 
 let ctx_ = ctx in 
-Some ({tokens = (Map.add setup.lqt_provider setup.initial_pool (Map.empty: (address, nat) map)); allowances = (Map.empty: ((address * address), nat) map); admin = setup.admin_; total_supply = setup.initial_pool}: dexter2FA12_State) in
+Some (Dext_build_state ((Map.add (lqt_provider setup) (initial_pool setup) (Map.empty: (address, nat) map)), (Map.empty: ((address * address), nat) map), (admin_ setup), (initial_pool setup))) in
 let ctx = cctx_instance in
 match (inner ctx setup) with
   Some v -> v
