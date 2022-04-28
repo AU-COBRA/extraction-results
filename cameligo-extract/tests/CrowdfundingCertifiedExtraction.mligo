@@ -162,8 +162,11 @@ type parameter_wrapper =
 | Call of msg_coq option
 
 let wrapper (param, st : parameter_wrapper * (storage) option) : return =
-  match param with  
-    Init init_args -> (([]: operation list), Some (init init_args))
+  match param with 
+    Init init_args -> (
+  match st with 
+      Some st -> (failwith ("Cannot call Init twice"): return)
+    | None -> (([]: operation list), Some (init init_args)))
   | Call p -> (
     match st with
       Some st -> (match (crowdfunding_receive dummy_chain cctx_instance  st p) with   
