@@ -171,35 +171,16 @@ match receive ctx state maybe_msg with
 Some x -> (Some (x.1, x.0))
  | None  -> (None:(operation list * state) option)
 
-let init (setup : setup) : state = 
-
-let inner (ctx : cctx) (setup : setup) :state option = 
-let ctx_ = ctx in 
+let init (setup : setup) : state = let inner (setup : setup) :state option = 
 Some (Build_state ((init_amount setup), (Map.add (owner setup) (init_amount setup) (Map.empty: (address, tokenValue) map)), (Map.empty: (address, (address, tokenValue) map) map))) in
-let ctx = cctx_instance in
-match (inner ctx setup) with
+match (inner setup) with
   Some v -> v
-| None -> (failwith (""): state)
-type init_args_ty = setup
-let init_wrapper (args : init_args_ty) =
-  init args
+| None -> (failwith ("Init failed"): state)
 
 
-type return = (operation) list * (state option)
-type parameter_wrapper =
-  Init of init_args_ty
-| Call of msg option
+type return = (operation) list * state
 
-let wrapper (param, st : parameter_wrapper * (state) option) : return =
-  match param with 
-    Init init_args -> (
-  match st with 
-      Some st -> (failwith ("Cannot call Init twice"): return)
-    | None -> (([]: operation list), Some (init init_args)))
-  | Call p -> (
-    match st with
-      Some st -> (match (receive_ dummy_chain cctx_instance  st p) with   
-                    Some v -> (v.0, Some v.1)
-                  | None -> (failwith ("") : return))
-    | None -> (failwith ("cannot call this endpoint before Init has been called"): return))
-let main (action, st : parameter_wrapper * state option) : return = wrapper (action, st)
+let main (p, st : msg option * state) : return = 
+   (match (receive_ dummy_chain cctx_instance  st p) with   
+      Some v -> (v.0, v.1)
+    | None -> (failwith ("Contract returned None") : return))
