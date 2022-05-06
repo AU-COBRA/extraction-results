@@ -214,17 +214,36 @@ match msg with
 Some msg0 -> (receive msg0 s)
  | None  -> (None:(operation list * storage) option)
 
-let init (setup : unit) : storage = let inner (setup : unit) :storage option = 
+let init (setup : unit) : storage = 
+
+let inner (ctx : cctx) (setup : unit) :storage option = 
+let ctx0 = ctx in 
 let setup0 = setup in 
 Some ([]:value list) in
-match (inner setup) with
+let ctx = cctx_instance in
+match (inner ctx setup) with
   Some v -> v
-| None -> (failwith ("Init failed"): storage)
+| None -> (failwith (""): storage)
+type init_args_ty = unit
+let init_wrapper (args : init_args_ty) =
+  init args
 
 
-type return = (operation) list * value list
+type return = (operation) list * (value list option)
+type parameter_wrapper =
+  Init of init_args_ty
+| Call of params option
 
-let main (p, st : params option * value list) : return = 
-   (match (receive_ dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+let wrapper (param, st : parameter_wrapper * (value list) option) : return =
+  match param with 
+    Init init_args -> (
+  match st with 
+      Some st -> (failwith ("Cannot call Init twice"): return)
+    | None -> (([]: operation list), Some (init init_args)))
+  | Call p -> (
+    match st with
+      Some st -> (match (receive_ dummy_chain cctx_instance  st p) with   
+                    Some v -> (v.0, Some v.1)
+                  | None -> (failwith ("") : return))
+    | None -> (failwith ("cannot call this endpoint before Init has been called"): return))
+let main (action, st : parameter_wrapper * storage option) : return = wrapper (action, st)

@@ -113,16 +113,35 @@ match msg with
 Some msg0 -> (counter_inner msg0 st)
  | None  -> (None:(operation list * storage) option)
 
-let init (setup : (int * address)) : storage = let inner (setup : (int * address)) :storage option = 
+let init (setup : (int * address)) : storage = 
+
+let inner (ctx : cctx) (setup : (int * address)) :storage option = 
+let ctx_ = ctx in 
 Some setup in
-match (inner setup) with
+let ctx = cctx_instance in
+match (inner ctx setup) with
   Some v -> v
-| None -> (failwith ("Init failed"): storage)
+| None -> (failwith (""): storage)
+type init_args_ty = (int * address)
+let init_wrapper (args : init_args_ty) =
+  init args
 
 
-type return = (operation) list * storage
+type return = (operation) list * (storage option)
+type parameter_wrapper =
+  Init of init_args_ty
+| Call of msg option
 
-let main (p, st : msg option * storage) : return = 
-   (match (counter dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+let wrapper (param, st : parameter_wrapper * (storage) option) : return =
+  match param with 
+    Init init_args -> (
+  match st with 
+      Some st -> (failwith ("Cannot call Init twice"): return)
+    | None -> (([]: operation list), Some (init init_args)))
+  | Call p -> (
+    match st with
+      Some st -> (match (counter dummy_chain cctx_instance  st p) with   
+                    Some v -> (v.0, Some v.1)
+                  | None -> (failwith ("") : return))
+    | None -> (failwith ("cannot call this endpoint before Init has been called"): return))
+let main (action, st : parameter_wrapper * storage option) : return = wrapper (action, st)

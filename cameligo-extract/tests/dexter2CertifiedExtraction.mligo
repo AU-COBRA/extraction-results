@@ -613,16 +613,36 @@ match receive_cpmm chain ctx state maybe_msg with
 Some x -> (Some (x.1, x.0))
  | None  -> (None:(operation list * dexter2CPMM_State) option)
 
-let init (setup : dexter2CPMM_Setup) : dexter2CPMM_State = let inner (setup : dexter2CPMM_Setup) :dexter2CPMM_State option = 
+let init (setup : dexter2CPMM_Setup) : dexter2CPMM_State = 
+
+let inner (ctx : cctx) (setup : dexter2CPMM_Setup) :dexter2CPMM_State option = 
+let ctx_ = ctx in 
 Some ({tokenPool = 0n; xtzPool = 0n; lqtTotal = setup.lqtTotal_; selfIsUpdatingTokenPool = false; freezeBaker = false; manager = setup.manager_; tokenAddress = setup.tokenAddress_; tokenId = setup.tokenId_; lqtAddress = ("tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU" : address)}: dexter2CPMM_State) in
-match (inner setup) with
+let ctx = cctx_instance in
+match (inner ctx setup) with
   Some v -> v
-| None -> (failwith ("Init failed"): dexter2CPMM_State)
+| None -> (failwith (""): dexter2CPMM_State)
+type init_args_ty = dexter2CPMM_Setup
+let init_wrapper (args : init_args_ty) =
+  init args
 
 
-type return = (operation) list * dexter2CPMM_State
+type return = (operation) list * (dexter2CPMM_State option)
+type parameter_wrapper =
+  Init of init_args_ty
+| Call of dexter2CPMM_Msg option
 
-let main (p, st : dexter2CPMM_Msg option * dexter2CPMM_State) : return = 
-   (match (receive_ dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+let wrapper (param, st : parameter_wrapper * (dexter2CPMM_State) option) : return =
+  match param with 
+    Init init_args -> (
+  match st with 
+      Some st -> (failwith ("Cannot call Init twice"): return)
+    | None -> (([]: operation list), Some (init init_args)))
+  | Call p -> (
+    match st with
+      Some st -> (match (receive_ dummy_chain cctx_instance  st p) with   
+                    Some v -> (v.0, Some v.1)
+                  | None -> (failwith ("") : return))
+    | None -> (failwith ("cannot call this endpoint before Init has been called"): return))
+
+let main (action, st : parameter_wrapper * dexter2CPMM_State option) : return = wrapper (action, st)

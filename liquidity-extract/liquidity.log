@@ -4773,7 +4773,6 @@ Contract CounterDepCertifiedExtraction
 Contract CounterSubsetTypes
 Contract CrowdfundingCertifiedExtraction
 Contract StackInterpreter
-Contract Escrow
 Main contract Liquidity_eip20token
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedExtraction.liq: Warning: 
 unused variable "powInt"
@@ -4923,54 +4922,6 @@ unused variable "fst"
 unused variable "setup0"
 ./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:135.53-135.57: Warning: 
 unused variable "ctx0"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:87.0-87.11: Warning: 
-unused variable "val2"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:86.0-86.11: Warning: 
-unused variable "val1"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:99.0-99.11: Warning: 
-unused variable "val1"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:98.0-98.11: Warning: 
-unused variable "val0"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:109.0-109.11: Warning: 
-unused variable "val2"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:108.0-108.11: Warning: 
-unused variable "val1"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:107.0-107.11: Warning: 
-unused variable "val0"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:119.0-119.11: Warning: 
-unused variable "val2"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:116.0-116.11: Warning: 
-unused variable "val0"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "ltb_time"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "leb_time"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "eqb_time"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "orb"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "eqNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "lxorNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "leNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "subNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "mulNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "evenTez"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "leTez"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "addTez"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "powInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "modInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "eqInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "ltInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "leInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "subInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "mulInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "addInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "snd"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "fst"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:142.0-142.11: Warning: 
-unused variable "val2"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:141.0-141.11: Warning: 
-unused variable "val1"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:140.0-140.11: Warning: 
-unused variable "val0"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:135.4-135.8: Warning: 
-unused variable "andb"
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq: Warning: 
 unused variable "eq_addr"
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq: Warning: 
@@ -5043,7 +4994,7 @@ Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@clos
                                                                   (((int *
                                                                     key_hash)
                                                                     ->
-                                                                    ('l43
+                                                                    ('h32
                                                                     list *
                                                                     (int *
                                                                     key_hash))
@@ -5150,7 +5101,7 @@ Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@clos
                                                                     bool)
                                                                     [@closure
                                                                     :int])))])
-                                                               * msg)]). Type variables 'l43 were replaced by unit.
+                                                               * msg)]). Type variables 'h32 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedExtraction.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedExtraction.liq:2.18-2.19: Warning: 
@@ -5165,7 +5116,7 @@ Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@clos
                                                                   (((int *
                                                                     key_hash)
                                                                     ->
-                                                                    ('r43
+                                                                    ('n32
                                                                     list *
                                                                     (int *
                                                                     key_hash))
@@ -5285,7 +5236,7 @@ Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@clos
                                                                     bool)
                                                                     [@closure
                                                                     :int])))])
-                                                               * coq_msg)]). Type variables 'r43 were replaced by unit.
+                                                               * coq_msg)]). Type variables 'n32 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:2.18-2.19: Warning: 
@@ -5301,7 +5252,7 @@ Unresolved type 's7. Type variables 's7 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:55.18-55.100: Warning: 
 Unresolved type ((int -> (operation list * int))[@closure
                                   :(((coq_msg ->
-                                        ((int -> ('x43 list * int) option)
+                                        ((int -> ('t32 list * int) option)
                                         [@closure
                                           :((bool ->
                                                ((bool -> coq_sumbool)
@@ -5386,7 +5337,7 @@ Unresolved type ((int -> (operation list * int))[@closure
                                                                   [@closure
                                                                     :
                                                                     int])))])
-                                     * coq_msg)]). Type variables 'x43 were replaced by unit.
+                                     * coq_msg)]). Type variables 't32 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:2.18-2.19: Warning: 
@@ -5420,7 +5371,7 @@ Unresolved type ((value list -> (operation list * value list))[@closure
                                                        ((string * int),
                                                        value) map) ->
                                                        ((value list ->
-                                                           ('j44 list * value
+                                                           ('f33 list * value
                                                              list) option)
                                                        [@closure
                                                          :(((((string * int),
@@ -6103,15 +6054,7 @@ Unresolved type ((value list -> (operation list * value list))[@closure
                                                             (int ->
                                                                ((int -> int)
                                                                [@closure
-                                                                 :int])))])])]))]). Type variables 'j44 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:2.38-2.43: Warning: 
-Unresolved type 'a. Type variables 'a were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:2.18-2.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:3.38-3.43: Warning: 
-Unresolved type 'b. Type variables 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:3.18-3.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+                                                                 :int])))])])]))]). Type variables 'f33 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:2.18-2.19: Warning: 
@@ -6128,7 +6071,7 @@ Unresolved type ((state -> (operation list * state) option)[@closure
                                                     (dun * dun))) ->
                                                     ((state ->
                                                         ((msg option ->
-                                                            ('h45 list *
+                                                            ('b34 list *
                                                               state) option)
                                                         [@closure
                                                           :((timestamp *
@@ -7522,14 +7465,14 @@ Unresolved type ((state -> (operation list * state) option)[@closure
                                                           (int ->
                                                              ((int -> int)
                                                              [@closure :
-                                                               int])))]))]))]). Type variables 'h45 were replaced by unit.
+                                                               int])))]))]))]). Type variables 'b34 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:120.18-123.75: Warning: 
 Unresolved type ((state -> (operation list * state))[@closure
                                       :(msg option *
                                          ((((timestamp * (address * (dun *
                                              dun))) * msg option) ->
                                              ((state ->
-                                                 ('o45 list * state) option)
+                                                 ('j34 list * state) option)
                                              [@closure
                                                :(((timestamp * (address *
                                                   (dun * dun))) * msg option)
@@ -7538,7 +7481,7 @@ Unresolved type ((state -> (operation list * state))[@closure
                                                       (dun * dun))) ->
                                                       ((state ->
                                                           ((msg option ->
-                                                              ('n45 list *
+                                                              ('i34 list *
                                                                 state) option)
                                                           [@closure
                                                             :((timestamp *
@@ -8960,7 +8903,7 @@ Unresolved type ((state -> (operation list * state))[@closure
                                                 dun))) ->
                                                 ((state ->
                                                     ((msg option ->
-                                                        ('m45 list * state)
+                                                        ('h34 list * state)
                                                           option)[@closure
                                                                    :((timestamp
                                                                     *
@@ -10321,7 +10264,7 @@ Unresolved type ((state -> (operation list * state))[@closure
                                                      *
                                                      (int ->
                                                         ((int -> int)
-                                                        [@closure :int])))]))])]))]). Type variables 'm45, 'n45, 'o45 were replaced by unit.
+                                                        [@closure :int])))]))])]))]). Type variables 'h34, 'i34, 'j34 were replaced by unit.
 Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedExtraction.initializer.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/CounterCertifiedExtraction.initializer.tz" generated
 You may want to typecheck with:
@@ -11094,64 +11037,3 @@ Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/S
 File "tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz
-Main contract Escrow
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:87.0-87.11: Warning: 
-unused variable "val2"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:86.0-86.11: Warning: 
-unused variable "val1"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:99.0-99.11: Warning: 
-unused variable "val1"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:98.0-98.11: Warning: 
-unused variable "val0"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:109.0-109.11: Warning: 
-unused variable "val2"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:108.0-108.11: Warning: 
-unused variable "val1"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:107.0-107.11: Warning: 
-unused variable "val0"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:119.0-119.11: Warning: 
-unused variable "val2"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:116.0-116.11: Warning: 
-unused variable "val0"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "ltb_time"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "leb_time"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "eqb_time"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "orb"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "eqNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "lxorNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "leNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "subNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "mulNat"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "evenTez"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "leTez"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "addTez"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "powInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "modInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "eqInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "ltInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "leInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "subInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "mulInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "addInt"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "snd"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq: Warning: unused variable "fst"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:142.0-142.11: Warning: 
-unused variable "val2"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:141.0-141.11: Warning: 
-unused variable "val1"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:140.0-140.11: Warning: 
-unused variable "val0"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:135.4-135.8: Warning: 
-unused variable "andb"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:2.38-2.43: Warning: 
-Unresolved type 'a. Type variables 'a were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:2.18-2.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:3.38-3.43: Warning: 
-Unresolved type 'b. Type variables 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:3.18-3.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/escrow.initializer.tz"
-File "tests/extracted-code/liquidity-extract/tests/escrow.tz" generated
-You may want to typecheck with:
-  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/escrow.tz

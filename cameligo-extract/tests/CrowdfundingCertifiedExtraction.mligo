@@ -143,17 +143,34 @@ match msg with
 Some msg0 -> (crowdfunding_receive_inner c ctx msg0 st)
  | None  -> (None:(operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))) option)
 
-let init (setup : (time_coq * (tez * address))) : ((time_coq * (tez * address)) * ((address,tez) map * bool)) = let inner (setup : (time_coq * (tez * address))) :((time_coq * (tez * address)) * ((address,tez) map * bool)) option = 
-Some (setup, ((Map.empty:(address,tez) map), false)) in
-match (inner setup) with
+let init (setup : (time_coq * (tez * address))) : ((time_coq * (tez * address)) * ((address,tez) map * bool)) = 
+
+let inner (ctx : cctx) (setup : (time_coq * (tez * address))) :((time_coq * (tez * address)) * ((address,tez) map * bool)) option = 
+if eqTez (ctx_amount ctx) 0tez then Some (setup, ((Map.empty:(address,tez) map), false)) else (None:((time_coq * (tez * address)) * ((address,tez) map * bool)) option) in
+let ctx = cctx_instance in
+match (inner ctx setup) with
   Some v -> v
-| None -> (failwith ("Init failed"): ((time_coq * (tez * address)) * ((address,tez) map * bool)))
+| None -> (failwith (""): ((time_coq * (tez * address)) * ((address,tez) map * bool)))
+type init_args_ty = (time_coq * (tez * address))
+let init_wrapper (args : init_args_ty) =
+  init args
 
-type storage = ((time_coq * (tez * address)) * ((address,tez) map * bool))
 
-type return = (operation) list * storage
+type storage = ((time_coq * (tez * address)) * ((address,tez) map * bool))type return = (operation) list * (storage option)
+type parameter_wrapper =
+  Init of init_args_ty
+| Call of msg_coq option
 
-let main (p, st : msg_coq option * storage) : return = 
-   (match (crowdfunding_receive dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+let wrapper (param, st : parameter_wrapper * (storage) option) : return =
+  match param with 
+    Init init_args -> (
+  match st with 
+      Some st -> (failwith ("Cannot call Init twice"): return)
+    | None -> (([]: operation list), Some (init init_args)))
+  | Call p -> (
+    match st with
+      Some st -> (match (crowdfunding_receive dummy_chain cctx_instance  st p) with   
+                    Some v -> (v.0, Some v.1)
+                  | None -> (failwith ("") : return))
+    | None -> (failwith ("cannot call this endpoint before Init has been called"): return))
+let main (action, st : parameter_wrapper * storage option) : return = wrapper (action, st)

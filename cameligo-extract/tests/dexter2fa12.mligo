@@ -363,16 +363,36 @@ match receive_lqt ctx state maybe_msg with
 Some x -> (Some (x.1, x.0))
  | None  -> (None:(operation list * dexter2FA12_State) option)
 
-let init (setup : dexter2FA12_Setup) : dexter2FA12_State = let inner (setup : dexter2FA12_Setup) :dexter2FA12_State option = 
+let init (setup : dexter2FA12_Setup) : dexter2FA12_State = 
+
+let inner (ctx : cctx) (setup : dexter2FA12_Setup) :dexter2FA12_State option = 
+let ctx_ = ctx in 
 Some (Dext_build_state ((Map.add (lqt_provider setup) (initial_pool setup) (Map.empty: (address, nat) map)), (Map.empty: ((address * address), nat) map), (admin_ setup), (initial_pool setup))) in
-match (inner setup) with
+let ctx = cctx_instance in
+match (inner ctx setup) with
   Some v -> v
-| None -> (failwith ("Init failed"): dexter2FA12_State)
+| None -> (failwith (""): dexter2FA12_State)
+type init_args_ty = dexter2FA12_Setup
+let init_wrapper (args : init_args_ty) =
+  init args
 
 
-type return = (operation) list * dexter2FA12_State
+type return = (operation) list * (dexter2FA12_State option)
+type parameter_wrapper =
+  Init of init_args_ty
+| Call of dexter2FA12_Msg option
 
-let main (p, st : dexter2FA12_Msg option * dexter2FA12_State) : return = 
-   (match (receive_ dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+let wrapper (param, st : parameter_wrapper * (dexter2FA12_State) option) : return =
+  match param with 
+    Init init_args -> (
+  match st with 
+      Some st -> (failwith ("Cannot call Init twice"): return)
+    | None -> (([]: operation list), Some (init init_args)))
+  | Call p -> (
+    match st with
+      Some st -> (match (receive_ dummy_chain cctx_instance  st p) with   
+                    Some v -> (v.0, Some v.1)
+                  | None -> (failwith ("") : return))
+    | None -> (failwith ("cannot call this endpoint before Init has been called"): return))
+
+let main (action, st : parameter_wrapper * dexter2FA12_State option) : return = wrapper (action, st)
