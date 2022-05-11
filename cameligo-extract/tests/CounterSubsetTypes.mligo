@@ -87,12 +87,12 @@ let chain_height (c : chain ) = c.chain_height_
 let current_slot (c : chain ) = c.current_slot_
 let finalized_height (c : chain) = c.finalized_height_
 
+type counterRefinementTypes_storage = int
+
 type specif_sumbool = 
   Spec_left
 | Spec_right
 
-
-type counterRefinementTypes_storage = int
 
 type counterRefinementTypes_msg = 
   Coun_Inc of int
@@ -135,36 +135,16 @@ match m with
 Some m0 -> (counterRefinementTypes_counter m0 s)
  | None  -> (None:(operation list * counterRefinementTypes_storage) option)
 
-let init (setup : int) : counterRefinementTypes_storage = 
-
-let inner (ctx : cctx) (setup : int) :counterRefinementTypes_storage option = 
-let ctx_ = ctx in 
+let init (setup : int) : counterRefinementTypes_storage = let inner (setup : int) :counterRefinementTypes_storage option = 
 Some setup in
-let ctx = cctx_instance in
-match (inner ctx setup) with
+match (inner setup) with
   Some v -> v
-| None -> (failwith (""): counterRefinementTypes_storage)
-type init_args_ty = int
-let init_wrapper (args : init_args_ty) =
-  init args
+| None -> (failwith ("Init failed"): counterRefinementTypes_storage)
 
 
-type return = (operation) list * (counterRefinementTypes_storage option)
-type parameter_wrapper =
-  Init of init_args_ty
-| Call of counterRefinementTypes_msg option
+type return = (operation) list * counterRefinementTypes_storage
 
-let wrapper (param, st : parameter_wrapper * (counterRefinementTypes_storage) option) : return =
-  match param with 
-    Init init_args -> (
-  match st with 
-      Some st -> (failwith ("Cannot call Init twice"): return)
-    | None -> (([]: operation list), Some (init init_args)))
-  | Call p -> (
-    match st with
-      Some st -> (match (cameLIGOExtractionSetup_counter_wrapper dummy_chain cctx_instance  st p) with   
-                    Some v -> (v.0, Some v.1)
-                  | None -> (failwith ("") : return))
-    | None -> (failwith ("cannot call this endpoint before Init has been called"): return))
-
-let main (action, st : parameter_wrapper * counterRefinementTypes_storage option) : return = wrapper (action, st)
+let main (p, st : counterRefinementTypes_msg option * counterRefinementTypes_storage) : return = 
+   (match (cameLIGOExtractionSetup_counter_wrapper dummy_chain cctx_instance  st p) with   
+      Some v -> (v.0, v.1)
+    | None -> (failwith ("Contract returned None") : return))
