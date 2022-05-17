@@ -105,7 +105,7 @@ let xtz_transfer (to_ : address) (amount_ : nat) : operation option =
 
 let subNTruncated (n : nat) (m : nat) : nat = if n < m then 0n else abs (n-m)
 
-type fA2Interface_token_id = nat
+type fA2LegacyInterface_token_id = nat
 
 type dexter2CPMM_Setup = {
 lqtTotal_ : nat;
@@ -126,72 +126,72 @@ tokenId : nat;
 lqtAddress : address
 }
 
-type fA2Interface_balance_of_request = {
+type fA2LegacyInterface_balance_of_request = {
 owner : address;
-bal_req_token_id : fA2Interface_token_id
+bal_req_token_id : fA2LegacyInterface_token_id
 }
 
-type fA2Interface_balance_of_response = {
-request : fA2Interface_balance_of_request;
+type fA2LegacyInterface_balance_of_response = {
+request : fA2LegacyInterface_balance_of_request;
 balance : nat
 }
 
-type fA2Interface_total_supply_response = {
-supply_resp_token_id : fA2Interface_token_id;
+type fA2LegacyInterface_total_supply_response = {
+supply_resp_token_id : fA2LegacyInterface_token_id;
 total_supply : nat
 }
 
-type fA2Interface_token_metadata = {
-metadata_token_id : fA2Interface_token_id;
+type fA2LegacyInterface_token_metadata = {
+metadata_token_id : fA2LegacyInterface_token_id;
 metadata_decimals : nat
 }
 
-type fA2Interface_operator_tokens = 
-  FA2I_all_tokens
-| FA2I_some_tokens of fA2Interface_token_id list
+type fA2LegacyInterface_operator_tokens = 
+  FA2L_all_tokens
+| FA2L_some_tokens of fA2LegacyInterface_token_id list
 
 
-type fA2Interface_operator_param = {
+type fA2LegacyInterface_operator_param = {
 op_param_owner : address;
 op_param_operator : address;
-op_param_tokens : fA2Interface_operator_tokens
+op_param_tokens : fA2LegacyInterface_operator_tokens
 }
 
-type fA2Interface_is_operator_response = {
-operator : fA2Interface_operator_param;
+type fA2LegacyInterface_is_operator_response = {
+operator : fA2LegacyInterface_operator_param;
 is_operator : bool
 }
 
-type fA2Interface_self_transfer_policy = 
-  FA2I_self_transfer_permitted
-| FA2I_self_transfer_denied
+type fA2LegacyInterface_self_transfer_policy = 
+  FA2L_self_transfer_permitted
+| FA2L_self_transfer_denied
 
 
-type fA2Interface_operator_transfer_policy = 
-  FA2I_operator_transfer_permitte
-| FA2I_operator_transfer_denied
+type fA2LegacyInterface_operator_transfer_policy = 
+  FA2L_operator_transfer_permitte
+| FA2L_operator_transfer_denied
 
 
-type fA2Interface_owner_transfer_policy = 
-  FA2I_owner_no_op
-| FA2I_optional_owner_hook
-| FA2I_required_owner_hook
+type fA2LegacyInterface_owner_transfer_policy = 
+  FA2L_owner_no_op
+| FA2L_optional_owner_hook
+| FA2L_required_owner_hook
 
 
-type fA2Interface_permissions_descriptor = {
-descr_self : fA2Interface_self_transfer_policy;
-descr_operator : fA2Interface_operator_transfer_policy;
-descr_receiver : fA2Interface_owner_transfer_policy;
-descr_sender : fA2Interface_owner_transfer_policy;
+type fA2LegacyInterface_permissions_descriptor = {
+descr_self : fA2LegacyInterface_self_transfer_policy;
+descr_operator : fA2LegacyInterface_operator_transfer_policy;
+descr_receiver : fA2LegacyInterface_owner_transfer_policy;
+descr_sender : fA2LegacyInterface_owner_transfer_policy;
 descr_custom : address option
 }
 
 type 'a fA2Token_FA2ReceiverMsg = 
-  FA2T_receive_balance_of_param of fA2Interface_balance_of_response list
-| FA2T_receive_total_supply_param of fA2Interface_total_supply_response list
-| FA2T_receive_metadata_callback of fA2Interface_token_metadata list
-| FA2T_receive_is_operator of fA2Interface_is_operator_response
-| FA2T_receive_permissions_descri of fA2Interface_permissions_descriptor
+  FA2T_receive_balance_of_param of fA2LegacyInterface_balance_of_response list
+| FA2T_receive_total_supply_param of fA2LegacyInterface_total_supply_response list
+| FA2T_receive_metadata_callback of fA2LegacyInterface_token_metadata list
+| FA2T_receive_is_operator of fA2LegacyInterface_is_operator_response
+| FA2T_receive_permissions_descri of fA2LegacyInterface_permissions_descriptor
 | FA2T_other_msg of 'a
 
 
@@ -252,75 +252,83 @@ type dexter2CPMM_Msg = dexter2CPMM_DexterMsg fA2Token_FA2ReceiverMsg
 
 type dEX2Extract_result = (dexter2CPMM_State * operation list) option
 
-type dexter2CPMM_update_token_pool_internal_ = fA2Interface_balance_of_response list
+type dexter2CPMM_update_token_pool_internal_ = fA2LegacyInterface_balance_of_response list
 
-type fA2Interface_transfer = {
-from_ : address;
+type fA2LegacyInterface_transfer_destination = {
 to_ : address;
-transfer_token_id : fA2Interface_token_id;
-amount : nat;
+dst_token_id : nat;
+amount : nat
+}
+
+type fA2LegacyInterface_transfer = {
+from_ : address;
+txs : fA2LegacyInterface_transfer_destination list;
 sender_callback_addr : address option
 }
 
-type fA2Interface_set_hook_param = {
+type fA2LegacyInterface_set_hook_param = {
 hook_addr : address;
-hook_permissions_descriptor : fA2Interface_permissions_descriptor
+hook_permissions_descriptor : fA2LegacyInterface_permissions_descriptor
 }
 
-type fA2Interface_transfer_descriptor = {
-transfer_descr_from_ : address;
-transfer_descr_to_ : address;
-transfer_descr_token_id : fA2Interface_token_id;
-transfer_descr_amount : nat
+type fA2LegacyInterface_transfer_destination_descriptor = {
+transfer_dst_descr_to_ : address option;
+transfer_dst_descr_token_id : fA2LegacyInterface_token_id;
+transfer_dst_descr_amount : nat
 }
 
-type fA2Interface_transfer_descriptor_param = {
+type fA2LegacyInterface_transfer_descriptor = {
+transfer_descr_from_ : address option;
+transfer_descr_txs : fA2LegacyInterface_transfer_destination_descriptor list
+}
+
+type fA2LegacyInterface_transfer_descriptor_param = {
 transfer_descr_fa2 : address;
-transfer_descr_batch : fA2Interface_transfer_descriptor list;
+transfer_descr_batch : fA2LegacyInterface_transfer_descriptor list;
 transfer_descr_operator : address
 }
 
-type 'a fA2Interface_callback = {
+type 'a fA2LegacyInterface_callback = {
 blob : 'a option;
 return_addr : address
 }
 
-type fA2Interface_balance_of_param = {
-bal_requests : fA2Interface_balance_of_request list;
-bal_callback : fA2Interface_balance_of_response list fA2Interface_callback
+type fA2LegacyInterface_balance_of_param = {
+bal_requests : fA2LegacyInterface_balance_of_request list;
+bal_callback : fA2LegacyInterface_balance_of_response list fA2LegacyInterface_callback
 }
 
-type fA2Interface_total_supply_param = {
-supply_param_token_ids : fA2Interface_token_id list;
-supply_param_callback : fA2Interface_total_supply_response list fA2Interface_callback
+type fA2LegacyInterface_total_supply_param = {
+supply_param_token_ids : fA2LegacyInterface_token_id list;
+supply_param_callback : fA2LegacyInterface_total_supply_response list fA2LegacyInterface_callback
 }
 
-type fA2Interface_token_metadata_param = {
-metadata_token_ids : fA2Interface_token_id list;
-metadata_callback : fA2Interface_token_metadata list fA2Interface_callback
+type fA2LegacyInterface_token_metadata_param = {
+metadata_token_ids : fA2LegacyInterface_token_id list;
+metadata_callback : fA2LegacyInterface_token_metadata list fA2LegacyInterface_callback
 }
 
-type fA2Interface_update_operator = 
-  FA2I_add_operator of fA2Interface_operator_param
-| FA2I_remove_operator of fA2Interface_operator_param
+type fA2LegacyInterface_update_operator = 
+  FA2L_add_operator of fA2LegacyInterface_operator_param
+| FA2L_remove_operator of fA2LegacyInterface_operator_param
 
 
-type fA2Interface_is_operator_param = {
-is_operator_operator : fA2Interface_operator_param;
-is_operator_callback : fA2Interface_is_operator_response fA2Interface_callback
+type fA2LegacyInterface_is_operator_param = {
+is_operator_operator : fA2LegacyInterface_operator_param;
+is_operator_callback : fA2LegacyInterface_is_operator_response fA2LegacyInterface_callback
 }
 
 type fA2Token_Msg = 
-  FA2T_msg_transfer of fA2Interface_transfer list
-| FA2T_msg_set_transfer_hook of fA2Interface_set_hook_param
-| FA2T_msg_receive_hook_transfer of fA2Interface_transfer_descriptor_param
-| FA2T_msg_balance_of of fA2Interface_balance_of_param
-| FA2T_msg_total_supply of fA2Interface_total_supply_param
-| FA2T_msg_token_metadata of fA2Interface_token_metadata_param
-| FA2T_msg_permissions_descriptor of fA2Interface_permissions_descriptor fA2Interface_callback
-| FA2T_msg_update_operators of fA2Interface_update_operator list
-| FA2T_msg_is_operator of fA2Interface_is_operator_param
-| FA2T_msg_create_tokens of fA2Interface_token_id
+  FA2T_msg_transfer of fA2LegacyInterface_transfer list
+| FA2T_msg_set_transfer_hook of fA2LegacyInterface_set_hook_param
+| FA2T_msg_receive_hook_transfer of fA2LegacyInterface_transfer_descriptor_param
+| FA2T_msg_balance_of of fA2LegacyInterface_balance_of_param
+| FA2T_msg_total_supply of fA2LegacyInterface_total_supply_param
+| FA2T_msg_token_metadata of fA2LegacyInterface_token_metadata_param
+| FA2T_msg_permissions_descriptor of fA2LegacyInterface_permissions_descriptor fA2LegacyInterface_callback
+| FA2T_msg_update_operators of fA2LegacyInterface_update_operator list
+| FA2T_msg_is_operator of fA2LegacyInterface_is_operator_param
+| FA2T_msg_create_tokens of fA2LegacyInterface_token_id
 
 
 type dexter2FA12_transfer_param = 
@@ -420,7 +428,7 @@ let set_State_lqtTotal (f : nat -> nat) (r : dexter2CPMM_State) : dexter2CPMM_St
 ({tokenPool = (tokenPool r); xtzPool = (xtzPool r); lqtTotal = (f (lqtTotal r)); selfIsUpdatingTokenPool = (selfIsUpdatingTokenPool r); freezeBaker = (freezeBaker r); manager = (manager r); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (lqtAddress r)}: dexter2CPMM_State)
 
 let token_transfer (state : dexter2CPMM_State) (from : address) (to0 : address) (amount0 : nat) : operation = 
-call_to_token state.tokenAddress 0n (FA2T_msg_transfer (({from_ = from; to_ = to0; transfer_token_id = state.tokenId; amount = amount0; sender_callback_addr = (None:address option)}: fA2Interface_transfer) :: ([]:fA2Interface_transfer list)))
+call_to_token state.tokenAddress 0n (FA2T_msg_transfer (({from_ = from; txs = (({to_ = to0; dst_token_id = state.tokenId; amount = amount0}: fA2LegacyInterface_transfer_destination) :: ([]:fA2LegacyInterface_transfer_destination list)); sender_callback_addr = (None:address option)}: fA2LegacyInterface_transfer) :: ([]:fA2LegacyInterface_transfer list)))
 
 let mint_or_burn (state : dexter2CPMM_State) (target : address) (quantitiy : int) : operation option = 
 match throwIf (eq_addr state.lqtAddress ("tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU" : address)) with 
@@ -558,8 +566,8 @@ let update_token_pool (ctx : cctx) (state : dexter2CPMM_State) : dEX2Extract_res
 match throwIf (not (eq_addr (ctx_from ctx) (ctx_origin ctx))) with 
 Some val0 -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
 Some val1 -> (match throwIf state.selfIsUpdatingTokenPool with 
-Some val2 -> (let balance_of_request = ({owner = (ctx_contract_address ctx); bal_req_token_id = state.tokenId}: fA2Interface_balance_of_request) in 
-let balance_of_param = ({bal_requests = (balance_of_request :: ([]:fA2Interface_balance_of_request list)); bal_callback = ({blob = (None:fA2Interface_balance_of_response list option); return_addr = (ctx_contract_address ctx)}: fA2Interface_balance_of_response list fA2Interface_callback)}: fA2Interface_balance_of_param) in 
+Some val2 -> (let balance_of_request = ({owner = (ctx_contract_address ctx); bal_req_token_id = state.tokenId}: fA2LegacyInterface_balance_of_request) in 
+let balance_of_param = ({bal_requests = (balance_of_request :: ([]:fA2LegacyInterface_balance_of_request list)); bal_callback = ({blob = (None:fA2LegacyInterface_balance_of_response list option); return_addr = (ctx_contract_address ctx)}: fA2LegacyInterface_balance_of_response list fA2LegacyInterface_callback)}: fA2LegacyInterface_balance_of_param) in 
 let op = call_to_token state.tokenAddress 0n (FA2T_msg_balance_of balance_of_param) in 
 Some ((set_State_selfIsUpdatingTokenPool (fun (a : bool) -> true) state), (op :: ([]:operation list))))
  | None  -> (None:(dexter2CPMM_State * operation list) option))
