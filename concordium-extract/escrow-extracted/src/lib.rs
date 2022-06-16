@@ -1,8 +1,8 @@
 #![allow(dead_code)]
-#![allow(non_camel_case_types)]
 #![allow(unused_imports)]
-#![allow(non_snake_case)]
 #![allow(unused_variables)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
 
 use concordium_std::*;
 use concert_std::{ActionBody, ConCertDeserial, ConCertSerial, SerializedValue};
@@ -380,21 +380,7 @@ fn Coq_ZArith_BinIntDef_Z_add__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn F
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_opp(&'a self, x: i64) -> i64 {
-  __Z_elim!(
-    {
-      0
-    },
-    x2, {
-      __Z_fromneg(
-        x2)
-    },
-    x2, {
-      __Z_frompos(
-        x2)
-    },
-    x)
-}
+fn Coq_ZArith_BinIntDef_Z_opp(&'a self, a: i64) -> i64 { a.checked_neg().unwrap() }
 fn Coq_ZArith_BinIntDef_Z_opp__curried(&'a self) -> &'a dyn Fn(i64) -> i64 {
   self.closure(move |x| {
     self.Coq_ZArith_BinIntDef_Z_opp(

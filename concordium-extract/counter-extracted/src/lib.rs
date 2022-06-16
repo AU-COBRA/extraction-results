@@ -1,8 +1,8 @@
 #![allow(dead_code)]
-#![allow(non_camel_case_types)]
 #![allow(unused_imports)]
-#![allow(non_snake_case)]
 #![allow(unused_variables)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
 
 use concordium_std::*;
 use concert_std::{ActionBody, ConCertDeserial, ConCertSerial, SerializedValue};
