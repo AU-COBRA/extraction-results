@@ -57,11 +57,11 @@ type cctx = {
 }
 (* a call context instance with fields filled in with required data *)
 let cctx_instance : cctx= 
-{ ctx_origin_ = Tezos.source;
-  ctx_from_ = Tezos.sender;
-  ctx_contract_address_ = Tezos.self_address;
-  ctx_contract_balance_ = Tezos.balance;
-  ctx_amount_ = Tezos.amount
+{ ctx_origin_ = Tezos.get_source ();
+  ctx_from_ = Tezos.get_sender ();
+  ctx_contract_address_ = Tezos.get_self_address ();
+  ctx_contract_balance_ = Tezos.get_balance ();
+  ctx_amount_ = Tezos.get_amount ()
 }
 
 (* context projections as functions *)
@@ -77,9 +77,9 @@ type chain = {
 }
 
 let dummy_chain : chain = {
-chain_height_     = Tezos.level;
-current_slot_     = Tezos.level;
-finalized_height_ = Tezos.level;
+chain_height_     = Tezos.get_level ();
+current_slot_     = Tezos.get_level ();
+finalized_height_ = Tezos.get_level ();
 }
 
 (* chain projections as functions *)
@@ -409,7 +409,7 @@ match throwIf (orb (not state.selfIsUpdatingTokenPool) (not (eq_addr (ctx_from c
 Some val0 -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
 Some val1 -> (match match token_pool with 
 []  -> (None:nat option)
- | x :: xs -> (Some x.balance) with 
+ | xs0 :: x0 -> (Some xs0.balance) with 
 Some val2 -> (let new_state = set_State_selfIsUpdatingTokenPool (fun (a : bool) -> false) (set_State_tokenPool (fun (a : nat) -> val2) state) in 
 Some (new_state, ([]:operation list)))
  | None  -> (None:(dexter2CPMM_State * operation list) option))
@@ -598,27 +598,27 @@ Some (new_state, ([]:operation list)))
 
 let receive_cpmm (chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg : dexter2CPMM_Msg option) : dEX2Extract_result = 
 match maybe_msg with 
-Some m -> (match m with 
-FA2T_receive_balance_of_param responses -> (update_token_pool_internal ctx state responses)
- | FA2T_receive_total_supply_param l -> (None:(dexter2CPMM_State * operation list) option)
- | FA2T_receive_metadata_callback l -> (None:(dexter2CPMM_State * operation list) option)
- | FA2T_receive_is_operator i -> (None:(dexter2CPMM_State * operation list) option)
- | FA2T_receive_permissions_descri p -> (None:(dexter2CPMM_State * operation list) option)
- | FA2T_other_msg d -> (match d with 
-Dext_AddLiquidity param -> (add_liquidity chain ctx state param)
- | Dext_RemoveLiquidity param -> (remove_liquidity chain ctx state param)
- | Dext_XtzToToken param -> (xtz_to_token chain ctx state param)
- | Dext_TokenToXtz param -> (token_to_xtz chain ctx state param)
- | Dext_SetBaker param -> (set_baker ctx state param)
- | Dext_SetManager param -> (set_manager ctx state param)
- | Dext_SetLqtAddress param -> (set_lqt_address ctx state param)
+Some m0 -> (match m0 with 
+FA2T_receive_balance_of_param responses0 -> (update_token_pool_internal ctx state responses0)
+ | FA2T_receive_total_supply_param l0 -> (None:(dexter2CPMM_State * operation list) option)
+ | FA2T_receive_metadata_callback l0 -> (None:(dexter2CPMM_State * operation list) option)
+ | FA2T_receive_is_operator i0 -> (None:(dexter2CPMM_State * operation list) option)
+ | FA2T_receive_permissions_descri p0 -> (None:(dexter2CPMM_State * operation list) option)
+ | FA2T_other_msg d0 -> (match d0 with 
+Dext_AddLiquidity param0 -> (add_liquidity chain ctx state param0)
+ | Dext_RemoveLiquidity param0 -> (remove_liquidity chain ctx state param0)
+ | Dext_XtzToToken param0 -> (xtz_to_token chain ctx state param0)
+ | Dext_TokenToXtz param0 -> (token_to_xtz chain ctx state param0)
+ | Dext_SetBaker param0 -> (set_baker ctx state param0)
+ | Dext_SetManager param0 -> (set_manager ctx state param0)
+ | Dext_SetLqtAddress param0 -> (set_lqt_address ctx state param0)
  | Dext_UpdateTokenPool  -> (update_token_pool ctx state)
- | Dext_TokenToToken param -> (token_to_token chain ctx state param)))
+ | Dext_TokenToToken param0 -> (token_to_token chain ctx state param0)))
  | None  -> (default_ ctx state)
 
 let receive_ (chain : chain) (ctx : cctx) (state : dexter2CPMM_State) (maybe_msg : dexter2CPMM_Msg option) : (operation list * dexter2CPMM_State) option = 
 match receive_cpmm chain ctx state maybe_msg with 
-Some x -> (Some (x.1, x.0))
+Some x0 -> (Some (x0.1, x0.0))
  | None  -> (None:(operation list * dexter2CPMM_State) option)
 
 let init (setup : dexter2CPMM_Setup) : dexter2CPMM_State = let inner (setup : dexter2CPMM_Setup) :dexter2CPMM_State option = 

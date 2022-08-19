@@ -67,9 +67,6 @@ conCert_Examples_Escrow_Escrow_next_step s =
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       next_step
 
-type Monad m
-  = Build_monad (() -> () -> m) (() -> () -> m -> (() -> m) -> m)
-
 type Comparison
   = Eq
   | Lt
@@ -419,7 +416,7 @@ coq_ZArith_BinIntDef_Z_div_eucl a b =
     Zpos a2 ->
       case b of
         Z0 ->
-          Pair Z0 Z0
+          Pair Z0 a
         Zpos p ->
           coq_ZArith_BinIntDef_Z_pos_div_eucl a2 b
         Zneg b2 ->
@@ -435,7 +432,7 @@ coq_ZArith_BinIntDef_Z_div_eucl a b =
     Zneg a2 ->
       case b of
         Z0 ->
-          Pair Z0 Z0
+          Pair Z0 a
         Zpos p ->
           case coq_ZArith_BinIntDef_Z_pos_div_eucl a2 b of
             Pair q r ->
@@ -611,31 +608,31 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
             Buyer_commit ->
               case conCert_Examples_Escrow_Escrow_subAmountOption (ctx_contract_balance ctx) (ctx_amount ctx) of
                 Some val ->
-                  (\diff_ -> let
-                               item_price =
-                                 coq_ZArith_BinIntDef_Z_div diff_ (Zpos (XO XH))
-                             in
-                             let
-                               expected =
-                                 coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XO XH))
-                             in
-                             case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
-                                     True ->
-                                       Some Tt
-                                     False ->
-                                       None) of
-                               Some val2 ->
-                                 (\x -> case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) expected of
-                                                True ->
-                                                  Some Tt
-                                                False ->
-                                                  None) of
-                                          Some val3 ->
-                                            (\x2 -> Some (Pair ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_last_action (\x3 -> current_slot chain) ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_next_step (\x3 -> Buyer_confirm) state)) Nil)) val3
-                                          None ->
-                                            None) val2
-                               None ->
-                                 None) val
+                  let
+                    item_price =
+                      coq_ZArith_BinIntDef_Z_div val (Zpos (XO XH))
+                  in
+                  let
+                    expected =
+                      coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XO XH))
+                  in
+                  case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
+                          True ->
+                            Some Tt
+                          False ->
+                            None) of
+                    Some val2 ->
+                      case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) expected of
+                              True ->
+                                Some Tt
+                              False ->
+                                None) of
+                        Some val3 ->
+                          Some (Pair (conCert_Examples_Escrow_Escrow_set_State_last_action (\x -> current_slot chain) (conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> Buyer_confirm) state)) Nil)
+                        None ->
+                          None
+                    None ->
+                      None
                 None ->
                   None
             Buyer_confirm ->
@@ -659,19 +656,19 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                       False ->
                         None) of
                 Some val ->
-                  (\x -> case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) Z0 of
-                                 True ->
-                                   Some Tt
-                                 False ->
-                                   None) of
-                           Some val2 ->
-                             (\x2 -> let
-                                       new_state =
-                                         (\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x3 -> coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XI XH))) ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x3 -> item_price) ((\x3 -> x3) conCert_Examples_Escrow_Escrow_set_State_next_step (\x3 -> Withdrawals) state))
-                                     in
-                                     Some (Pair new_state Nil)) val2
-                           None ->
-                             None) val
+                  case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) Z0 of
+                          True ->
+                            Some Tt
+                          False ->
+                            None) of
+                    Some val2 ->
+                      let
+                        new_state =
+                          conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x -> coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XI XH))) (conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x -> item_price) (conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> Withdrawals) state))
+                      in
+                      Some (Pair new_state Nil)
+                    None ->
+                      None
                 None ->
                   None
             Withdrawals ->
@@ -687,27 +684,27 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                       False ->
                         None) of
                 Some val ->
-                  (\x -> case (case coq_Init_Nat_ltb (coq_Init_Nat_add (conCert_Examples_Escrow_Escrow_last_action state) (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S O))))))))))))))))))))))))))))))))))))))))))))))))))) (current_slot chain) of
-                                 True ->
-                                   None
-                                 False ->
-                                   Some Tt) of
-                           Some val2 ->
-                             (\x2 -> case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_seller state) of
-                                             True ->
-                                               Some Tt
-                                             False ->
-                                               None) of
-                                       Some val3 ->
-                                         (\x3 -> let
-                                                   balance =
-                                                     ctx_contract_balance ctx
-                                                 in
-                                                 Some (Pair ((\x4 -> x4) conCert_Examples_Escrow_Escrow_set_State_next_step (\x4 -> No_next_step) state) (Cons (Act_transfer (conCert_Examples_Escrow_Escrow_seller state) balance) Nil))) val3
-                                       None ->
-                                         None) val2
-                           None ->
-                             None) val
+                  case (case coq_Init_Nat_ltb (coq_Init_Nat_add (conCert_Examples_Escrow_Escrow_last_action state) (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S O))))))))))))))))))))))))))))))))))))))))))))))))))) (current_slot chain) of
+                          True ->
+                            None
+                          False ->
+                            Some Tt) of
+                    Some val2 ->
+                      case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_seller state) of
+                              True ->
+                                Some Tt
+                              False ->
+                                None) of
+                        Some val3 ->
+                          let
+                            balance =
+                              ctx_contract_balance ctx
+                          in
+                          Some (Pair (conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> No_next_step) state) (Cons (Act_transfer (conCert_Examples_Escrow_Escrow_seller state) balance) Nil))
+                        None ->
+                          None
+                    None ->
+                      None
                 None ->
                   None
             Buyer_confirm ->
@@ -719,41 +716,41 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                       False ->
                         None) of
                 Some val ->
-                  (\x -> let
-                           from =
-                             ctx_from ctx
-                         in
-                         case (case Order.eq from (conCert_Examples_Escrow_Escrow_buyer state) of
-                                 True ->
-                                   Some (Pair (conCert_Examples_Escrow_Escrow_buyer_withdrawable state) ((\x2 -> x2) conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x2 -> Z0) state))
-                                 False ->
-                                   case Order.eq from (conCert_Examples_Escrow_Escrow_seller state) of
-                                     True ->
-                                       Some (Pair (conCert_Examples_Escrow_Escrow_seller_withdrawable state) ((\x2 -> x2) conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x2 -> Z0) state))
-                                     False ->
-                                       None) of
-                           Some val2 ->
-                             (\x2 -> case x2 of
-                                       Pair to_pay new_state ->
-                                         case (case coq_ZArith_BinIntDef_Z_gtb to_pay Z0 of
-                                                 True ->
-                                                   Some Tt
-                                                 False ->
-                                                   None) of
-                                           Some val3 ->
-                                             (\x3 -> let
-                                                       new_state2 =
-                                                         case coq_Init_Datatypes_andb (coq_ZArith_BinIntDef_Z_eqb (conCert_Examples_Escrow_Escrow_buyer_withdrawable new_state) Z0) (coq_ZArith_BinIntDef_Z_eqb (conCert_Examples_Escrow_Escrow_seller_withdrawable new_state) Z0) of
-                                                           True ->
-                                                             (\x4 -> x4) conCert_Examples_Escrow_Escrow_set_State_next_step (\x4 -> No_next_step) new_state
-                                                           False ->
-                                                             new_state
-                                                     in
-                                                     Some (Pair new_state2 (Cons (Act_transfer (ctx_from ctx) to_pay) Nil))) val3
-                                           None ->
-                                             None) val2
-                           None ->
-                             None) val
+                  let
+                    from =
+                      ctx_from ctx
+                  in
+                  case (case Order.eq from (conCert_Examples_Escrow_Escrow_buyer state) of
+                          True ->
+                            Some (Pair (conCert_Examples_Escrow_Escrow_buyer_withdrawable state) (conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x -> Z0) state))
+                          False ->
+                            case Order.eq from (conCert_Examples_Escrow_Escrow_seller state) of
+                              True ->
+                                Some (Pair (conCert_Examples_Escrow_Escrow_seller_withdrawable state) (conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x -> Z0) state))
+                              False ->
+                                None) of
+                    Some val2 ->
+                      case val2 of
+                        Pair to_pay new_state ->
+                          case (case coq_ZArith_BinIntDef_Z_gtb to_pay Z0 of
+                                  True ->
+                                    Some Tt
+                                  False ->
+                                    None) of
+                            Some val3 ->
+                              let
+                                new_state2 =
+                                  case coq_Init_Datatypes_andb (coq_ZArith_BinIntDef_Z_eqb (conCert_Examples_Escrow_Escrow_buyer_withdrawable new_state) Z0) (coq_ZArith_BinIntDef_Z_eqb (conCert_Examples_Escrow_Escrow_seller_withdrawable new_state) Z0) of
+                                    True ->
+                                      conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> No_next_step) new_state
+                                    False ->
+                                      new_state
+                              in
+                              Some (Pair new_state2 (Cons (Act_transfer (ctx_from ctx) to_pay) Nil))
+                            None ->
+                              None
+                    None ->
+                      None
                 None ->
                   None
             No_next_step ->

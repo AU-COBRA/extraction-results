@@ -50,12 +50,6 @@ type 'a addrMap = (address, 'a) map
 
 type  tokenValue = int
 
-type msg = 
-Transfer of address * tokenValue
-| Transfer_from of address * address * tokenValue
-| Approve of address * tokenValue
-
-
 type setup = {
 owner : address;
 init_amount : tokenValue
@@ -67,12 +61,18 @@ balances : ( (address, tokenValue) map);
 allowances : ( (address, ( (address, tokenValue) map)) map)
 }
 
+type msg = 
+Transfer of address * tokenValue
+| Transfer_from of address * address * tokenValue
+| Approve of address * tokenValue
+
+
 let increment_balance (m : ( (address, tokenValue) map)) (addr : address) (inc : tokenValue) = match Map.find addr m with 
-Some (old) -> (Map.add addr (addInt old inc) m)
+Some (old0) -> (Map.add addr (addInt old0 inc) m)
  | None  -> (Map.add addr inc m)
 
 let try_transfer (from0 : address) (to0 : address) (amount : tokenValue) (state : state) = let from_balance = match Map.find from0 state.balances with 
-Some (v) -> v
+Some (v0) -> v0
  | None  -> 0 in 
 if ltInt from_balance amount then None else let new_balances = Map.add from0 (subInt from_balance amount) state.balances in 
 let new_balances0 = increment_balance new_balances to0 amount in 
@@ -81,7 +81,7 @@ Some ({total_supply = state.total_supply; balances = new_balances0; allowances =
 let try_transfer_from (delegate : address) (from0 : address) (to0 : address) (amount : tokenValue) (state : state) = match Map.find from0 state.allowances with 
 Some (val0) -> (match Map.find delegate val0 with 
 Some (val1) -> (let from_balance = match Map.find from0 state.balances with 
-Some (v) -> v
+Some (v0) -> v0
  | None  -> 0 in 
 if orb (ltInt val1 amount) (ltInt from_balance amount) then None else let new_allowances = Map.add delegate (subInt val1 amount) val0 in 
 let new_balances = Map.add from0 (subInt from_balance amount) state.balances in 
@@ -91,18 +91,18 @@ Some ({total_supply = {total_supply = state.total_supply; balances = new_balance
  | None  -> None
 
 let try_approve (caller : address) (delegate : address) (amount : tokenValue) (state : state) = match Map.find caller state.allowances with 
-Some (caller_allowances) -> (Some ({total_supply = state.total_supply; balances = state.balances; allowances = (Map.add caller (Map.add delegate amount caller_allowances) state.allowances)}))
+Some (caller_allowances0) -> (Some ({total_supply = state.total_supply; balances = state.balances; allowances = (Map.add caller (Map.add delegate amount caller_allowances0) state.allowances)}))
  | None  -> (Some ({total_supply = state.total_supply; balances = state.balances; allowances = (Map.add caller (Map.add delegate amount (Map [])) state.allowances)}))
 
 let test_receive (ctx : (timestamp * (address * (tez * tez)))) (state : state) (maybe_msg : ( (msg) option)) = let sender = (fun x -> x.(1).(0)) ctx in 
 let without_actions = fun o -> match o with 
-Some (a) -> (Some ( ([], a)))
+Some (a0) -> (Some ( ([], a0)))
  | None  -> None in 
 match maybe_msg with 
-Some (m) -> (match m with 
-Transfer (to_addr, amountt) -> (without_actions (try_transfer sender to_addr amountt state))
- | Transfer_from (from0, to_addr, amountt) -> (without_actions (try_transfer_from sender from0 to_addr amountt state))
- | Approve (delegate, amount) -> (without_actions (try_approve sender delegate amount state)))
+Some (m0) -> (match m0 with 
+Transfer (amountt0, to_addr0) -> (without_actions (try_transfer sender amountt0 to_addr0 state))
+ | Transfer_from (amountt0, to_addr0, from0) -> (without_actions (try_transfer_from sender amountt0 to_addr0 from0 state))
+ | Approve (amount0, delegate0) -> (without_actions (try_approve sender amount0 delegate0 state)))
  | None  -> None
 
 let receive_wrapper (params : ((timestamp * (address * (tez * tez))) * ( (msg) option))) (st : state) = test_receive params.(0) st params.(1)

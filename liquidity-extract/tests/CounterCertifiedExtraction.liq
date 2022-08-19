@@ -27,8 +27,8 @@ let inc_balance (st : storage) (new_balance : int) =  ((addInt st.(0) new_balanc
 let dec_balance (st : storage) (new_balance : int) =  ((subInt st.(0) new_balance), st.(1))
 
 let counter (msg : msg) (st : storage) = match msg with 
-Inc (i) -> (if leInt 0 i then Some ( ([], (inc_balance st i))) else None)
- | Dec (i) -> (if leInt 0 i then Some ( ([], (dec_balance st i))) else None)
+Inc (i0) -> (if leInt 0 i0 then Some ( ([], (inc_balance st i0))) else None)
+ | Dec (i0) -> (if leInt 0 i0 then Some ( ([], (dec_balance st i0))) else None)
 
 let%init storage (setup : (int * key_hash)) = 
 let inner (ctx : simpleCallCtx) (setup : (int * key_hash)) = let ctx' = ctx in 

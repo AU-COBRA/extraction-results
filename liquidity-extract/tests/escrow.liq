@@ -77,7 +77,7 @@ buyer_withdrawable : tez
 let subAmountOption (n : tez) (m : tez) = if ltTez n m then None else Some ((subTez n m))
 
 let receive (chain : chain) (ctx : cctx) (state : state) (msg : ( (msg) option)) = match msg with 
-Some (m) -> (match m with 
+Some (m0) -> (match m0 with 
 Commit_money  -> (match state.next_step with 
 Buyer_commit  -> (match subAmountOption ((fun (c : cctx) -> c.(1).(1).(0)) ctx) ((fun (c : cctx) -> c.(1).(1).(1)) ctx) with 
 Some (val0) -> (let item_price = divTez val0 2tz in 
@@ -115,9 +115,9 @@ Some ( ({last_action = state.last_action; next_step = No_next_step; seller = sta
  | Withdrawals  -> (match if eqTez ((fun (c : cctx) -> c.(1).(1).(1)) ctx) 0tz then Some (()) else None with 
 Some (val0) -> (let from0 = (fun (c : cctx) -> c.(1).(0)) ctx in 
 match if eq_addr from0 state.buyer then Some ( (state.buyer_withdrawable, {last_action = state.last_action; next_step = state.next_step; seller = state.seller; buyer = state.buyer; seller_withdrawable = state.seller_withdrawable; buyer_withdrawable = 0tz})) else if eq_addr from0 state.seller then Some ( (state.seller_withdrawable, {last_action = state.last_action; next_step = state.next_step; seller = state.seller; buyer = state.buyer; seller_withdrawable = 0tz; buyer_withdrawable = state.buyer_withdrawable})) else None with 
-Some (val1) -> (let (to_pay,new_state) = val1 in (match if gtTez to_pay 0tz then Some (()) else None with 
-Some (val2) -> (let new_state0 = if andb (eqTez new_state.buyer_withdrawable 0tz) (eqTez new_state.seller_withdrawable 0tz) then {last_action = new_state.last_action; next_step = No_next_step; seller = new_state.seller; buyer = new_state.buyer; seller_withdrawable = new_state.seller_withdrawable; buyer_withdrawable = new_state.buyer_withdrawable} else new_state in 
-Some ( (new_state0, (Contract.call ((fun (c : cctx) -> c.(1).(0)) ctx) to_pay default () :: []))))
+Some (val1) -> (let (new_state0,to_pay0) = val1 in (match if gtTez new_state0 0tz then Some (()) else None with 
+Some (val2) -> (let new_state1 = if andb (eqTez to_pay0.buyer_withdrawable 0tz) (eqTez to_pay0.seller_withdrawable 0tz) then {last_action = to_pay0.last_action; next_step = No_next_step; seller = to_pay0.seller; buyer = to_pay0.buyer; seller_withdrawable = to_pay0.seller_withdrawable; buyer_withdrawable = to_pay0.buyer_withdrawable} else to_pay0 in 
+Some ( (new_state1, (Contract.call ((fun (c : cctx) -> c.(1).(0)) ctx) new_state0 default () :: []))))
  | None  -> None))
  | None  -> None)
  | None  -> None)
@@ -125,7 +125,7 @@ Some ( (new_state0, (Contract.call ((fun (c : cctx) -> c.(1).(0)) ctx) to_pay de
  | None  -> None
 
 let liquidity_escrow_receive (m : ((msg * cctx) * chain)) (s : state) = match receive m.(1) m.(0).(1) s (Some (m.(0).(0))) with 
-Some (p) -> (let (s0,acts) = p in (Some ( (acts, s0))))
+Some (p0) -> (let (acts0,s0) = p0 in (Some ( (s0, acts0))))
  | None  -> None
 
 let%init storage (s : (setup * chain)) = 

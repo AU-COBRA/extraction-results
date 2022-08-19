@@ -57,11 +57,11 @@ type cctx = {
 }
 (* a call context instance with fields filled in with required data *)
 let cctx_instance : cctx= 
-{ ctx_origin_ = Tezos.source;
-  ctx_from_ = Tezos.sender;
-  ctx_contract_address_ = Tezos.self_address;
-  ctx_contract_balance_ = Tezos.balance;
-  ctx_amount_ = Tezos.amount
+{ ctx_origin_ = Tezos.get_source ();
+  ctx_from_ = Tezos.get_sender ();
+  ctx_contract_address_ = Tezos.get_self_address ();
+  ctx_contract_balance_ = Tezos.get_balance ();
+  ctx_amount_ = Tezos.get_amount ()
 }
 
 (* context projections as functions *)
@@ -77,9 +77,9 @@ type chain = {
 }
 
 let dummy_chain : chain = {
-chain_height_     = Tezos.level;
-current_slot_     = Tezos.level;
-finalized_height_ = Tezos.level;
+chain_height_     = Tezos.get_level ();
+current_slot_     = Tezos.get_level ();
+finalized_height_ = Tezos.get_level ();
 }
 
 (* chain projections as functions *)
@@ -110,31 +110,31 @@ type msg =
 
 let setup_buyer (s : setup) : address = 
 match s with 
-Build_setup setup_buyer -> setup_buyer
+Build_setup setup_buyer0 -> setup_buyer0
 
 let next_step (s : state) : nextStep = 
 match s with 
-Build_state (last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) -> next_step
+Build_state (buyer_withdrawable0, seller_withdrawable0, buyer0, seller0, next_step0, last_action0) -> seller_withdrawable0
 
 let buyer (s : state) : address = 
 match s with 
-Build_state (last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) -> buyer
+Build_state (buyer_withdrawable0, seller_withdrawable0, buyer0, seller0, next_step0, last_action0) -> seller0
 
 let last_action (s : state) : nat = 
 match s with 
-Build_state (last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) -> last_action
+Build_state (buyer_withdrawable0, seller_withdrawable0, buyer0, seller0, next_step0, last_action0) -> buyer_withdrawable0
 
 let seller (s : state) : address = 
 match s with 
-Build_state (last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) -> seller
+Build_state (buyer_withdrawable0, seller_withdrawable0, buyer0, seller0, next_step0, last_action0) -> buyer0
 
 let seller_withdrawable (s : state) : tez = 
 match s with 
-Build_state (last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) -> seller_withdrawable
+Build_state (buyer_withdrawable0, seller_withdrawable0, buyer0, seller0, next_step0, last_action0) -> next_step0
 
 let buyer_withdrawable (s : state) : tez = 
 match s with 
-Build_state (last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) -> buyer_withdrawable
+Build_state (buyer_withdrawable0, seller_withdrawable0, buyer0, seller0, next_step0, last_action0) -> last_action0
 
 let set_State_last_action (f : nat -> nat) (r : state) : state = 
 Build_state ((f (last_action r)), (next_step r), (seller r), (buyer r), (seller_withdrawable r), (buyer_withdrawable r))
@@ -150,7 +150,7 @@ Build_state ((last_action r), (next_step r), (seller r), (buyer r), (seller_with
 
 let receive (chain : chain) (ctx : cctx) (state : state) (msg : msg option) : (state * operation list) option = 
 match msg with 
-Some m -> (match m with 
+Some m0 -> (match m0 with 
 Commit_money  -> (match next_step state with 
 Buyer_commit  -> (match subTez (ctx_contract_balance ctx) (ctx_amount ctx) with 
 Some val0 -> (let item_price = divTez val0 2tez in 
@@ -189,9 +189,9 @@ Some ((set_State_next_step (fun (a : nextStep) -> No_next_step) state), (Tezos.t
 Some val0 -> (let from = ctx_from ctx in 
 match if eq_addr from (buyer state) then Some ((buyer_withdrawable state), (set_State_buyer_withdrawable (fun (a : tez) -> 0tez) state)) else if eq_addr from (seller state) then Some ((seller_withdrawable state), (set_State_seller_withdrawable (fun (a : tez) -> 0tez) state)) else (None:(tez * state) option) with 
 Some val1 -> (match val1 with 
- (to_pay, new_state) -> (match if gtbTez to_pay 0tez then Some () else (None:unit option) with 
-Some val2 -> (let new_state0 = if andb (eqTez (buyer_withdrawable new_state) 0tez) (eqTez (seller_withdrawable new_state) 0tez) then set_State_next_step (fun (a : nextStep) -> No_next_step) new_state else new_state in 
-Some (new_state0, (Tezos.transaction unit to_pay (get_contract_unit (ctx_from ctx)) :: ([]:operation list))))
+ (new_state0, to_pay0) -> (match if gtbTez new_state0 0tez then Some () else (None:unit option) with 
+Some val2 -> (let new_state1 = if andb (eqTez (buyer_withdrawable to_pay0) 0tez) (eqTez (seller_withdrawable to_pay0) 0tez) then set_State_next_step (fun (a : nextStep) -> No_next_step) to_pay0 else to_pay0 in 
+Some (new_state1, (Tezos.transaction unit new_state0 (get_contract_unit (ctx_from ctx)) :: ([]:operation list))))
  | None  -> (None:(state * operation list) option)))
  | None  -> (None:(state * operation list) option))
  | None  -> (None:(state * operation list) option))
@@ -200,8 +200,8 @@ Some (new_state0, (Tezos.transaction unit to_pay (get_contract_unit (ctx_from ct
 
 let escrow_receive (c : chain) (cctx : cctx) (s : state) (msg : msg option) : (operation list * state) option = 
 match receive c cctx s msg with 
-Some p -> (match p with 
- (s0, acts) -> (Some (acts, s0)))
+Some p0 -> (match p0 with 
+ (acts0, s0) -> (Some (s0, acts0)))
  | None  -> (None:(operation list * state) option)
 
 let init (s : ((address * setup) * nat)) : state = let inner (s : ((address * setup) * nat)) :state option = 

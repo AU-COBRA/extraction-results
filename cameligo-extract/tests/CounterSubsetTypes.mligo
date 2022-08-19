@@ -57,11 +57,11 @@ type cctx = {
 }
 (* a call context instance with fields filled in with required data *)
 let cctx_instance : cctx= 
-{ ctx_origin_ = Tezos.source;
-  ctx_from_ = Tezos.sender;
-  ctx_contract_address_ = Tezos.self_address;
-  ctx_contract_balance_ = Tezos.balance;
-  ctx_amount_ = Tezos.amount
+{ ctx_origin_ = Tezos.get_source ();
+  ctx_from_ = Tezos.get_sender ();
+  ctx_contract_address_ = Tezos.get_self_address ();
+  ctx_contract_balance_ = Tezos.get_balance ();
+  ctx_amount_ = Tezos.get_amount ()
 }
 
 (* context projections as functions *)
@@ -77,9 +77,9 @@ type chain = {
 }
 
 let dummy_chain : chain = {
-chain_height_     = Tezos.level;
-current_slot_     = Tezos.level;
-finalized_height_ = Tezos.level;
+chain_height_     = Tezos.get_level ();
+current_slot_     = Tezos.get_level ();
+finalized_height_ = Tezos.get_level ();
 }
 
 (* chain projections as functions *)
@@ -111,21 +111,21 @@ let counterRefinementTypes_Transaction_none  : operation list =
 
 let counterRefinementTypes_inc_counter (st : counterRefinementTypes_storage) (inc : int specif_sig) : counterRefinementTypes_storage specif_sig = 
 Spec_exist (addInt st (match inc with 
-Spec_exist a -> a))
+Spec_exist a0 -> a0))
 
 let counterRefinementTypes_dec_counter (st : counterRefinementTypes_storage) (dec : int specif_sig) : counterRefinementTypes_storage specif_sig = 
 Spec_exist (subInt st (match dec with 
-Spec_exist a -> a))
+Spec_exist a0 -> a0))
 
 let counterRefinementTypes_counter (msg : counterRefinementTypes_msg) (st : counterRefinementTypes_storage) : (operation list * counterRefinementTypes_storage) option = 
 match msg with 
-Coun_Inc i -> (match bool_bool_dec true (ltInt 0 i) with 
-Spec_left  -> (Some (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_inc_counter st (Spec_exist i) with 
-Spec_exist a -> a)))
+Coun_Inc i0 -> (match bool_bool_dec true (ltInt 0 i0) with 
+Spec_left  -> (Some (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_inc_counter st (Spec_exist i0) with 
+Spec_exist a0 -> a0)))
  | Spec_right  -> (None:(operation list * counterRefinementTypes_storage) option))
- | Coun_Dec i -> (match bool_bool_dec true (ltInt 0 i) with 
-Spec_left  -> (Some (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_dec_counter st (Spec_exist i) with 
-Spec_exist a -> a)))
+ | Coun_Dec i0 -> (match bool_bool_dec true (ltInt 0 i0) with 
+Spec_left  -> (Some (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_dec_counter st (Spec_exist i0) with 
+Spec_exist a0 -> a0)))
  | Spec_right  -> (None:(operation list * counterRefinementTypes_storage) option))
 
 let cameLIGOExtractionSetup_counter_wrapper (c : chain) (ctx : cctx) (s : counterRefinementTypes_storage) (m : counterRefinementTypes_msg option) : (operation list * counterRefinementTypes_storage) option = 

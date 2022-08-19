@@ -57,11 +57,11 @@ type cctx = {
 }
 (* a call context instance with fields filled in with required data *)
 let cctx_instance : cctx= 
-{ ctx_origin_ = Tezos.source;
-  ctx_from_ = Tezos.sender;
-  ctx_contract_address_ = Tezos.self_address;
-  ctx_contract_balance_ = Tezos.balance;
-  ctx_amount_ = Tezos.amount
+{ ctx_origin_ = Tezos.get_source ();
+  ctx_from_ = Tezos.get_sender ();
+  ctx_contract_address_ = Tezos.get_self_address ();
+  ctx_contract_balance_ = Tezos.get_balance ();
+  ctx_amount_ = Tezos.get_amount ()
 }
 
 (* context projections as functions *)
@@ -77,9 +77,9 @@ type chain = {
 }
 
 let dummy_chain : chain = {
-chain_height_     = Tezos.level;
-current_slot_     = Tezos.level;
-finalized_height_ = Tezos.level;
+chain_height_     = Tezos.get_level ();
+current_slot_     = Tezos.get_level ();
+finalized_height_ = Tezos.get_level ();
 }
 
 (* chain projections as functions *)
@@ -103,8 +103,8 @@ let dec_balance (st : storage) (new_balance : int) : (int * address) =
 
 let counter_inner (msg : msg) (st : storage) : (operation list * storage) option = 
 match msg with 
-Inc i -> (if leInt 0 i then Some (([]:operation list), (inc_balance st i)) else (None:(operation list * storage) option))
- | Dec i -> (if leInt 0 i then Some (([]:operation list), (dec_balance st i)) else (None:(operation list * storage) option))
+Inc i0 -> (if leInt 0 i0 then Some (([]:operation list), (inc_balance st i0)) else (None:(operation list * storage) option))
+ | Dec i0 -> (if leInt 0 i0 then Some (([]:operation list), (dec_balance st i0)) else (None:(operation list * storage) option))
 
 let counter (c : chain) (ctx : cctx) (st : storage) (msg : msg option) : (operation list * storage) option = 
 let c_ = c in 

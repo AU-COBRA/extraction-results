@@ -60,7 +60,7 @@ type  simpleCallCtx = (timestamp * (address * (tez * tez)))
 let update_contribs (f_st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) (cs : (address,tez) map) =  (f_st.(0),  (cs, f_st.(1).(1)))
 
 let maybe_bind_unit (o : ( (unit) option)) (b : ( ((( (operation) list) * ((timestamp * (tez * address)) * ((address,tez) map * bool)))) option)) = match o with 
-Some (_) -> b
+Some (_0) -> b
  | None  -> None
 
 let validate (tx_amount : tez) = if eqTez 0DUN tx_amount then Some (()) else None
@@ -69,11 +69,11 @@ let set_done (f_st : ((timestamp * (tez * address)) * ((address,tez) map * bool)
 
 let receive (m : msg_coq) (s : ((timestamp * (tez * address)) * ((address,tez) map * bool))) (ctx : (timestamp * (address * (tez * tez)))) = match m with 
 Donate_coq  -> (if leb_time ctx.(0) s.(0).(0) then match Map.find ctx.(1).(0) s.(1).(0) with 
-Some (v) -> (Some ( ([], (update_contribs s (Map.add ctx.(1).(0) (addTez v ctx.(1).(1).(0)) s.(1).(0))))))
+Some (v0) -> (Some ( ([], (update_contribs s (Map.add ctx.(1).(0) (addTez v0 ctx.(1).(1).(0)) s.(1).(0))))))
  | None  -> (Some ( ([], (update_contribs s (Map.add ctx.(1).(0) ctx.(1).(1).(0) s.(1).(0)))))) else None)
  | GetFunds_coq  -> (if andb (andb (eq_addr s.(0).(1).(1) ctx.(1).(0)) (ltb_time s.(0).(0) ctx.(0))) (leTez s.(0).(1).(0) ctx.(1).(1).(1)) then maybe_bind_unit (validate ctx.(1).(1).(0)) (Some ( ((Contract.call ctx.(1).(0) ctx.(1).(1).(1) default () :: []), (set_done s)))) else None)
  | Claim_coq  -> (if andb (andb (ltb_time s.(0).(0) ctx.(0)) (ltTez ctx.(1).(1).(1) s.(0).(1).(0))) (not s.(1).(1)) then match Map.find ctx.(1).(0) s.(1).(0) with 
-Some (v) -> (maybe_bind_unit (validate ctx.(1).(1).(0)) (Some ( ((Contract.call ctx.(1).(0) v default () :: []), (update_contribs s (Map.add ctx.(1).(0) 0DUN s.(1).(0)))))))
+Some (v0) -> (maybe_bind_unit (validate ctx.(1).(1).(0)) (Some ( ((Contract.call ctx.(1).(0) v0 default () :: []), (update_contribs s (Map.add ctx.(1).(0) 0DUN s.(1).(0)))))))
  | None  -> None else None)
 
 let crowdfunding_receive (params : ((timestamp * (address * (tez * tez))) * msg_coq)) (st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) = receive params.(1) st params.(0)

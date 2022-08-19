@@ -3,7 +3,7 @@
 let safe_head (l : nat list) : nat = 
 (match l with 
 []  -> (fun (a : unit) -> (failwith 0 : nat) (* absurd case *))
- | hd :: tl -> (fun (a : unit) -> hd)) ()
+ | tl0 :: hd0 -> (fun (a : unit) -> tl0)) ()
 
 let head_of_list_2 (xs : nat list) : nat = 
 safe_head (0n :: (0n :: xs))

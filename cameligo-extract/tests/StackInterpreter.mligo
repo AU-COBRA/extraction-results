@@ -57,11 +57,11 @@ type cctx = {
 }
 (* a call context instance with fields filled in with required data *)
 let cctx_instance : cctx= 
-{ ctx_origin_ = Tezos.source;
-  ctx_from_ = Tezos.sender;
-  ctx_contract_address_ = Tezos.self_address;
-  ctx_contract_balance_ = Tezos.balance;
-  ctx_amount_ = Tezos.amount
+{ ctx_origin_ = Tezos.get_source ();
+  ctx_from_ = Tezos.get_sender ();
+  ctx_contract_address_ = Tezos.get_self_address ();
+  ctx_contract_balance_ = Tezos.get_balance ();
+  ctx_amount_ = Tezos.get_amount ()
 }
 
 (* context projections as functions *)
@@ -77,9 +77,9 @@ type chain = {
 }
 
 let dummy_chain : chain = {
-chain_height_     = Tezos.level;
-current_slot_     = Tezos.level;
-finalized_height_ = Tezos.level;
+chain_height_     = Tezos.get_level ();
+current_slot_     = Tezos.get_level ();
+finalized_height_ = Tezos.get_level ();
 }
 
 (* chain projections as functions *)
@@ -131,80 +131,80 @@ let interp  : (string * int,value) map -> instruction list -> value list -> int 
 let rec interp (ext : (string * int,value) map) (insts : instruction list) (s : value list) (cond : int) : value list option = 
 match insts with 
 []  -> (Some s)
- | hd :: inst0 -> (match hd with 
-IPushZ i -> (if continue_ cond then interp ext inst0 ((ZVal i) :: s) cond else interp ext inst0 s cond)
- | IPushB b -> (if continue_ cond then interp ext inst0 ((BVal b) :: s) cond else interp ext inst0 s cond)
- | IObs p -> (if continue_ cond then match Map.find_opt p ext with 
-Some v -> (interp ext inst0 (v :: s) cond)
- | None  -> (None:value list option) else interp ext inst0 s cond)
+ | inst00 :: hd0 -> (match inst00 with 
+IPushZ i0 -> (if continue_ cond then interp ext hd0 ((ZVal i0) :: s) cond else interp ext hd0 s cond)
+ | IPushB b0 -> (if continue_ cond then interp ext hd0 ((BVal b0) :: s) cond else interp ext hd0 s cond)
+ | IObs p0 -> (if continue_ cond then match Map.find_opt p0 ext with 
+Some v0 -> (interp ext hd0 (v0 :: s) cond)
+ | None  -> (None:value list option) else interp ext hd0 s cond)
  | IIf  -> (if eqInt cond 0 then match s with 
 []  -> (None:value list option)
- | v :: s0 -> (match v with 
-BVal b -> (interp ext inst0 s0 (bool_to_cond b))
- | ZVal z -> (None:value list option)) else interp ext inst0 s (addInt 1 cond))
- | IElse  -> (interp ext inst0 s (flip cond))
- | IEndIf  -> (interp ext inst0 s (reset_decrement cond))
- | IOp op -> (if continue_ cond then match op with 
+ | s00 :: v0 -> (match s00 with 
+BVal b0 -> (interp ext hd0 v0 (bool_to_cond b0))
+ | ZVal z0 -> (None:value list option)) else interp ext hd0 s (addInt 1 cond))
+ | IElse  -> (interp ext hd0 s (flip cond))
+ | IEndIf  -> (interp ext hd0 s (reset_decrement cond))
+ | IOp op0 -> (if continue_ cond then match op0 with 
 Add  -> (match s with 
 []  -> (None:value list option)
- | v :: l -> (match v with 
-BVal b -> (None:value list option)
- | ZVal i -> (match l with 
+ | l0 :: v0 -> (match l0 with 
+BVal b0 -> (None:value list option)
+ | ZVal i0 -> (match v0 with 
 []  -> (None:value list option)
- | v0 :: s0 -> (match v0 with 
-BVal b -> (None:value list option)
- | ZVal j -> (interp ext inst0 ((ZVal (addInt i j)) :: s0) cond)))))
+ | s00 :: v00 -> (match s00 with 
+BVal b0 -> (None:value list option)
+ | ZVal j0 -> (interp ext hd0 ((ZVal (addInt i0 j0)) :: v00) cond)))))
  | Sub  -> (match s with 
 []  -> (None:value list option)
- | v :: l -> (match v with 
-BVal b -> (None:value list option)
- | ZVal i -> (match l with 
+ | l0 :: v0 -> (match l0 with 
+BVal b0 -> (None:value list option)
+ | ZVal i0 -> (match v0 with 
 []  -> (None:value list option)
- | v0 :: s0 -> (match v0 with 
-BVal b -> (None:value list option)
- | ZVal j -> (interp ext inst0 ((ZVal (subInt i j)) :: s0) cond)))))
+ | s00 :: v00 -> (match s00 with 
+BVal b0 -> (None:value list option)
+ | ZVal j0 -> (interp ext hd0 ((ZVal (subInt i0 j0)) :: v00) cond)))))
  | Mult  -> (match s with 
 []  -> (None:value list option)
- | v :: l -> (match v with 
-BVal b -> (None:value list option)
- | ZVal i -> (match l with 
+ | l0 :: v0 -> (match l0 with 
+BVal b0 -> (None:value list option)
+ | ZVal i0 -> (match v0 with 
 []  -> (None:value list option)
- | v0 :: s0 -> (match v0 with 
-BVal b -> (None:value list option)
- | ZVal j -> (interp ext inst0 ((ZVal (multInt i j)) :: s0) cond)))))
+ | s00 :: v00 -> (match s00 with 
+BVal b0 -> (None:value list option)
+ | ZVal j0 -> (interp ext hd0 ((ZVal (multInt i0 j0)) :: v00) cond)))))
  | Lt  -> (match s with 
 []  -> (None:value list option)
- | v :: l -> (match v with 
-BVal b -> (None:value list option)
- | ZVal i -> (match l with 
+ | l0 :: v0 -> (match l0 with 
+BVal b0 -> (None:value list option)
+ | ZVal i0 -> (match v0 with 
 []  -> (None:value list option)
- | v0 :: s0 -> (match v0 with 
-BVal b -> (None:value list option)
- | ZVal j -> (interp ext inst0 ((BVal (ltInt i j)) :: s0) cond)))))
+ | s00 :: v00 -> (match s00 with 
+BVal b0 -> (None:value list option)
+ | ZVal j0 -> (interp ext hd0 ((BVal (ltInt i0 j0)) :: v00) cond)))))
  | Le  -> (match s with 
 []  -> (None:value list option)
- | v :: l -> (match v with 
-BVal b -> (None:value list option)
- | ZVal i -> (match l with 
+ | l0 :: v0 -> (match l0 with 
+BVal b0 -> (None:value list option)
+ | ZVal i0 -> (match v0 with 
 []  -> (None:value list option)
- | v0 :: s0 -> (match v0 with 
-BVal b -> (None:value list option)
- | ZVal j -> (interp ext inst0 ((BVal (leInt i j)) :: s0) cond)))))
+ | s00 :: v00 -> (match s00 with 
+BVal b0 -> (None:value list option)
+ | ZVal j0 -> (interp ext hd0 ((BVal (leInt i0 j0)) :: v00) cond)))))
  | Equal  -> (match s with 
 []  -> (None:value list option)
- | v :: l -> (match v with 
-BVal b -> (None:value list option)
- | ZVal i -> (match l with 
+ | l0 :: v0 -> (match l0 with 
+BVal b0 -> (None:value list option)
+ | ZVal i0 -> (match v0 with 
 []  -> (None:value list option)
- | v0 :: s0 -> (match v0 with 
-BVal b -> (None:value list option)
- | ZVal j -> (interp ext inst0 ((BVal (eqInt i j)) :: s0) cond))))) else interp ext inst0 s cond))
+ | s00 :: v00 -> (match s00 with 
+BVal b0 -> (None:value list option)
+ | ZVal j0 -> (interp ext hd0 ((BVal (eqInt i0 j0)) :: v00) cond))))) else interp ext hd0 s cond))
  in (interp : (string * int,value) map -> instruction list -> value list -> int -> value list option)
 
 let receive (p : params) (s : value list) : (operation list * storage) option = 
 let s0 = s in 
 match interp p.1 p.0 ([]:value list) 0 with 
-Some v -> (Some (([]:operation list), v))
+Some v0 -> (Some (([]:operation list), v0))
  | None  -> (None:(operation list * storage) option)
 
 let receive_ (c : chain) (ctx : cctx) (s : storage) (msg : params option) : (operation list * storage) option = 

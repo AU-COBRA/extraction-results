@@ -34,11 +34,11 @@ let coq_inc_balance (st : (int * key_hash)) (new_balance : int) =  ((addInt st.(
 let coq_dec_balance (st : storage) (new_balance : int) =  ((subInt st.(0) new_balance), st.(1))
 
 let coq_counter (msg : coq_msg) (st : storage) = match msg with 
-Coq_Inc (i) -> (match coq_my_bool_dec (leInt 0 i) true with 
-Coq_Left  -> (Some ( ([], (coq_inc_balance st i))))
+Coq_Inc (i0) -> (match coq_my_bool_dec (leInt 0 i0) true with 
+Coq_Left  -> (Some ( ([], (coq_inc_balance st i0))))
  | Coq_Right  -> None)
- | Coq_Dec (i) -> (match coq_my_bool_dec (leInt 0 i) true with 
-Coq_Left  -> (Some ( ([], (coq_dec_balance st i))))
+ | Coq_Dec (i0) -> (match coq_my_bool_dec (leInt 0 i0) true with 
+Coq_Left  -> (Some ( ([], (coq_dec_balance st i0))))
  | Coq_Right  -> None)
 
 let%init storage (setup : (int * key_hash)) = 

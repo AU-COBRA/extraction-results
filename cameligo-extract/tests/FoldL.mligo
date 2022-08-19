@@ -4,7 +4,7 @@ let foldL(type a b) (f : a -> b -> a) : b list -> a -> a =
 let rec foldL (l : b list) (a0 : a) : a = 
 match l with 
 []  -> a0
- | b :: t -> (foldL t (f a0 b))
+ | t0 :: b0 -> (foldL b0 (f a0 t0))
  in (foldL : b list -> a -> a)
 
 let sum (xs : nat list) : nat = 
