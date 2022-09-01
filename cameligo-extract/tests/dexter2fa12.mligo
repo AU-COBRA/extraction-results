@@ -42,6 +42,10 @@ let z_of_N (n : nat) : int = int (n)
 
 [@inline] let eq_addr (a1 : address) (a2 : address) = a1 = a2
 
+type ('t,'e) result =
+  Ok of 't
+| Err of 'e
+
 let get_contract_unit (a : address) : unit contract  =
   match (Tezos.get_contract_opt a : unit contract option) with
     Some c -> c
@@ -98,13 +102,6 @@ let call_to_token (type msg) (addr : address) (amt : nat) (msg : msg) : operatio
 
 [@inline] let natural_to_mutez (a: nat): tez = a * 1mutez
 
-[@inline] let mutez_to_natural (a: tez): nat = a / 1mutez
-
-let xtz_transfer (to_ : address) (amount_ : nat) : operation option =
-  match (Tezos.get_contract_opt to_ : unit contract option) with
-    | None -> None
-    | Some c -> Some (Tezos.transaction () (natural_to_mutez amount_) c)
-
 let subNTruncated (n : nat) (m : nat) : nat = if n < m then 0n else abs (n-m)
 
 type dexter2FA12_Setup = 
@@ -114,6 +111,8 @@ type dexter2FA12_Setup =
 type dexter2FA12_State = 
   Dext_build_state of ((address, nat) map * ((address * address), nat) map * address * nat)
 
+
+type dexter2FA12_Error = nat
 
 type dexter2FA12_transfer_param = 
   Dext_build_transfer_param of (address * address * nat)
@@ -171,8 +170,13 @@ let admin_ (s : dexter2FA12_Setup) : address =
 match s with 
 Dext_build_setup (initial_pool0, lqt_provider0, admin_0) -> initial_pool0
 
-let throwIf (cond : bool) : unit option = 
-if cond then (None:unit option) else Some ()
+let throwIf(type e) (cond : bool) (err : e) : (unit, e) result = 
+if cond then ((Err err):(unit, e) result) else ((Ok ()):(unit, e) result)
+
+let without_actions(type t e) (x : (t, e) result) : ((t * operation list), e) result = 
+match x with 
+Ok t0 -> ((Ok (t0, ([]:operation list))):((t * operation list), e) result)
+ | Err e0 -> ((Err e0):((t * operation list), e) result)
 
 let allowances (s : dexter2FA12_State) : ((address * address), nat) map = 
 match s with 
@@ -217,29 +221,29 @@ Dext_build_state ((f (tokens r)), (allowances r), (admin r), (total_supply r))
 let setter_from_getter_State_tokens  : ((address, nat) map -> (address, nat) map) -> dexter2FA12_State -> dexter2FA12_State = 
 set_State_tokens
 
-let try_transfer (sender : address) (param : dexter2FA12_transfer_param) (state : dexter2FA12_State) : dexter2FA12_State option = 
+let try_transfer (sender : address) (param : dexter2FA12_transfer_param) (state : dexter2FA12_State) : (dexter2FA12_State, dexter2FA12_Error) result = 
 let allowances_ = allowances state in 
 let tokens_ = tokens state in 
-match if eq_addr sender (from param) then Some allowances_ else let allowance_key = ((from param), sender) in 
+match if eq_addr sender (from param) then ((Ok allowances_):(((address * address), nat) map, dexter2FA12_Error) result) else let allowance_key = ((from param), sender) in 
 let authorized_value = match Map.find_opt allowance_key allowances_ with 
 Some v0 -> v0
  | None  -> 0n in 
-match throwIf (ltbN authorized_value (value param)) with 
-Some val0 -> (Some (Map.update allowance_key (maybe (subNTruncated authorized_value (value param))) allowances_))
- | None  -> (None:((address * address), nat) map option) with 
-Some val0 -> (match let from_balance = match Map.find_opt (from param) tokens_ with 
+match throwIf (ltbN authorized_value (value param)) 1n with 
+Ok t0 -> ((Ok (Map.update allowance_key (maybe (subNTruncated authorized_value (value param))) allowances_)):(((address * address), nat) map, dexter2FA12_Error) result)
+ | Err e0 -> ((Err e0):(((address * address), nat) map, dexter2FA12_Error) result) with 
+Ok t0 -> (match let from_balance = match Map.find_opt (from param) tokens_ with 
 Some v0 -> v0
  | None  -> 0n in 
-match throwIf (ltbN from_balance (value param)) with 
-Some val1 -> (Some (Map.update (from param) (maybe (subNTruncated from_balance (value param))) tokens_))
- | None  -> (None:(address, nat) map option) with 
-Some val1 -> (let tokens_0 = let to_balance = match Map.find_opt (to param) val1 with 
+match throwIf (ltbN from_balance (value param)) 1n with 
+Ok t1 -> ((Ok (Map.update (from param) (maybe (subNTruncated from_balance (value param))) tokens_)):((address, nat) map, dexter2FA12_Error) result)
+ | Err e0 -> ((Err e0):((address, nat) map, dexter2FA12_Error) result) with 
+Ok t1 -> (let tokens_0 = let to_balance = match Map.find_opt (to param) t1 with 
 Some v0 -> v0
  | None  -> 0n in 
-Map.update (to param) (maybe (addN to_balance (value param))) val1 in 
-Some (setter_from_getter_State_allowances (fun (a : ((address * address), nat) map) -> val0) (setter_from_getter_State_tokens (fun (a : (address, nat) map) -> tokens_0) state)))
- | None  -> (None:dexter2FA12_State option))
- | None  -> (None:dexter2FA12_State option)
+Map.update (to param) (maybe (addN to_balance (value param))) t1 in 
+((Ok (setter_from_getter_State_allowances (fun (a : ((address * address), nat) map) -> t0) (setter_from_getter_State_tokens (fun (a : (address, nat) map) -> tokens_0) state))):(dexter2FA12_State, dexter2FA12_Error) result))
+ | Err e0 -> ((Err e0):(dexter2FA12_State, dexter2FA12_Error) result))
+ | Err e0 -> ((Err e0):(dexter2FA12_State, dexter2FA12_Error) result)
 
 let spender (a : dexter2FA12_approve_param) : address = 
 match a with 
@@ -249,16 +253,16 @@ let value_ (a : dexter2FA12_approve_param) : nat =
 match a with 
 Dext_build_approve_param (value_0, spender0) -> spender0
 
-let try_approve (sender : address) (param : dexter2FA12_approve_param) (state : dexter2FA12_State) : dexter2FA12_State option = 
+let try_approve (sender : address) (param : dexter2FA12_approve_param) (state : dexter2FA12_State) : (dexter2FA12_State, dexter2FA12_Error) result = 
 let allowances_ = allowances state in 
 let allowance_key = (sender, (spender param)) in 
 let previous_value = match Map.find_opt allowance_key allowances_ with 
 Some v0 -> v0
  | None  -> 0n in 
-match throwIf (andb (ltbN 0n previous_value) (ltbN 0n (value_ param))) with 
-Some val0 -> (let allowances_0 = Map.update allowance_key (maybe (value_ param)) allowances_ in 
-Some (setter_from_getter_State_allowances (fun (a : ((address * address), nat) map) -> allowances_0) state))
- | None  -> (None:dexter2FA12_State option)
+match throwIf (andb (ltbN 0n previous_value) (ltbN 0n (value_ param))) 1n with 
+Ok t0 -> (let allowances_0 = Map.update allowance_key (maybe (value_ param)) allowances_ in 
+((Ok (setter_from_getter_State_allowances (fun (a : ((address * address), nat) map) -> allowances_0) state)):(dexter2FA12_State, dexter2FA12_Error) result))
+ | Err e0 -> ((Err e0):(dexter2FA12_State, dexter2FA12_Error) result)
 
 let target (m : dexter2FA12_mintOrBurn_param) : address = 
 match m with 
@@ -274,19 +278,19 @@ Dext_build_state ((tokens r), (allowances r), (admin r), (f (total_supply r)))
 let setter_from_getter_State_total_supply  : (nat -> nat) -> dexter2FA12_State -> dexter2FA12_State = 
 set_State_total_supply
 
-let try_mint_or_burn (sender : address) (param : dexter2FA12_mintOrBurn_param) (state : dexter2FA12_State) : dexter2FA12_State option = 
-match throwIf (not (eq_addr sender (admin state))) with 
-Some val0 -> (let tokens_ = tokens state in 
+let try_mint_or_burn (sender : address) (param : dexter2FA12_mintOrBurn_param) (state : dexter2FA12_State) : (dexter2FA12_State, dexter2FA12_Error) result = 
+match throwIf (not (eq_addr sender (admin state))) 1n with 
+Ok t0 -> (let tokens_ = tokens state in 
 let old_balance = match Map.find_opt (target param) tokens_ with 
 Some v0 -> v0
  | None  -> 0n in 
 let new_balance = addInt (z_of_N old_balance) (quantity param) in 
-match throwIf (ltInt new_balance 0) with 
-Some val1 -> (let tokens_0 = Map.update (target param) (maybe (abs new_balance)) tokens_ in 
+match throwIf (ltInt new_balance 0) 1n with 
+Ok t1 -> (let tokens_0 = Map.update (target param) (maybe (abs new_balance)) tokens_ in 
 let total_supply_ = abs (addInt (z_of_N (total_supply state)) (quantity param)) in 
-Some (setter_from_getter_State_total_supply (fun (a : nat) -> total_supply_) (setter_from_getter_State_tokens (fun (a : (address, nat) map) -> tokens_0) state)))
- | None  -> (None:dexter2FA12_State option))
- | None  -> (None:dexter2FA12_State option)
+((Ok (setter_from_getter_State_total_supply (fun (a : nat) -> total_supply_) (setter_from_getter_State_tokens (fun (a : (address, nat) map) -> tokens_0) state))):(dexter2FA12_State, dexter2FA12_Error) result))
+ | Err e0 -> ((Err e0):(dexter2FA12_State, dexter2FA12_Error) result))
+ | Err e0 -> ((Err e0):(dexter2FA12_State, dexter2FA12_Error) result)
 
 let request (g : dexter2FA12_getAllowance_param) : (address * address) = 
 match g with 
@@ -340,14 +344,11 @@ let try_get_total_supply (param : dexter2FA12_getTotalSupply_param) (state : dex
 let value = total_supply state in 
 (mk_callback (callback_addr (supply_callback param)) (receive_total_supply_ value)) :: ([]:operation list)
 
-let receive_lqt (ctx : cctx) (state : dexter2FA12_State) (maybe_msg : dexter2FA12_Msg option) : (dexter2FA12_State * operation list) option = 
+let receive_lqt (ctx : cctx) (state : dexter2FA12_State) (maybe_msg : dexter2FA12_Msg option) : ((dexter2FA12_State * operation list), dexter2FA12_Error) result = 
 let sender0 = ctx_from ctx in 
-let without_actions = fun (o : dexter2FA12_State option) -> match o with 
-Some a0 -> (Some (a0, ([]:operation list)))
- | None  -> (None:(dexter2FA12_State * operation list) option) in 
-let without_statechange = fun (acts : operation list) -> Some (state, acts) in 
-match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) with 
-Some val0 -> (match maybe_msg with 
+let without_statechange = fun (acts : operation list) -> ((Ok (state, acts)):((dexter2FA12_State * operation list), dexter2FA12_Error) result) in 
+match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) 1n with 
+Ok t0 -> (match maybe_msg with 
 Some m0 -> (match m0 with 
 Dext_msg_transfer param0 -> (without_actions (try_transfer sender0 param0 state))
  | Dext_msg_approve param0 -> (without_actions (try_approve sender0 param0 state))
@@ -355,24 +356,24 @@ Dext_msg_transfer param0 -> (without_actions (try_transfer sender0 param0 state)
  | Dext_msg_get_allowance param0 -> (without_statechange (try_get_allowance param0 state))
  | Dext_msg_get_balance param0 -> (without_statechange (try_get_balance param0 state))
  | Dext_msg_get_total_supply param0 -> (without_statechange (try_get_total_supply param0 state)))
- | None  -> (None:(dexter2FA12_State * operation list) option))
- | None  -> (None:(dexter2FA12_State * operation list) option)
+ | None  -> ((Err 1n):((dexter2FA12_State * operation list), dexter2FA12_Error) result))
+ | Err e0 -> ((Err e0):((dexter2FA12_State * operation list), dexter2FA12_Error) result)
 
-let receive_ (chain : chain) (ctx : cctx) (state : dexter2FA12_State) (maybe_msg : dexter2FA12_Msg option) : (operation list * dexter2FA12_State) option = 
+let receive_ (chain : chain) (ctx : cctx) (state : dexter2FA12_State) (maybe_msg : dexter2FA12_Msg option) : ((operation list * dexter2FA12_State), dexter2FA12_Error) result = 
 match receive_lqt ctx state maybe_msg with 
-Some x0 -> (Some (x0.1, x0.0))
- | None  -> (None:(operation list * dexter2FA12_State) option)
+Ok x0 -> ((Ok (x0.1, x0.0)):((operation list * dexter2FA12_State), dexter2FA12_Error) result)
+ | Err e0 -> ((Err e0):((operation list * dexter2FA12_State), dexter2FA12_Error) result)
 
-let init (setup : dexter2FA12_Setup) : dexter2FA12_State = let inner (setup : dexter2FA12_Setup) :dexter2FA12_State option = 
-Some (Dext_build_state ((Map.add (lqt_provider setup) (initial_pool setup) (Map.empty: (address, nat) map)), (Map.empty: ((address * address), nat) map), (admin_ setup), (initial_pool setup))) in
+let init (setup : dexter2FA12_Setup) : (dexter2FA12_State, dexter2FA12_Error) result = let inner (setup : dexter2FA12_Setup) :(dexter2FA12_State, dexter2FA12_Error) result = 
+((Ok (Dext_build_state ((Map.add (lqt_provider setup) (initial_pool setup) (Map.empty: (address, nat) map)), (Map.empty: ((address * address), nat) map), (admin_ setup), (initial_pool setup)))):(dexter2FA12_State, dexter2FA12_Error) result) in
 match (inner setup) with
-  Some v -> v
-| None -> (failwith ("Init failed"): dexter2FA12_State)
+  Ok v -> Ok v
+| Err e -> (failwith e: (dexter2FA12_State, dexter2FA12_Error) result)
 
 
 type return = (operation) list * dexter2FA12_State
 
 let main (p, st : dexter2FA12_Msg option * dexter2FA12_State) : return = 
    (match (receive_ dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+      Ok v -> (v.0, v.1)
+    | Err e -> (failwith e : return))

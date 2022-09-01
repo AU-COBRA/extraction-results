@@ -48,6 +48,10 @@ let[@inline] eq_addr (a1 : address) (a2 : address) = a1 = a2
 
 type 'a addrMap = (address, 'a) map
 
+type ('t,'e) result =
+  Ok of 't
+| Err of 'e
+
 type  tokenValue = int
 
 type setup = {
@@ -61,11 +65,17 @@ balances : ( (address, tokenValue) map);
 allowances : ( (address, ( (address, tokenValue) map)) map)
 }
 
+type  error = nat
+
 type msg = 
 Transfer of address * tokenValue
 | Transfer_from of address * address * tokenValue
 | Approve of address * tokenValue
 
+
+let default_error  = 1p
+
+let error (t : unit) = Err (default_error)
 
 let increment_balance (m : ( (address, tokenValue) map)) (addr : address) (inc : tokenValue) = match Map.find addr m with 
 Some (old0) -> (Map.add addr (addInt old0 inc) m)
@@ -74,52 +84,56 @@ Some (old0) -> (Map.add addr (addInt old0 inc) m)
 let try_transfer (from0 : address) (to0 : address) (amount : tokenValue) (state : state) = let from_balance = match Map.find from0 state.balances with 
 Some (v0) -> v0
  | None  -> 0 in 
-if ltInt from_balance amount then None else let new_balances = Map.add from0 (subInt from_balance amount) state.balances in 
+if ltInt from_balance amount then error () else let new_balances = Map.add from0 (subInt from_balance amount) state.balances in 
 let new_balances0 = increment_balance new_balances to0 amount in 
-Some ({total_supply = state.total_supply; balances = new_balances0; allowances = state.allowances})
+Ok ({total_supply = state.total_supply; balances = new_balances0; allowances = state.allowances})
 
-let try_transfer_from (delegate : address) (from0 : address) (to0 : address) (amount : tokenValue) (state : state) = match Map.find from0 state.allowances with 
-Some (val0) -> (match Map.find delegate val0 with 
-Some (val1) -> (let from_balance = match Map.find from0 state.balances with 
+let result_of_option (o : ( ('t) option)) (err : 'e) = match o with 
+Some (a0) -> (Ok (a0))
+ | None  -> (Err (err))
+
+let try_transfer_from (delegate : address) (from0 : address) (to0 : address) (amount : tokenValue) (state : state) = match result_of_option (Map.find from0 state.allowances) default_error with 
+Ok (t0) -> (match result_of_option (Map.find delegate t0) default_error with 
+Ok (t1) -> (let from_balance = match Map.find from0 state.balances with 
 Some (v0) -> v0
  | None  -> 0 in 
-if orb (ltInt val1 amount) (ltInt from_balance amount) then None else let new_allowances = Map.add delegate (subInt val1 amount) val0 in 
+if orb (ltInt t1 amount) (ltInt from_balance amount) then error () else let new_allowances = Map.add delegate (subInt t1 amount) t0 in 
 let new_balances = Map.add from0 (subInt from_balance amount) state.balances in 
 let new_balances0 = increment_balance new_balances to0 amount in 
-Some ({total_supply = {total_supply = state.total_supply; balances = new_balances0; allowances = state.allowances}.total_supply; balances = {total_supply = state.total_supply; balances = new_balances0; allowances = state.allowances}.balances; allowances = (Map.add from0 new_allowances {total_supply = state.total_supply; balances = new_balances0; allowances = state.allowances}.allowances)}))
- | None  -> None)
- | None  -> None
+Ok ({total_supply = {total_supply = state.total_supply; balances = new_balances0; allowances = state.allowances}.total_supply; balances = {total_supply = state.total_supply; balances = new_balances0; allowances = state.allowances}.balances; allowances = (Map.add from0 new_allowances {total_supply = state.total_supply; balances = new_balances0; allowances = state.allowances}.allowances)}))
+ | Err (e0) -> (Err (e0)))
+ | Err (e0) -> (Err (e0))
 
 let try_approve (caller : address) (delegate : address) (amount : tokenValue) (state : state) = match Map.find caller state.allowances with 
-Some (caller_allowances0) -> (Some ({total_supply = state.total_supply; balances = state.balances; allowances = (Map.add caller (Map.add delegate amount caller_allowances0) state.allowances)}))
- | None  -> (Some ({total_supply = state.total_supply; balances = state.balances; allowances = (Map.add caller (Map.add delegate amount (Map [])) state.allowances)}))
+Some (caller_allowances0) -> (Ok ({total_supply = state.total_supply; balances = state.balances; allowances = (Map.add caller (Map.add delegate amount caller_allowances0) state.allowances)}))
+ | None  -> (Ok ({total_supply = state.total_supply; balances = state.balances; allowances = (Map.add caller (Map.add delegate amount (Map [])) state.allowances)}))
 
 let test_receive (ctx : (timestamp * (address * (tez * tez)))) (state : state) (maybe_msg : ( (msg) option)) = let sender = (fun x -> x.(1).(0)) ctx in 
-let without_actions = fun o -> match o with 
-Some (a0) -> (Some ( ([], a0)))
- | None  -> None in 
+let without_actions = fun x -> match x with 
+Ok (t0) -> (Ok ( ([], t0)))
+ | Err (e0) -> (Err (e0)) in 
 match maybe_msg with 
 Some (m0) -> (match m0 with 
 Transfer (amountt0, to_addr0) -> (without_actions (try_transfer sender amountt0 to_addr0 state))
  | Transfer_from (amountt0, to_addr0, from0) -> (without_actions (try_transfer_from sender amountt0 to_addr0 from0 state))
  | Approve (amount0, delegate0) -> (without_actions (try_approve sender amount0 delegate0 state)))
- | None  -> None
+ | None  -> (Err (default_error))
 
 let receive_wrapper (params : ((timestamp * (address * (tez * tez))) * ( (msg) option))) (st : state) = test_receive params.(0) st params.(1)
 
 let%init storage (setup : setup) = 
 let inner (ctx : (timestamp * (address * (tez * tez)))) (setup : setup) = let ctx_ = ctx in 
-Some ({total_supply = setup.init_amount; balances = (Map.add setup.owner setup.init_amount (Map [])); allowances = (Map [])}) in
+Ok ({total_supply = setup.init_amount; balances = (Map.add setup.owner setup.init_amount (Map [])); allowances = (Map [])}) in
 let ctx = (Current.time (),
    (Current.sender (),
    (Current.amount (),
     Current.balance ()))) in
-match (inner ctx setup) with Some v -> v | None -> failwith ()
+match (inner ctx setup) with Ok v -> v | Err e -> failwith e
 
 type storage = state
 let wrapper param (st : storage) = match receive_wrapper ((Current.time (),
    (Current.sender (),
    (Current.amount (),
-    Current.balance ()))), param) st with| Some v -> v| None -> failwith ()
+    Current.balance ()))), param) st with| Ok v -> v| Err e -> failwith e
 let%entry main param st = wrapper param st
 (*END*)

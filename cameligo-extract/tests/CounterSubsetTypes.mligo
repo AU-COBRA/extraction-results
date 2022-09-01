@@ -42,6 +42,10 @@ let z_of_N (n : nat) : int = int (n)
 
 [@inline] let eq_addr (a1 : address) (a2 : address) = a1 = a2
 
+type ('t,'e) result =
+  Ok of 't
+| Err of 'e
+
 let get_contract_unit (a : address) : unit contract  =
   match (Tezos.get_contract_opt a : unit contract option) with
     Some c -> c
@@ -89,6 +93,8 @@ let finalized_height (c : chain) = c.finalized_height_
 
 type counterRefinementTypes_storage = int
 
+type counterRefinementTypes_Error = nat
+
 type specif_sumbool = 
   Spec_left
 | Spec_right
@@ -113,38 +119,41 @@ let counterRefinementTypes_inc_counter (st : counterRefinementTypes_storage) (in
 Spec_exist (addInt st (match inc with 
 Spec_exist a0 -> a0))
 
+let counterRefinementTypes_default_error  : counterRefinementTypes_Error = 
+1n
+
 let counterRefinementTypes_dec_counter (st : counterRefinementTypes_storage) (dec : int specif_sig) : counterRefinementTypes_storage specif_sig = 
 Spec_exist (subInt st (match dec with 
 Spec_exist a0 -> a0))
 
-let counterRefinementTypes_counter (msg : counterRefinementTypes_msg) (st : counterRefinementTypes_storage) : (operation list * counterRefinementTypes_storage) option = 
+let counterRefinementTypes_counter (msg : counterRefinementTypes_msg) (st : counterRefinementTypes_storage) : ((operation list * counterRefinementTypes_storage), counterRefinementTypes_Error) result = 
 match msg with 
 Coun_Inc i0 -> (match bool_bool_dec true (ltInt 0 i0) with 
-Spec_left  -> (Some (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_inc_counter st (Spec_exist i0) with 
-Spec_exist a0 -> a0)))
- | Spec_right  -> (None:(operation list * counterRefinementTypes_storage) option))
+Spec_left  -> ((Ok (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_inc_counter st (Spec_exist i0) with 
+Spec_exist a0 -> a0))):((operation list * counterRefinementTypes_storage), counterRefinementTypes_Error) result)
+ | Spec_right  -> ((Err counterRefinementTypes_default_error):((operation list * counterRefinementTypes_storage), counterRefinementTypes_Error) result))
  | Coun_Dec i0 -> (match bool_bool_dec true (ltInt 0 i0) with 
-Spec_left  -> (Some (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_dec_counter st (Spec_exist i0) with 
-Spec_exist a0 -> a0)))
- | Spec_right  -> (None:(operation list * counterRefinementTypes_storage) option))
+Spec_left  -> ((Ok (counterRefinementTypes_Transaction_none, (match counterRefinementTypes_dec_counter st (Spec_exist i0) with 
+Spec_exist a0 -> a0))):((operation list * counterRefinementTypes_storage), counterRefinementTypes_Error) result)
+ | Spec_right  -> ((Err counterRefinementTypes_default_error):((operation list * counterRefinementTypes_storage), counterRefinementTypes_Error) result))
 
-let cameLIGOExtractionSetup_counter_wrapper (c : chain) (ctx : cctx) (s : counterRefinementTypes_storage) (m : counterRefinementTypes_msg option) : (operation list * counterRefinementTypes_storage) option = 
+let cameLIGOExtractionSetup_counter_wrapper (c : chain) (ctx : cctx) (s : counterRefinementTypes_storage) (m : counterRefinementTypes_msg option) : ((operation list * counterRefinementTypes_storage), counterRefinementTypes_Error) result = 
 let c_ = c in 
 let ctx_ = ctx in 
 match m with 
 Some m0 -> (counterRefinementTypes_counter m0 s)
- | None  -> (None:(operation list * counterRefinementTypes_storage) option)
+ | None  -> ((Err counterRefinementTypes_default_error):((operation list * counterRefinementTypes_storage), counterRefinementTypes_Error) result)
 
-let init (setup : int) : counterRefinementTypes_storage = let inner (setup : int) :counterRefinementTypes_storage option = 
-Some setup in
+let init (setup : int) : (counterRefinementTypes_storage, counterRefinementTypes_Error) result = let inner (setup : int) :(counterRefinementTypes_storage, counterRefinementTypes_Error) result = 
+((Ok setup):(int, counterRefinementTypes_Error) result) in
 match (inner setup) with
-  Some v -> v
-| None -> (failwith ("Init failed"): counterRefinementTypes_storage)
+  Ok v -> Ok v
+| Err e -> (failwith e: (counterRefinementTypes_storage, counterRefinementTypes_Error) result)
 
 
 type return = (operation) list * counterRefinementTypes_storage
 
 let main (p, st : counterRefinementTypes_msg option * counterRefinementTypes_storage) : return = 
    (match (cameLIGOExtractionSetup_counter_wrapper dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+      Ok v -> (v.0, v.1)
+    | Err e -> (failwith e : return))

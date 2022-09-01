@@ -42,6 +42,10 @@ let z_of_N (n : nat) : int = int (n)
 
 [@inline] let eq_addr (a1 : address) (a2 : address) = a1 = a2
 
+type ('t,'e) result =
+  Ok of 't
+| Err of 'e
+
 let get_contract_unit (a : address) : unit contract  =
   match (Tezos.get_contract_opt a : unit contract option) with
     Some c -> c
@@ -97,6 +101,8 @@ type state =
   Build_state of (tokenValue * (address, tokenValue) map * (address, (address, tokenValue) map) map)
 
 
+type error = nat
+
 type msg = 
   Transfer of (address * tokenValue)
 | Transfer_from of (address * address * tokenValue)
@@ -110,6 +116,17 @@ Build_setup (init_amount0, owner0) -> owner0
 let owner (s : setup) : address = 
 match s with 
 Build_setup (init_amount0, owner0) -> init_amount0
+
+let default_error  : error = 
+1n
+
+let error(type t) (t : unit) : (t, error) result = 
+((Err default_error):(t, error) result)
+
+let without_actions(type t e) (x : (t, e) result) : ((t * operation list), e) result = 
+match x with 
+Ok t0 -> ((Ok (t0, ([]:operation list))):((t * operation list), e) result)
+ | Err e0 -> ((Err e0):((t * operation list), e) result)
 
 let balances (s : state) : (address, tokenValue) map = 
 match s with 
@@ -131,62 +148,64 @@ Build_state (allowances0, balances0, total_supply0) -> total_supply0
 let set_State_balances (f : (address, tokenValue) map -> (address, tokenValue) map) (r : state) : state = 
 Build_state ((total_supply r), (f (balances r)), (allowances r))
 
-let try_transfer (from : address) (to0 : address) (amount0 : tokenValue) (state : state) : state option = 
+let try_transfer (from : address) (to0 : address) (amount0 : tokenValue) (state : state) : (state, error) result = 
 let from_balance = match Map.find_opt from (balances state) with 
 Some v0 -> v0
  | None  -> 0 in 
-if ltInt from_balance amount0 then (None:state option) else let new_balances = Map.add from (subIntTruncated from_balance amount0) (balances state) in 
+if ltInt from_balance amount0 then error () else let new_balances = Map.add from (subIntTruncated from_balance amount0) (balances state) in 
 let new_balances0 = increment_balance new_balances to0 amount0 in 
-Some (set_State_balances (fun (a : (address, tokenValue) map) -> new_balances0) state)
+((Ok (set_State_balances (fun (a : (address, tokenValue) map) -> new_balances0) state)):(state, error) result)
+
+let result_of_option(type t e) (o : t option) (err : e) : (t, e) result = 
+match o with 
+Some a0 -> ((Ok a0):(t, e) result)
+ | None  -> ((Err err):(t, e) result)
 
 let set_State_allowances (f : (address, (address, tokenValue) map) map -> (address, (address, tokenValue) map) map) (r : state) : state = 
 Build_state ((total_supply r), (balances r), (f (allowances r)))
 
-let try_transfer_from (delegate : address) (from : address) (to0 : address) (amount0 : tokenValue) (state : state) : state option = 
-match Map.find_opt from (allowances state) with 
-Some val0 -> (match Map.find_opt delegate val0 with 
-Some val1 -> (let from_balance = match Map.find_opt from (balances state) with 
+let try_transfer_from (delegate : address) (from : address) (to0 : address) (amount0 : tokenValue) (state : state) : (state, error) result = 
+match result_of_option (Map.find_opt from (allowances state)) default_error with 
+Ok t0 -> (match result_of_option (Map.find_opt delegate t0) default_error with 
+Ok t1 -> (let from_balance = match Map.find_opt from (balances state) with 
 Some v0 -> v0
  | None  -> 0 in 
-if orb (ltInt val1 amount0) (ltInt from_balance amount0) then (None:state option) else let new_allowances = Map.add delegate (subIntTruncated val1 amount0) val0 in 
+if orb (ltInt t1 amount0) (ltInt from_balance amount0) then error () else let new_allowances = Map.add delegate (subIntTruncated t1 amount0) t0 in 
 let new_balances = Map.add from (subIntTruncated from_balance amount0) (balances state) in 
 let new_balances0 = increment_balance new_balances to0 amount0 in 
-Some (set_State_allowances (Map.add from new_allowances) (set_State_balances (fun (a : (address, tokenValue) map) -> new_balances0) state)))
- | None  -> (None:state option))
- | None  -> (None:state option)
+((Ok (set_State_allowances (Map.add from new_allowances) (set_State_balances (fun (a : (address, tokenValue) map) -> new_balances0) state))):(state, error) result))
+ | Err e0 -> ((Err e0):(state, error) result))
+ | Err e0 -> ((Err e0):(state, error) result)
 
-let try_approve (caller : address) (delegate : address) (amount0 : tokenValue) (state : state) : state option = 
+let try_approve (caller : address) (delegate : address) (amount0 : tokenValue) (state : state) : (state, error) result = 
 match Map.find_opt caller (allowances state) with 
-Some caller_allowances0 -> (Some (set_State_allowances (Map.add caller (Map.add delegate amount0 caller_allowances0)) state))
- | None  -> (Some (set_State_allowances (Map.add caller (Map.add delegate amount0 (Map.empty: (address, tokenValue) map))) state))
+Some caller_allowances0 -> ((Ok (set_State_allowances (Map.add caller (Map.add delegate amount0 caller_allowances0)) state)):(state, error) result)
+ | None  -> ((Ok (set_State_allowances (Map.add caller (Map.add delegate amount0 (Map.empty: (address, tokenValue) map))) state)):(state, error) result)
 
-let receive (ctx : cctx) (state : state) (maybe_msg : msg option) : (state * operation list) option = 
+let receive (ctx : cctx) (state : state) (maybe_msg : msg option) : ((state * operation list), error) result = 
 let sender0 = ctx_from ctx in 
-let without_actions = fun (o : state option) -> match o with 
-Some a0 -> (Some (a0, ([]:operation list)))
- | None  -> (None:(state * operation list) option) in 
-if gtbTez (ctx_amount ctx) 0tez then (None:(state * operation list) option) else match maybe_msg with 
+if gtbTez (ctx_amount ctx) 0tez then error () else match maybe_msg with 
 Some m0 -> (match m0 with 
 Transfer (amount0, to0) -> (without_actions (try_transfer sender0 amount0 to0 state))
  | Transfer_from (amount0, to0, from0) -> (without_actions (try_transfer_from sender0 amount0 to0 from0 state))
  | Approve (amount0, delegate0) -> (without_actions (try_approve sender0 amount0 delegate0 state)))
- | None  -> (None:(state * operation list) option)
+ | None  -> (error ())
 
-let receive_ (chain : chain) (ctx : cctx) (state : state) (maybe_msg : msg option) : (operation list * state) option = 
+let receive_ (chain : chain) (ctx : cctx) (state : state) (maybe_msg : msg option) : ((operation list * state), error) result = 
 match receive ctx state maybe_msg with 
-Some x0 -> (Some (x0.1, x0.0))
- | None  -> (None:(operation list * state) option)
+Ok x0 -> ((Ok (x0.1, x0.0)):((operation list * state), error) result)
+ | Err e0 -> ((Err e0):((operation list * state), error) result)
 
-let init (setup : setup) : state = let inner (setup : setup) :state option = 
-Some (Build_state ((init_amount setup), (Map.add (owner setup) (init_amount setup) (Map.empty: (address, tokenValue) map)), (Map.empty: (address, (address, tokenValue) map) map))) in
+let init (setup : setup) : (state, error) result = let inner (setup : setup) :(state, error) result = 
+((Ok (Build_state ((init_amount setup), (Map.add (owner setup) (init_amount setup) (Map.empty: (address, tokenValue) map)), (Map.empty: (address, (address, tokenValue) map) map)))):(state, error) result) in
 match (inner setup) with
-  Some v -> v
-| None -> (failwith ("Init failed"): state)
+  Ok v -> Ok v
+| Err e -> (failwith e: (state, error) result)
 
 
 type return = (operation) list * state
 
 let main (p, st : msg option * state) : return = 
    (match (receive_ dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+      Ok v -> (v.0, v.1)
+    | Err e -> (failwith e : return))

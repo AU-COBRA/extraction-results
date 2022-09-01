@@ -42,6 +42,10 @@ let z_of_N (n : nat) : int = int (n)
 
 [@inline] let eq_addr (a1 : address) (a2 : address) = a1 = a2
 
+type ('t,'e) result =
+  Ok of 't
+| Err of 'e
+
 let get_contract_unit (a : address) : unit contract  =
   match (Tezos.get_contract_opt a : unit contract option) with
     Some c -> c
@@ -102,6 +106,8 @@ type state =
   Build_state of (nat * nextStep * address * address * tez * tez)
 
 
+type error = nat
+
 type msg = 
   Commit_money
 | Confirm_item_received
@@ -115,6 +121,11 @@ Build_setup setup_buyer0 -> setup_buyer0
 let next_step (s : state) : nextStep = 
 match s with 
 Build_state (buyer_withdrawable0, seller_withdrawable0, buyer0, seller0, next_step0, last_action0) -> seller_withdrawable0
+
+let result_of_option(type t e) (o : t option) (err : e) : (t, e) result = 
+match o with 
+Some a0 -> ((Ok a0):(t, e) result)
+ | None  -> ((Err err):(t, e) result)
 
 let buyer (s : state) : address = 
 match s with 
@@ -148,76 +159,76 @@ Build_state ((last_action r), (next_step r), (seller r), (buyer r), (f (seller_w
 let set_State_buyer_withdrawable (f : tez -> tez) (r : state) : state = 
 Build_state ((last_action r), (next_step r), (seller r), (buyer r), (seller_withdrawable r), (f (buyer_withdrawable r)))
 
-let receive (chain : chain) (ctx : cctx) (state : state) (msg : msg option) : (state * operation list) option = 
+let receive (chain : chain) (ctx : cctx) (state : state) (msg : msg option) : ((state * operation list), error) result = 
 match msg with 
 Some m0 -> (match m0 with 
 Commit_money  -> (match next_step state with 
-Buyer_commit  -> (match subTez (ctx_contract_balance ctx) (ctx_amount ctx) with 
-Some val0 -> (let item_price = divTez val0 2tez in 
+Buyer_commit  -> (match result_of_option (subTez (ctx_contract_balance ctx) (ctx_amount ctx)) 1n with 
+Ok t0 -> (let item_price = divTez t0 2tez in 
 let expected = multTez item_price 2tez in 
-match if eq_addr (ctx_from ctx) (buyer state) then Some () else (None:unit option) with 
-Some val1 -> (match if eqTez (ctx_amount ctx) expected then Some () else (None:unit option) with 
-Some val2 -> (Some ((set_State_last_action (fun (a : nat) -> current_slot chain) (set_State_next_step (fun (a : nextStep) -> Buyer_confirm) state)), ([]:operation list)))
- | None  -> (None:(state * operation list) option))
- | None  -> (None:(state * operation list) option))
- | None  -> (None:(state * operation list) option))
- | Buyer_confirm  -> (None:(state * operation list) option)
- | Withdrawals  -> (None:(state * operation list) option)
- | No_next_step  -> (None:(state * operation list) option))
+match if eq_addr (ctx_from ctx) (buyer state) then ((Ok ()):(unit, error) result) else ((Err 1n):(unit, error) result) with 
+Ok t1 -> (match if eqTez (ctx_amount ctx) expected then ((Ok ()):(unit, error) result) else ((Err 1n):(unit, error) result) with 
+Ok t2 -> ((Ok ((set_State_last_action (fun (a : nat) -> current_slot chain) (set_State_next_step (fun (a : nextStep) -> Buyer_confirm) state)), ([]:operation list))):((state * operation list), error) result)
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | Buyer_confirm  -> ((Err 1n):((state * operation list), error) result)
+ | Withdrawals  -> ((Err 1n):((state * operation list), error) result)
+ | No_next_step  -> ((Err 1n):((state * operation list), error) result))
  | Confirm_item_received  -> (match next_step state with 
-Buyer_commit  -> (None:(state * operation list) option)
+Buyer_commit  -> ((Err 1n):((state * operation list), error) result)
  | Buyer_confirm  -> (let item_price = divTez (ctx_contract_balance ctx) 4tez in 
-match if eq_addr (ctx_from ctx) (buyer state) then Some () else (None:unit option) with 
-Some val0 -> (match if eqTez (ctx_amount ctx) 0tez then Some () else (None:unit option) with 
-Some val1 -> (let new_state = set_State_seller_withdrawable (fun (a : tez) -> multTez item_price 3tez) (set_State_buyer_withdrawable (fun (a : tez) -> item_price) (set_State_next_step (fun (a : nextStep) -> Withdrawals) state)) in 
-Some (new_state, ([]:operation list)))
- | None  -> (None:(state * operation list) option))
- | None  -> (None:(state * operation list) option))
- | Withdrawals  -> (None:(state * operation list) option)
- | No_next_step  -> (None:(state * operation list) option))
+match if eq_addr (ctx_from ctx) (buyer state) then ((Ok ()):(unit, error) result) else ((Err 1n):(unit, error) result) with 
+Ok t0 -> (match if eqTez (ctx_amount ctx) 0tez then ((Ok ()):(unit, error) result) else ((Err 1n):(unit, error) result) with 
+Ok t1 -> (let new_state = set_State_seller_withdrawable (fun (a : tez) -> multTez item_price 3tez) (set_State_buyer_withdrawable (fun (a : tez) -> item_price) (set_State_next_step (fun (a : nextStep) -> Withdrawals) state)) in 
+((Ok (new_state, ([]:operation list))):((state * operation list), error) result))
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | Withdrawals  -> ((Err 1n):((state * operation list), error) result)
+ | No_next_step  -> ((Err 1n):((state * operation list), error) result))
  | Withdraw  -> (match next_step state with 
-Buyer_commit  -> (match if eqTez (ctx_amount ctx) 0tez then Some () else (None:unit option) with 
-Some val0 -> (match if ltbN (addN (last_action state) 50n) (current_slot chain) then (None:unit option) else Some () with 
-Some val1 -> (match if eq_addr (ctx_from ctx) (seller state) then Some () else (None:unit option) with 
-Some val2 -> (let balance0 = ctx_contract_balance ctx in 
-Some ((set_State_next_step (fun (a : nextStep) -> No_next_step) state), (Tezos.transaction unit balance0 (get_contract_unit (seller state)) :: ([]:operation list))))
- | None  -> (None:(state * operation list) option))
- | None  -> (None:(state * operation list) option))
- | None  -> (None:(state * operation list) option))
- | Buyer_confirm  -> (None:(state * operation list) option)
- | Withdrawals  -> (match if eqTez (ctx_amount ctx) 0tez then Some () else (None:unit option) with 
-Some val0 -> (let from = ctx_from ctx in 
-match if eq_addr from (buyer state) then Some ((buyer_withdrawable state), (set_State_buyer_withdrawable (fun (a : tez) -> 0tez) state)) else if eq_addr from (seller state) then Some ((seller_withdrawable state), (set_State_seller_withdrawable (fun (a : tez) -> 0tez) state)) else (None:(tez * state) option) with 
-Some val1 -> (match val1 with 
- (new_state0, to_pay0) -> (match if gtbTez new_state0 0tez then Some () else (None:unit option) with 
-Some val2 -> (let new_state1 = if andb (eqTez (buyer_withdrawable to_pay0) 0tez) (eqTez (seller_withdrawable to_pay0) 0tez) then set_State_next_step (fun (a : nextStep) -> No_next_step) to_pay0 else to_pay0 in 
-Some (new_state1, (Tezos.transaction unit new_state0 (get_contract_unit (ctx_from ctx)) :: ([]:operation list))))
- | None  -> (None:(state * operation list) option)))
- | None  -> (None:(state * operation list) option))
- | None  -> (None:(state * operation list) option))
- | No_next_step  -> (None:(state * operation list) option)))
- | None  -> (None:(state * operation list) option)
+Buyer_commit  -> (match if eqTez (ctx_amount ctx) 0tez then ((Ok ()):(unit, error) result) else ((Err 1n):(unit, error) result) with 
+Ok t0 -> (match if ltbN (addN (last_action state) 50n) (current_slot chain) then ((Err 1n):(unit, error) result) else ((Ok ()):(unit, error) result) with 
+Ok t1 -> (match if eq_addr (ctx_from ctx) (seller state) then ((Ok ()):(unit, error) result) else ((Err 1n):(unit, error) result) with 
+Ok t2 -> (let balance0 = ctx_contract_balance ctx in 
+((Ok ((set_State_next_step (fun (a : nextStep) -> No_next_step) state), (Tezos.transaction unit balance0 (get_contract_unit (seller state)) :: ([]:operation list)))):((state * operation list), error) result))
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | Buyer_confirm  -> ((Err 1n):((state * operation list), error) result)
+ | Withdrawals  -> (match if eqTez (ctx_amount ctx) 0tez then ((Ok ()):(unit, error) result) else ((Err 1n):(unit, error) result) with 
+Ok t0 -> (let from = ctx_from ctx in 
+match if eq_addr from (buyer state) then ((Ok ((buyer_withdrawable state), (set_State_buyer_withdrawable (fun (a : tez) -> 0tez) state))):((tez * state), error) result) else if eq_addr from (seller state) then ((Ok ((seller_withdrawable state), (set_State_seller_withdrawable (fun (a : tez) -> 0tez) state))):((tez * state), error) result) else ((Err 1n):((tez * state), error) result) with 
+Ok t1 -> (match t1 with 
+ (new_state0, to_pay0) -> (match if gtbTez new_state0 0tez then ((Ok ()):(unit, error) result) else ((Err 1n):(unit, error) result) with 
+Ok t2 -> (let new_state1 = if andb (eqTez (buyer_withdrawable to_pay0) 0tez) (eqTez (seller_withdrawable to_pay0) 0tez) then set_State_next_step (fun (a : nextStep) -> No_next_step) to_pay0 else to_pay0 in 
+((Ok (new_state1, (Tezos.transaction unit new_state0 (get_contract_unit (ctx_from ctx)) :: ([]:operation list)))):((state * operation list), error) result))
+ | Err e0 -> ((Err e0):((state * operation list), error) result)))
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | Err e0 -> ((Err e0):((state * operation list), error) result))
+ | No_next_step  -> ((Err 1n):((state * operation list), error) result)))
+ | None  -> ((Err 1n):((state * operation list), error) result)
 
-let escrow_receive (c : chain) (cctx : cctx) (s : state) (msg : msg option) : (operation list * state) option = 
+let escrow_receive (c : chain) (cctx : cctx) (s : state) (msg : msg option) : ((operation list * state), error) result = 
 match receive c cctx s msg with 
-Some p0 -> (match p0 with 
- (acts0, s0) -> (Some (s0, acts0)))
- | None  -> (None:(operation list * state) option)
+Ok t0 -> (match t0 with 
+ (acts0, s0) -> ((Ok (s0, acts0)):((operation list * state), error) result))
+ | Err e0 -> ((Err e0):((operation list * state), error) result)
 
-let init (s : ((address * setup) * nat)) : state = let inner (s : ((address * setup) * nat)) :state option = 
+let init (s : ((address * setup) * nat)) : (state, error) result = let inner (s : ((address * setup) * nat)) :(state, error) result = 
 let seller = s.0.0 in 
 let setup = s.0.1 in 
 let curr_slot = s.1 in 
 let buyer = setup_buyer setup in 
-if eq_addr buyer seller then (None:state option) else Some (Build_state (curr_slot, Buyer_commit, seller, buyer, 0tez, 0tez)) in
+if eq_addr buyer seller then ((Err 1n):(state, error) result) else ((Ok (Build_state (curr_slot, Buyer_commit, seller, buyer, 0tez, 0tez))):(state, error) result) in
 match (inner s) with
-  Some v -> v
-| None -> (failwith ("Init failed"): state)
+  Ok v -> Ok v
+| Err e -> (failwith e: (state, error) result)
 
 
 type return = (operation) list * state
 
 let main (p, st : msg option * state) : return = 
    (match (escrow_receive dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+      Ok v -> (v.0, v.1)
+    | Err e -> (failwith e : return))

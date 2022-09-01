@@ -42,6 +42,10 @@ let z_of_N (n : nat) : int = int (n)
 
 [@inline] let eq_addr (a1 : address) (a2 : address) = a1 = a2
 
+type ('t,'e) result =
+  Ok of 't
+| Err of 'e
+
 let get_contract_unit (a : address) : unit contract  =
   match (Tezos.get_contract_opt a : unit contract option) with
     Some c -> c
@@ -94,6 +98,8 @@ type value =
 
 type storage = value list
 
+type error = nat
+
 type op = 
   Add
 | Sub
@@ -118,6 +124,9 @@ type params = (instruction list * (string * int,value) map)
 let continue_ (i : int) : bool = 
 eqInt i 0
 
+let default_error  : error = 
+1n
+
 let bool_to_cond (b : bool) : int = 
 if b then 0 else 1
 
@@ -127,104 +136,104 @@ if eqInt i 0 then 1 else if eqInt i 1 then 0 else i
 let reset_decrement (i : int) : int = 
 if leInt i 1 then 0 else subInt i 1
 
-let interp  : (string * int,value) map -> instruction list -> value list -> int -> value list option = 
-let rec interp (ext : (string * int,value) map) (insts : instruction list) (s : value list) (cond : int) : value list option = 
+let interp  : (string * int,value) map -> instruction list -> storage -> int -> (storage, error) result = 
+let rec interp (ext : (string * int,value) map) (insts : instruction list) (s : storage) (cond : int) : (storage, error) result = 
 match insts with 
-[]  -> (Some s)
+[]  -> ((Ok s):(storage, error) result)
  | inst00 :: hd0 -> (match inst00 with 
 IPushZ i0 -> (if continue_ cond then interp ext hd0 ((ZVal i0) :: s) cond else interp ext hd0 s cond)
  | IPushB b0 -> (if continue_ cond then interp ext hd0 ((BVal b0) :: s) cond else interp ext hd0 s cond)
  | IObs p0 -> (if continue_ cond then match Map.find_opt p0 ext with 
 Some v0 -> (interp ext hd0 (v0 :: s) cond)
- | None  -> (None:value list option) else interp ext hd0 s cond)
+ | None  -> ((Err default_error):(storage, error) result) else interp ext hd0 s cond)
  | IIf  -> (if eqInt cond 0 then match s with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | s00 :: v0 -> (match s00 with 
 BVal b0 -> (interp ext hd0 v0 (bool_to_cond b0))
- | ZVal z0 -> (None:value list option)) else interp ext hd0 s (addInt 1 cond))
+ | ZVal z0 -> ((Err default_error):(storage, error) result)) else interp ext hd0 s (addInt 1 cond))
  | IElse  -> (interp ext hd0 s (flip cond))
  | IEndIf  -> (interp ext hd0 s (reset_decrement cond))
  | IOp op0 -> (if continue_ cond then match op0 with 
 Add  -> (match s with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | l0 :: v0 -> (match l0 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal i0 -> (match v0 with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | s00 :: v00 -> (match s00 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal j0 -> (interp ext hd0 ((ZVal (addInt i0 j0)) :: v00) cond)))))
  | Sub  -> (match s with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | l0 :: v0 -> (match l0 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal i0 -> (match v0 with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | s00 :: v00 -> (match s00 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal j0 -> (interp ext hd0 ((ZVal (subInt i0 j0)) :: v00) cond)))))
  | Mult  -> (match s with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | l0 :: v0 -> (match l0 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal i0 -> (match v0 with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | s00 :: v00 -> (match s00 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal j0 -> (interp ext hd0 ((ZVal (multInt i0 j0)) :: v00) cond)))))
  | Lt  -> (match s with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | l0 :: v0 -> (match l0 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal i0 -> (match v0 with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | s00 :: v00 -> (match s00 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal j0 -> (interp ext hd0 ((BVal (ltInt i0 j0)) :: v00) cond)))))
  | Le  -> (match s with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | l0 :: v0 -> (match l0 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal i0 -> (match v0 with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | s00 :: v00 -> (match s00 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal j0 -> (interp ext hd0 ((BVal (leInt i0 j0)) :: v00) cond)))))
  | Equal  -> (match s with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | l0 :: v0 -> (match l0 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal i0 -> (match v0 with 
-[]  -> (None:value list option)
+[]  -> ((Err default_error):(storage, error) result)
  | s00 :: v00 -> (match s00 with 
-BVal b0 -> (None:value list option)
+BVal b0 -> ((Err default_error):(storage, error) result)
  | ZVal j0 -> (interp ext hd0 ((BVal (eqInt i0 j0)) :: v00) cond))))) else interp ext hd0 s cond))
- in (interp : (string * int,value) map -> instruction list -> value list -> int -> value list option)
+ in (interp : (string * int,value) map -> instruction list -> storage -> int -> (storage, error) result)
 
-let receive (p : params) (s : value list) : (operation list * storage) option = 
+let receive (p : params) (s : storage) : ((operation list * storage), error) result = 
 let s0 = s in 
 match interp p.1 p.0 ([]:value list) 0 with 
-Some v0 -> (Some (([]:operation list), v0))
- | None  -> (None:(operation list * storage) option)
+Ok v0 -> ((Ok (([]:operation list), v0)):((operation list * storage), error) result)
+ | Err e0 -> ((Err e0):((operation list * storage), error) result)
 
-let receive_ (c : chain) (ctx : cctx) (s : storage) (msg : params option) : (operation list * storage) option = 
+let receive_ (c : chain) (ctx : cctx) (s : storage) (msg : params option) : ((operation list * storage), error) result = 
 let c_ = c in 
 let ctx_ = ctx in 
 match msg with 
 Some msg0 -> (receive msg0 s)
- | None  -> (None:(operation list * storage) option)
+ | None  -> ((Err default_error):((operation list * storage), error) result)
 
-let init (setup : unit) : storage = let inner (setup : unit) :storage option = 
+let init (setup : unit) : (storage, error) result = let inner (setup : unit) :(storage, error) result = 
 let setup0 = setup in 
-Some ([]:value list) in
+((Ok ([]:value list)):(value list, error) result) in
 match (inner setup) with
-  Some v -> v
-| None -> (failwith ("Init failed"): storage)
+  Ok v -> Ok v
+| Err e -> (failwith e: (storage, error) result)
 
 
 type return = (operation) list * value list
 
 let main (p, st : params option * value list) : return = 
    (match (receive_ dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+      Ok v -> (v.0, v.1)
+    | Err e -> (failwith e : return))

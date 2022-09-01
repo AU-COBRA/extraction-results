@@ -47,6 +47,10 @@ let[@inline] ltb_time (a1 : timestamp) (a2 : timestamp) = a1 < a2
 let[@inline] eq_addr (a1 : address) (a2 : address) = a1 = a2
 
 type 'a addrMap = (address, 'a) map
+
+type ('t,'e) result =
+  Ok of 't
+| Err of 'e
 type storage = ((timestamp * (tez * address)) * ((address,tez) map * bool))
 
 type msg_coq = 
@@ -56,6 +60,10 @@ Donate_coq
 
 
 type  simpleCallCtx = (timestamp * (address * (tez * tez)))
+
+type  error = nat
+
+let default_error  = 1p
 
 let update_contribs (f_st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) (cs : (address,tez) map) =  (f_st.(0),  (cs, f_st.(1).(1)))
 
@@ -76,20 +84,21 @@ Some (v0) -> (Some ( ([], (update_contribs s (Map.add ctx.(1).(0) (addTez v0 ctx
 Some (v0) -> (maybe_bind_unit (validate ctx.(1).(1).(0)) (Some ( ((Contract.call ctx.(1).(0) v0 default () :: []), (update_contribs s (Map.add ctx.(1).(0) 0DUN s.(1).(0)))))))
  | None  -> None else None)
 
-let crowdfunding_receive (params : ((timestamp * (address * (tez * tez))) * msg_coq)) (st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) = receive params.(1) st params.(0)
+let crowdfunding_receive (params : ((timestamp * (address * (tez * tez))) * msg_coq)) (st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) = match receive params.(1) st params.(0) with 
+Some (v0) -> (Ok (v0))
+ | None  -> (Err (default_error))
 
 let%init storage (setup : (timestamp * (tez * address))) = let fst (p : 'a * 'b) : 'a = p.(0) in
 let snd (p : 'a * 'b) : 'b = p.(1) in
 let eqTez (a : tez ) (b : tez ) = a = b in
-let inner (ctx : simpleCallCtx) (setup : (timestamp * (tez * address))) = if eqTez ctx.(1).(1).(0) 0DUN then Some ( (setup,  (Map [], false))) else None in
+let default_error = 1 in
+let inner (ctx : simpleCallCtx) (setup : (timestamp * (tez * address))) = if eqTez ctx.(1).(1).(0) 0DUN then Ok ( (setup,  (Map [], false))) else Err (default_error) in
 let ctx = (Current.time (),
    (Current.sender (),
    (Current.amount (),
     Current.balance ()))) in
-match (inner ctx setup) with Some v -> v | None -> failwith ()
+match (inner ctx setup) with Ok v -> v | Err e -> failwith e
 
-let wrapper (msg : msg_coq)(st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) = match receive msg st (Current.time (), (Current.sender (), (Current.amount (), Current.balance ()))) with
-| Some v -> v| None -> failwith ()
-
-let%entry main (msg : msg_coq)(st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) = wrapper msg st
+let wrapper param (st : storage) = match crowdfunding_receive param st with| Ok v -> v| Err e -> failwith e
+let%entry main param st = wrapper param st
 (*END*)

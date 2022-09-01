@@ -42,6 +42,10 @@ let z_of_N (n : nat) : int = int (n)
 
 [@inline] let eq_addr (a1 : address) (a2 : address) = a1 = a2
 
+type ('t,'e) result =
+  Ok of 't
+| Err of 'e
+
 let get_contract_unit (a : address) : unit contract  =
   match (Tezos.get_contract_opt a : unit contract option) with
     Some c -> c
@@ -90,6 +94,8 @@ let test_account : address = ("tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" : address)
 
 type storage = (int * address)
 
+type error = nat
+
 type msg = 
   Inc of int
 | Dec of int
@@ -98,31 +104,34 @@ type msg =
 let inc_balance (st : storage) (new_balance : int) : (int * address) = 
 ((addInt st.0 new_balance), st.1)
 
+let default_error  : error = 
+1n
+
 let dec_balance (st : storage) (new_balance : int) : (int * address) = 
 ((subInt st.0 new_balance), st.1)
 
-let counter_inner (msg : msg) (st : storage) : (operation list * storage) option = 
+let counter_inner (msg : msg) (st : storage) : ((operation list * storage), error) result = 
 match msg with 
-Inc i0 -> (if leInt 0 i0 then Some (([]:operation list), (inc_balance st i0)) else (None:(operation list * storage) option))
- | Dec i0 -> (if leInt 0 i0 then Some (([]:operation list), (dec_balance st i0)) else (None:(operation list * storage) option))
+Inc i0 -> (if leInt 0 i0 then ((Ok (([]:operation list), (inc_balance st i0))):((operation list * (int * address)), error) result) else ((Err default_error):((operation list * storage), error) result))
+ | Dec i0 -> (if leInt 0 i0 then ((Ok (([]:operation list), (dec_balance st i0))):((operation list * (int * address)), error) result) else ((Err default_error):((operation list * storage), error) result))
 
-let counter (c : chain) (ctx : cctx) (st : storage) (msg : msg option) : (operation list * storage) option = 
+let counter (c : chain) (ctx : cctx) (st : storage) (msg : msg option) : ((operation list * storage), error) result = 
 let c_ = c in 
 let ctx_ = ctx in 
 match msg with 
 Some msg0 -> (counter_inner msg0 st)
- | None  -> (None:(operation list * storage) option)
+ | None  -> ((Err default_error):((operation list * storage), error) result)
 
-let init (setup : (int * address)) : storage = let inner (setup : (int * address)) :storage option = 
-Some setup in
+let init (setup : (int * address)) : (storage, error) result = let inner (setup : (int * address)) :(storage, error) result = 
+((Ok setup):((int * address), error) result) in
 match (inner setup) with
-  Some v -> v
-| None -> (failwith ("Init failed"): storage)
+  Ok v -> Ok v
+| Err e -> (failwith e: (storage, error) result)
 
 
 type return = (operation) list * storage
 
 let main (p, st : msg option * storage) : return = 
    (match (counter dummy_chain cctx_instance  st p) with   
-      Some v -> (v.0, v.1)
-    | None -> (failwith ("Contract returned None") : return))
+      Ok v -> (v.0, v.1)
+    | Err e -> (failwith e : return))

@@ -12,6 +12,8 @@ let rec powIntAcc((a,b,acc) : int*int*int) =
         if b <= 0 then acc
         else powIntAcc(a, (b-1), acc * a)
 let powInt(a : int)(b : int) = powIntAcc(a,b,1)
+type 'a sig_ = 'a
+let exist_ a = a
 type ('t,'e) result =
   Ok of 't
 | Err of 'e
@@ -23,33 +25,33 @@ Coq_Inc of int
 
 type  coq_SimpleCallCtx = (timestamp * (address * (tez * tez)))
 
-type  storage = (int * key_hash)
-
-type  coq_Error = nat
+type  storage = int
 
 type coq_sumbool = 
 Coq_Left
 | Coq_Right
 
 
-let coq_my_bool_dec (b1 : bool) (b2 : bool) = (if b1 then fun x -> if x then Coq_Left else Coq_Right else fun x -> if x then Coq_Right else Coq_Left) b2
+type  coq_Error = nat
 
-let coq_inc_balance (st : storage) (new_balance : int) =  ((addInt st.(0) new_balance), st.(1))
+let coq_bool_dec (b1 : bool) (b2 : bool) = (if b1 then fun x -> if x then Coq_Left else Coq_Right else fun x -> if x then Coq_Right else Coq_Left) b2
+
+let coq_inc_counter (st : storage) (inc : ( (int) sig_)) = (addInt st ((fun x -> x) inc))
 
 let coq_default_error  = 1p
 
-let coq_dec_balance (st : storage) (new_balance : int) =  ((subInt st.(0) new_balance), st.(1))
+let coq_dec_counter (st : storage) (dec : ( (int) sig_)) = (subInt st ((fun x -> x) dec))
 
 let coq_counter (msg : coq_msg) (st : storage) = match msg with 
-Coq_Inc (i0) -> (match coq_my_bool_dec (leInt 0 i0) true with 
-Coq_Left  -> (Ok ( ([], (coq_inc_balance st i0))))
+Coq_Inc (i0) -> (match coq_bool_dec true (ltInt 0 i0) with 
+Coq_Left  -> (Ok ( ([], ((fun x -> x) (coq_inc_counter st i0)))))
  | Coq_Right  -> (Err (coq_default_error)))
- | Coq_Dec (i0) -> (match coq_my_bool_dec (leInt 0 i0) true with 
-Coq_Left  -> (Ok ( ([], (coq_dec_balance st i0))))
+ | Coq_Dec (i0) -> (match coq_bool_dec true (ltInt 0 i0) with 
+Coq_Left  -> (Ok ( ([], ((fun x -> x) (coq_dec_counter st i0)))))
  | Coq_Right  -> (Err (coq_default_error)))
 
-let%init storage (setup : (int * key_hash)) = 
-let inner (ctx : coq_SimpleCallCtx) (setup : (int * key_hash)) = let ctx' = ctx in 
+let%init storage (setup : int) = 
+let inner (ctx : coq_SimpleCallCtx) (setup : int) = let ctx_ = ctx in 
 Ok (setup) in
 let ctx = (Current.time (),
    (Current.sender (),
