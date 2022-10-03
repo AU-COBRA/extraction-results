@@ -12,8 +12,8 @@
 [@inline] let addTez (n : tez) (m : tez) = n + m
 [@inline] let subTez (n : tez) (m : tez) : tez option = n - m
 [@inline] let leTez (a : tez ) (b : tez ) = a <= b
-[@inline] let ltTez (a : tez ) (b : tez ) =  a < b
-[@inline] let gtbTez (a : tez ) (b : tez ) =  a > b
+[@inline] let ltTez (a : tez ) (b : tez ) = a < b
+[@inline] let gtbTez (a : tez ) (b : tez ) = a > b
 [@inline] let eqTez (a : tez ) (b : tez ) = a = b
 [@inline] let natural_to_mutez (a: nat): tez = a * 1mutez
 [@inline] let divTez (a : tez) (b : tez) : tez = natural_to_mutez (a/b)
@@ -46,7 +46,7 @@ type ('t,'e) result =
   Ok of 't
 | Err of 'e
 
-let get_contract_unit (a : address) : unit contract  =
+let get_contract_unit (a : address) : unit contract =
   match (Tezos.get_contract_opt a : unit contract option) with
     Some c -> c
   | None -> (failwith ("Contract not found.") : unit contract)
@@ -95,12 +95,12 @@ let unsafe_int_to_nat (n : int) = abs(n)
   let mod_pow (a : int) (e : int) (p : int) : int = failwith ("unimplemented")
   let egcd (a : int) (p : int) : int * int = failwith ("unimplemented")
 
-  let nth  = let rec nth  (n, l, default : nat * int list * int) : int =
+  let nth = let rec nth (n, l, default : nat * int list * int) : int =
   if n = 0n then (match l with
-  []  -> default
+  [] -> default
    | x :: r -> x)
   else let m = predN n in (match l with
-  []  -> default
+  [] -> default
    | x :: t -> (nth (m, t, default)))
    in fun (n:nat) (l:int list) (default:int) -> nth (n, l, default)
 
@@ -114,13 +114,13 @@ let unsafe_int_to_nat (n : int) = abs(n)
         else (predN n, b :: a)) (n,([] : int list)) l in
    r
 
-  let skipn  = let rec skipn  (n, l : nat * int list) : int list =
+  let skipn = let rec skipn (n, l : nat * int list) : int list =
    if n = 0n then l
     else let n0 = predN n in (match l with
-    | []  -> ([]:int list)
+    | [] -> ([]:int list)
     | a :: l0 -> (skipn (n0, l0 : nat * int list)))
     in fun (n : nat) (l : int list) -> skipn (n, l : nat * int list)
-let hash_func (l :  (nat) list) = addN 1n (List.fold_left (fun (a, p : nat * nat) -> Bitwise.xor p a) 1n l)
+let hash_func (l : (nat) list) = addN 1n (List.fold_left (fun (a, p : nat * nat) -> Bitwise.xor p a) 1n l)
 
 type setup = {
 eligible_voters : (address, unit) map;
@@ -402,9 +402,9 @@ Ok res1 -> (match assert_none state.tally ctx0 chain0 p20 p10 p00 with
 Ok res3 -> ((let voters = (fun (v:(address, voterInfo) map) ->
     Map.fold (fun (acc, (_,info) : voterInfo list * (address * voterInfo)) -> info :: acc)
     v ([]: voterInfo list)) state.registered_voters in 
-fun (chain2 : chain) -> fun (ctx2 : cctx) -> fun (state3 : state) -> fun (msg2 : msg option) -> fun (acts2 : operation list) -> match assert_false ((let existsb (f : voterInfo -> bool) = let rec existsb  (l: voterInfo list) : bool =
+fun (chain2 : chain) -> fun (ctx2 : cctx) -> fun (state3 : state) -> fun (msg2 : msg option) -> fun (acts2 : operation list) -> match assert_false ((let existsb (f : voterInfo -> bool) = let rec existsb (l: voterInfo list) : bool =
   match l with
-  []  -> false
+  [] -> false
   | a :: l0 -> (if (f a) then true else (existsb (l0)))
   in fun (l: voterInfo list) -> existsb (l) in existsb) (fun (vi : voterInfo) -> if elmeqb vi.public_vote 0 then true else false) voters) chain2 ctx2 state3 msg2 acts2 with 
  (res4, p4) -> (match res4 with 
@@ -413,8 +413,8 @@ fun (chain2 : chain) -> fun (ctx2 : cctx) -> fun (state3 : state) -> fun (msg2 :
  (state4, p22) -> (match state4 with 
  (ctx3, chain3) -> (match p4 with 
 Ok res5 -> ((let votes = List.map public_vote voters in 
-fun (chain4 : chain) -> fun (ctx4 : cctx) -> fun (state5 : state) -> fun (msg4 : msg option) -> fun (acts4 : operation list) -> match (((((chain4, ctx4), state5), msg4), acts4), ((fun (votes :  (a) list) ->
-  let rec bruteforce_tally_aux  (n, votes_product : nat * a) : (nat, nat) result =
+fun (chain4 : chain) -> fun (ctx4 : cctx) -> fun (state5 : state) -> fun (msg4 : msg option) -> fun (acts4 : operation list) -> match (((((chain4, ctx4), state5), msg4), acts4), ((fun (votes : (a) list) ->
+  let rec bruteforce_tally_aux (n, votes_product : nat * a) : (nat, nat) result =
     if elmeqb (pow_p generator (int n)) votes_product then
         Ok (n)
     else if n = 0n then
@@ -496,6 +496,6 @@ match (inner s) with
 type return = (operation) list * state
 
 let main (p, st : msg option * state) : return = 
-   (match (receive_wrapper dummy_chain cctx_instance  st p) with   
+   (match (receive_wrapper dummy_chain cctx_instance  st p) with 
       Ok v -> (v.0, v.1)
     | Err e -> (failwith e : return))

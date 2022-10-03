@@ -17,8 +17,8 @@ let powInt(a : int)(b : int) = powIntAcc(a,b,1)
 let[@inline] addTez (n : tez) (m : tez) = n + m
 let[@inline] subTez (n : tez) (m : tez) = n - m
 let[@inline] leTez (a : tez ) (b : tez ) = a <= b
-let[@inline] ltTez (a : tez ) (b : tez ) =  a < b
-let[@inline] gtTez (a : tez ) (b : tez ) =  a > b
+let[@inline] ltTez (a : tez ) (b : tez ) = a < b
+let[@inline] gtTez (a : tez ) (b : tez ) = a > b
 let[@inline] eqTez (a : tez ) (b : tez ) = a = b
 let[@inline] evenTez (i : tez) = match i/2tz with | Some (_, r) -> r=0tz | None -> false
 let tez_to_nat (a : tez) : nat =

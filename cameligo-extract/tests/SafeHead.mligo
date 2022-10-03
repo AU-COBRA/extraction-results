@@ -8,4 +8,4 @@ let safe_head (l : nat list) : nat =
 let head_of_list_2 (xs : nat list) : nat = 
 safe_head (0n :: (0n :: xs))
 
-let main (st : unit * nat option) : operation list * (nat option)  = (([]: operation list), Some (head_of_list_2 ([] : nat list)))
+let main (st : unit * nat option) : operation list * (nat option) = (([]: operation list), Some (head_of_list_2 ([] : nat list)))

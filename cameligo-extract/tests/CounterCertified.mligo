@@ -12,8 +12,8 @@
 [@inline] let addTez (n : tez) (m : tez) = n + m
 [@inline] let subTez (n : tez) (m : tez) : tez option = n - m
 [@inline] let leTez (a : tez ) (b : tez ) = a <= b
-[@inline] let ltTez (a : tez ) (b : tez ) =  a < b
-[@inline] let gtbTez (a : tez ) (b : tez ) =  a > b
+[@inline] let ltTez (a : tez ) (b : tez ) = a < b
+[@inline] let gtbTez (a : tez ) (b : tez ) = a > b
 [@inline] let eqTez (a : tez ) (b : tez ) = a = b
 [@inline] let natural_to_mutez (a: nat): tez = a * 1mutez
 [@inline] let divTez (a : tez) (b : tez) : tez = natural_to_mutez (a/b)
@@ -46,7 +46,7 @@ type ('t,'e) result =
   Ok of 't
 | Err of 'e
 
-let get_contract_unit (a : address) : unit contract  =
+let get_contract_unit (a : address) : unit contract =
   match (Tezos.get_contract_opt a : unit contract option) with
     Some c -> c
   | None -> (failwith ("Contract not found.") : unit contract)
@@ -132,6 +132,6 @@ match (inner setup) with
 type return = (operation) list * storage
 
 let main (p, st : msg option * storage) : return = 
-   (match (counter dummy_chain cctx_instance  st p) with   
+   (match (counter dummy_chain cctx_instance  st p) with 
       Ok v -> (v.0, v.1)
     | Err e -> (failwith e : return))

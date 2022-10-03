@@ -12,8 +12,8 @@
 [@inline] let addTez (n : tez) (m : tez) = n + m
 [@inline] let subTez (n : tez) (m : tez) : tez option = n - m
 [@inline] let leTez (a : tez ) (b : tez ) = a <= b
-[@inline] let ltTez (a : tez ) (b : tez ) =  a < b
-[@inline] let gtbTez (a : tez ) (b : tez ) =  a > b
+[@inline] let ltTez (a : tez ) (b : tez ) = a < b
+[@inline] let gtbTez (a : tez ) (b : tez ) = a > b
 [@inline] let eqTez (a : tez ) (b : tez ) = a = b
 [@inline] let natural_to_mutez (a: nat): tez = a * 1mutez
 [@inline] let divTez (a : tez) (b : tez) : tez = natural_to_mutez (a/b)
@@ -46,7 +46,7 @@ type ('t,'e) result =
   Ok of 't
 | Err of 'e
 
-let get_contract_unit (a : address) : unit contract  =
+let get_contract_unit (a : address) : unit contract =
   match (Tezos.get_contract_opt a : unit contract option) with
     Some c -> c
   | None -> (failwith ("Contract not found.") : unit contract)
@@ -92,7 +92,7 @@ let current_slot (c : chain ) = c.current_slot_
 let finalized_height (c : chain) = c.finalized_height_
 
 let test_account : address = ("tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" : address)
-let init_storage :  (timestamp * (tez * address)) =
+let init_storage : (timestamp * (tez * address)) =
           (Tezos.get_now (), (42tez,("tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx": address)))
 
 type time_coq = 
@@ -164,6 +164,6 @@ type storage = ((time_coq * (tez * address)) * ((address,tez) map * bool))
 type return = (operation) list * storage
 
 let main (p, st : msg_coq option * storage) : return = 
-   (match (crowdfunding_receive dummy_chain cctx_instance  st p) with   
+   (match (crowdfunding_receive dummy_chain cctx_instance  st p) with 
       Ok v -> (v.0, v.1)
     | Err e -> (failwith e : return))

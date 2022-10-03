@@ -10,4 +10,4 @@ match l with
 let sumAlt (xs : nat list) : nat = 
 foldLAlt () () addN xs 0n
 
-let main (st : unit * nat option) : operation list * (nat option)  = (([]: operation list), Some ( sumAlt([1n;2n;3n])))
+let main (st : unit * nat option) : operation list * (nat option) = (([]: operation list), Some ( sumAlt([1n;2n;3n])))
