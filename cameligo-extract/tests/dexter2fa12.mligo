@@ -264,6 +264,9 @@ Ok t0 -> (let allowances_0 = Map.update allowance_key (maybe (value_ param)) all
 ((Ok (setter_from_getter_State_allowances (fun (a : ((address * address), nat) map) -> allowances_0) state)):(dexter2FA12_State, dexter2FA12_Error) result))
  | Err e0 -> ((Err e0):(dexter2FA12_State, dexter2FA12_Error) result)
 
+let address_neqb (x : address) (y : address) : bool = 
+not (eq_addr x y)
+
 let target (m : dexter2FA12_mintOrBurn_param) : address = 
 match m with 
 Dext_build_mintOrBurn_param (target0, quantity0) -> quantity0
@@ -279,7 +282,7 @@ let setter_from_getter_State_total_supply  : (nat -> nat) -> dexter2FA12_State -
 set_State_total_supply
 
 let try_mint_or_burn (sender : address) (param : dexter2FA12_mintOrBurn_param) (state : dexter2FA12_State) : (dexter2FA12_State, dexter2FA12_Error) result = 
-match throwIf (not (eq_addr sender (admin state))) 1n with 
+match throwIf (address_neqb sender (admin state)) 1n with 
 Ok t0 -> (let tokens_ = tokens state in 
 let old_balance = match Map.find_opt (target param) tokens_ with 
 Some v0 -> v0

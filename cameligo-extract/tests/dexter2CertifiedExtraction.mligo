@@ -379,6 +379,9 @@ type dexter2FA12_Msg =
 let throwIf(type e) (cond : bool) (err : e) : (unit, e) result = 
 if cond then ((Err err):(unit, e) result) else ((Ok ()):(unit, e) result)
 
+let address_neqb (x : address) (y : address) : bool = 
+not (eq_addr x y)
+
 let tokenPool (s : dexter2CPMM_State) : nat = 
 s.tokenPool
 
@@ -413,7 +416,7 @@ let set_State_tokenPool (f : nat -> nat) (r : dexter2CPMM_State) : dexter2CPMM_S
 ({tokenPool = (f (tokenPool r)); xtzPool = (xtzPool r); lqtTotal = (lqtTotal r); selfIsUpdatingTokenPool = (selfIsUpdatingTokenPool r); freezeBaker = (freezeBaker r); manager = (manager r); tokenAddress = (tokenAddress r); tokenId = (tokenId r); lqtAddress = (lqtAddress r)}: dexter2CPMM_State)
 
 let update_token_pool_internal (ctx : cctx) (state : dexter2CPMM_State) (token_pool : dexter2CPMM_update_token_pool_internal_) : dEX2Extract_Result = 
-match throwIf (orb (not state.selfIsUpdatingTokenPool) (not (eq_addr (ctx_from ctx) state.tokenAddress))) 1n with 
+match throwIf (orb (not state.selfIsUpdatingTokenPool) (address_neqb (ctx_from ctx) state.tokenAddress)) 1n with 
 Ok t0 -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) 1n with 
 Ok t1 -> (match match token_pool with 
 []  -> ((Err 1n):(nat, dexter2CPMM_Error) result)
@@ -536,7 +539,7 @@ let set_State_freezeBaker (f : bool -> bool) (r : dexter2CPMM_State) : dexter2CP
 let set_baker (ctx : cctx) (state : dexter2CPMM_State) (param : dexter2CPMM_set_baker_param) : dEX2Extract_Result = 
 match throwIf state.selfIsUpdatingTokenPool 1n with 
 Ok t0 -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) 1n with 
-Ok t1 -> (match throwIf (not (eq_addr (ctx_from ctx) state.manager)) 1n with 
+Ok t1 -> (match throwIf (address_neqb (ctx_from ctx) state.manager) 1n with 
 Ok t2 -> (match throwIf state.freezeBaker 1n with 
 Ok t3 -> ((Ok ((set_State_freezeBaker (fun (a : bool) -> param.freezeBaker_) state), ((fun (x : key_hash option) -> [Tezos.set_delegate x]) param.baker))):((dexter2CPMM_State * operation list), dexter2CPMM_Error) result)
  | Err e0 -> ((Err e0):((dexter2CPMM_State * operation list), dexter2CPMM_Error) result))
@@ -550,7 +553,7 @@ let set_State_manager (f : address -> address) (r : dexter2CPMM_State) : dexter2
 let set_manager (ctx : cctx) (state : dexter2CPMM_State) (new_manager : address) : dEX2Extract_Result = 
 match throwIf state.selfIsUpdatingTokenPool 1n with 
 Ok t0 -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) 1n with 
-Ok t1 -> (match throwIf (not (eq_addr (ctx_from ctx) state.manager)) 1n with 
+Ok t1 -> (match throwIf (address_neqb (ctx_from ctx) state.manager) 1n with 
 Ok t2 -> ((Ok ((set_State_manager (fun (a : address) -> new_manager) state), ([]:operation list))):((dexter2CPMM_State * operation list), dexter2CPMM_Error) result)
  | Err e0 -> ((Err e0):((dexter2CPMM_State * operation list), dexter2CPMM_Error) result))
  | Err e0 -> ((Err e0):((dexter2CPMM_State * operation list), dexter2CPMM_Error) result))
@@ -562,8 +565,8 @@ let set_State_lqtAddress (f : address -> address) (r : dexter2CPMM_State) : dext
 let set_lqt_address (ctx : cctx) (state : dexter2CPMM_State) (new_lqt_address : address) : dEX2Extract_Result = 
 match throwIf state.selfIsUpdatingTokenPool 1n with 
 Ok t0 -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) 1n with 
-Ok t1 -> (match throwIf (not (eq_addr (ctx_from ctx) state.manager)) 1n with 
-Ok t2 -> (match throwIf (not (eq_addr state.lqtAddress ("tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU" : address))) 1n with 
+Ok t1 -> (match throwIf (address_neqb (ctx_from ctx) state.manager) 1n with 
+Ok t2 -> (match throwIf (address_neqb state.lqtAddress ("tz1Ke2h7sDdakHJQh8WX4Z372du1KChsksyU" : address)) 1n with 
 Ok t3 -> ((Ok ((set_State_lqtAddress (fun (a : address) -> new_lqt_address) state), ([]:operation list))):((dexter2CPMM_State * operation list), dexter2CPMM_Error) result)
  | Err e0 -> ((Err e0):((dexter2CPMM_State * operation list), dexter2CPMM_Error) result))
  | Err e0 -> ((Err e0):((dexter2CPMM_State * operation list), dexter2CPMM_Error) result))
@@ -571,7 +574,7 @@ Ok t3 -> ((Ok ((set_State_lqtAddress (fun (a : address) -> new_lqt_address) stat
  | Err e0 -> ((Err e0):((dexter2CPMM_State * operation list), dexter2CPMM_Error) result)
 
 let update_token_pool (ctx : cctx) (state : dexter2CPMM_State) : dEX2Extract_Result = 
-match throwIf (not (eq_addr (ctx_from ctx) (ctx_origin ctx))) 1n with 
+match throwIf (address_neqb (ctx_from ctx) (ctx_origin ctx)) 1n with 
 Ok t0 -> (match throwIf ((fun (x : tez) -> 0tez < x) (ctx_amount ctx)) 1n with 
 Ok t1 -> (match throwIf state.selfIsUpdatingTokenPool 1n with 
 Ok t2 -> (let balance_of_request = ({owner = (ctx_contract_address ctx); bal_req_token_id = state.tokenId}: fA2LegacyInterface_balance_of_request) in 
