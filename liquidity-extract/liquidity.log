@@ -1,169 +1,53 @@
 Main contract CounterCertifiedLiquidity
 Main contract CounterDepCertifiedLiquidity
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "powInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "modInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "eqInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "powInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "ltInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "modInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "mulInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "eqInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "ltInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "fst"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "mulInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "fst"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.65-41.69: Warning: 
-unused variable "ctx'"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.69-52.73: Warning: 
+unused variable "ctx'"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.38-2.43: Warning: 
+Unresolved type 'a. Type variables 'a were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "powInt"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.18-2.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "modInt"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "eqInt"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "ltInt"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.38-3.43: Warning: 
+Unresolved type 'b. Type variables 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "mulInt"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "snd"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "fst"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.18-3.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.65-41.69: Warning: 
 unused variable "ctx'"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.38-2.43: Warning: 
-Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.18-2.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.18-2.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.38-3.43: Warning: 
 Unresolved type 'b. Type variables 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.38-3.43: Warning: 
-Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.18-3.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.18-3.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:49.18-49.94: Warning: 
-Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@closure
-                                                            :(((msg ->
-                                                                  (((int *
-                                                                    key_hash)
-                                                                    ->
-                                                                    'e5
-                                                                    result)
-                                                                  [@closure
-                                                                    :
-                                                                    (((
-                                                                    (int *
-                                                                    key_hash)
-                                                                    ->
-                                                                    ((int ->
-                                                                    (int *
-                                                                    key_hash))
-                                                                    [@closure
-                                                                    :((int *
-                                                                    key_hash)
-                                                                    *
-                                                                    (int ->
-                                                                    ((int ->
-                                                                    int)
-                                                                    [@closure
-                                                                    :int])))]))
-                                                                    [@closure
-                                                                    :int ->
-                                                                    ((int ->
-                                                                    int)
-                                                                    [@closure
-                                                                    :int])])
-                                                                    * nat *
-                                                                    (((int *
-                                                                    key_hash)
-                                                                    ->
-                                                                    ((int ->
-                                                                    (int *
-                                                                    key_hash))
-                                                                    [@closure
-                                                                    :((int ->
-                                                                    ((int ->
-                                                                    int)[@closure
-                                                                    :int])) *
-                                                                    (int *
-                                                                    key_hash))]))
-                                                                    [@closure
-                                                                    :int ->
-                                                                    ((int ->
-                                                                    int)
-                                                                    [@closure
-                                                                    :int])])
-                                                                    *
-                                                                    (int ->
-                                                                    ((int ->
-                                                                    bool)
-                                                                    [@closure
-                                                                    :int])) *
-                                                                    msg)]))
-                                                               [@closure
-                                                                 :(((
-                                                                    (int *
-                                                                    key_hash)
-                                                                    ->
-                                                                    ((int ->
-                                                                    (int *
-                                                                    key_hash))
-                                                                    [@closure
-                                                                    :((int *
-                                                                    key_hash)
-                                                                    *
-                                                                    (int ->
-                                                                    ((int ->
-                                                                    int)
-                                                                    [@closure
-                                                                    :int])))]))
-                                                                    [@closure
-                                                                    :int ->
-                                                                    ((int ->
-                                                                    int)
-                                                                    [@closure
-                                                                    :int])])
-                                                                    * nat *
-                                                                    ((
-                                                                    (int *
-                                                                    key_hash)
-                                                                    ->
-                                                                    ((int ->
-                                                                    (int *
-                                                                    key_hash))
-                                                                    [@closure
-                                                                    :((int ->
-                                                                    ((int ->
-                                                                    int)[@closure
-                                                                    :int])) *
-                                                                    (int *
-                                                                    key_hash))]))
-                                                                    [@closure
-                                                                    :int ->
-                                                                    ((int ->
-                                                                    int)
-                                                                    [@closure
-                                                                    :int])])
-                                                                    *
-                                                                    (
-                                                                    int ->
-                                                                    ((int ->
-                                                                    bool)
-                                                                    [@closure
-                                                                    :int])))])
-                                                               * msg)]). Type variables 'e5 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.32-42.10: Warning: 
-Unresolved type (((int * key_hash) -> 'm5 result)[@closure
-                                   :(timestamp * (address * (dun * dun)))]). Type variables 'm5 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.61-42.10: Warning: 
-Unresolved type 'm5 result. Type variables 'm5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:60.18-60.98: Warning: 
 Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@closure
                                                             :(((coq_msg ->
@@ -293,14 +177,130 @@ Unresolved type (((int * key_hash) -> 'u5 result)[@closure
                                    :(timestamp * (address * (dun * dun)))]). Type variables 'u5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.65-53.10: Warning: 
 Unresolved type 'u5 result. Type variables 'u5 were replaced by unit.
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:49.18-49.94: Warning: 
+Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@closure
+                                                            :(((msg ->
+                                                                  (((int *
+                                                                    key_hash)
+                                                                    ->
+                                                                    'e5
+                                                                    result)
+                                                                  [@closure
+                                                                    :
+                                                                    (((
+                                                                    (int *
+                                                                    key_hash)
+                                                                    ->
+                                                                    ((int ->
+                                                                    (int *
+                                                                    key_hash))
+                                                                    [@closure
+                                                                    :((int *
+                                                                    key_hash)
+                                                                    *
+                                                                    (int ->
+                                                                    ((int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])))]))
+                                                                    [@closure
+                                                                    :int ->
+                                                                    ((int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])])
+                                                                    * nat *
+                                                                    (((int *
+                                                                    key_hash)
+                                                                    ->
+                                                                    ((int ->
+                                                                    (int *
+                                                                    key_hash))
+                                                                    [@closure
+                                                                    :((int ->
+                                                                    ((int ->
+                                                                    int)[@closure
+                                                                    :int])) *
+                                                                    (int *
+                                                                    key_hash))]))
+                                                                    [@closure
+                                                                    :int ->
+                                                                    ((int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])])
+                                                                    *
+                                                                    (int ->
+                                                                    ((int ->
+                                                                    bool)
+                                                                    [@closure
+                                                                    :int])) *
+                                                                    msg)]))
+                                                               [@closure
+                                                                 :(((
+                                                                    (int *
+                                                                    key_hash)
+                                                                    ->
+                                                                    ((int ->
+                                                                    (int *
+                                                                    key_hash))
+                                                                    [@closure
+                                                                    :((int *
+                                                                    key_hash)
+                                                                    *
+                                                                    (int ->
+                                                                    ((int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])))]))
+                                                                    [@closure
+                                                                    :int ->
+                                                                    ((int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])])
+                                                                    * nat *
+                                                                    ((
+                                                                    (int *
+                                                                    key_hash)
+                                                                    ->
+                                                                    ((int ->
+                                                                    (int *
+                                                                    key_hash))
+                                                                    [@closure
+                                                                    :((int ->
+                                                                    ((int ->
+                                                                    int)[@closure
+                                                                    :int])) *
+                                                                    (int *
+                                                                    key_hash))]))
+                                                                    [@closure
+                                                                    :int ->
+                                                                    ((int ->
+                                                                    int)
+                                                                    [@closure
+                                                                    :int])])
+                                                                    *
+                                                                    (
+                                                                    int ->
+                                                                    ((int ->
+                                                                    bool)
+                                                                    [@closure
+                                                                    :int])))])
+                                                               * msg)]). Type variables 'e5 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.32-42.10: Warning: 
+Unresolved type (((int * key_hash) -> 'm5 result)[@closure
+                                   :(timestamp * (address * (dun * dun)))]). Type variables 'm5 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.61-42.10: Warning: 
+Unresolved type 'm5 result. Type variables 'm5 were replaced by unit.
 Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
-File "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz" generated
-You may want to typecheck with:
-  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz
+File "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz" generated
+You may want to typecheck with:
+  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz
 Main contract CounterSubsetTypes
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
 unused variable "exist_"
@@ -333,6 +333,54 @@ Unresolved type 'o1. Type variables 'o1 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:16.11-16.12: Warning: 
 Unresolved type 'o1. Type variables 'o1 were replaced by unit.
 Main contract CrowdfundingCertifiedExtraction
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "eqb_time"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "orb"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "eqNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "lxorNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "ltNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "leNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "subNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "mulNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "addNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "multTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "divTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "evenTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "gtTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "subTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "powInt"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "modInt"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "eqInt"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "ltInt"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "leInt"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "subInt"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "mulInt"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "addInt"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "snd"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "fst"
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:62.18-62.98: Warning: 
 Unresolved type ((int -> (operation list * int))[@closure
                                   :(((coq_msg ->
@@ -421,63 +469,18 @@ Unresolved type ((int -> (operation list * int))[@closure
                                           (int ->
                                              ((int -> bool)[@closure :int])))])
                                      * coq_msg)]). Type variables 'w5 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.36-55.10: Warning: 
-Unresolved type ((int -> 'e6 result)[@closure :(timestamp * (address * (dun * dun)))]). Type variables 'e6 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.52-55.10: Warning: 
-Unresolved type 'e6 result. Type variables 'e6 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "eqb_time"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "orb"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "eqNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "lxorNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "ltNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "leNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "subNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "mulNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "addNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "multTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "divTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "evenTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "gtTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "subTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "powInt"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "modInt"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "eqInt"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "ltInt"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "leInt"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "subInt"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "mulInt"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "addInt"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "snd"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "fst"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:92.4-92.7: Warning: 
 unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:91.63-91.66: Warning: 
 unused variable "fst"
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.36-55.10: Warning: 
+Unresolved type ((int -> 'e6 result)[@closure :(timestamp * (address * (dun * dun)))]). Type variables 'e6 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.52-55.10: Warning: 
+Unresolved type 'e6 result. Type variables 'e6 were replaced by unit.
 Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.initializer.tz"
+File "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz" generated
+You may want to typecheck with:
+  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:2.18-2.19: Warning: 
@@ -486,9 +489,6 @@ Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:3.18-3.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-File "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz" generated
-You may want to typecheck with:
-  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:92.29-92.34: Warning: 
 Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:92.9-92.10: Warning: 
@@ -1235,8 +1235,8 @@ Unresolved type ((unit -> 'k19 result)[@closure :(timestamp * (address * (dun * 
 Unresolved type 'k19 result. Type variables 'k19 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:144.0-144.7: Warning: 
 Unresolved type 'k19 result. Type variables 'k19 were replaced by unit.
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/StackInterpreter.initializer.tz"
 Main contract Escrow
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/StackInterpreter.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:98.11-100.26: Warning: 
 unused variable "t2"
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:97.0-101.25: Warning: 
