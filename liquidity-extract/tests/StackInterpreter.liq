@@ -12,8 +12,8 @@ let rec powIntAcc((a,b,acc) : int*int*int) =
         if b <= 0 then acc
         else powIntAcc(a, (b-1), acc * a)
 let powInt(a : int)(b : int) = powIntAcc(a,b,1)
-let[@inline] andb (a : bool ) (b : bool ) = a & b
-let[@inline] orb (a : bool ) (b : bool ) = a || b
+let[@inline] andb (a : bool) (b : bool) = a & b
+let[@inline] orb (a : bool) (b : bool) = a || b
 type ('t,'e) result =
   Ok of 't
 | Err of 'e

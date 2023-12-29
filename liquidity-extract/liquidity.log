@@ -1,5 +1,4 @@
 Main contract CounterCertifiedLiquidity
-Main contract CounterDepCertifiedLiquidity
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
 unused variable "powInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
@@ -16,28 +15,29 @@ unused variable "snd"
 unused variable "fst"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.65-41.69: Warning: 
 unused variable "ctx'"
+Main contract CounterDepCertifiedLiquidity
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.18-2.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.38-3.43: Warning: 
+Unresolved type 'b. Type variables 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.18-3.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "powInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "modInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "eqInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.18-2.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "ltInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "mulInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.38-3.43: Warning: 
-Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "fst"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.18-3.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.69-52.73: Warning: 
 unused variable "ctx'"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.38-2.43: Warning: 
@@ -164,6 +164,7 @@ Unresolved type (((int * key_hash) -> 'm5 result)[@closure
                                    :(timestamp * (address * (dun * dun)))]). Type variables 'm5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.61-42.10: Warning: 
 Unresolved type 'm5 result. Type variables 'm5 were replaced by unit.
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:60.18-60.98: Warning: 
 Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@closure
                                                             :(((coq_msg ->
@@ -293,11 +294,10 @@ Unresolved type (((int * key_hash) -> 'u5 result)[@closure
                                    :(timestamp * (address * (dun * dun)))]). Type variables 'u5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.65-53.10: Warning: 
 Unresolved type 'u5 result. Type variables 'u5 were replaced by unit.
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz
@@ -332,7 +332,6 @@ Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 Unresolved type 'o1. Type variables 'o1 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:16.11-16.12: Warning: 
 Unresolved type 'o1. Type variables 'o1 were replaced by unit.
-Main contract CrowdfundingCertifiedExtraction
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:62.18-62.98: Warning: 
 Unresolved type ((int -> (operation list * int))[@closure
                                   :(((coq_msg ->
@@ -425,6 +424,11 @@ Unresolved type ((int -> (operation list * int))[@closure
 Unresolved type ((int -> 'e6 result)[@closure :(timestamp * (address * (dun * dun)))]). Type variables 'e6 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.52-55.10: Warning: 
 Unresolved type 'e6 result. Type variables 'e6 were replaced by unit.
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.initializer.tz"
+Main contract CrowdfundingCertifiedExtraction
+File "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz" generated
+You may want to typecheck with:
+  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
 unused variable "eqb_time"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
@@ -477,10 +481,6 @@ unused variable "fst"
 unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:91.63-91.66: Warning: 
 unused variable "fst"
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.initializer.tz"
-File "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz" generated
-You may want to typecheck with:
-  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:2.18-2.19: Warning: 
@@ -1293,9 +1293,6 @@ Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:3.18-3.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-File "tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz" generated
-You may want to typecheck with:
-  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:91.28-137.33: Warning: 
 Unresolved type (((timestamp * (address * (dun * dun))) ->
     ((state ->
@@ -1473,6 +1470,9 @@ Unresolved type (((timestamp * (address * (dun * dun))) ->
                                                                     dun)
                                                                     [@closure
                                                                     :dun])))]))]). Type variables 'm33, 'n33, 'o33, 'p33, 'q33, 'r33 were replaced by unit.
+File "tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz" generated
+You may want to typecheck with:
+  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:91.41-137.33: Warning: 
 Unresolved type ((state ->
     ((msg option -> result)[@closure

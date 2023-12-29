@@ -11,30 +11,30 @@
 
 [@inline] let addTez (n : tez) (m : tez) = n + m
 [@inline] let subTez (n : tez) (m : tez) : tez option = n - m
-[@inline] let leTez (a : tez ) (b : tez ) = a <= b
-[@inline] let ltTez (a : tez ) (b : tez ) = a < b
-[@inline] let gtbTez (a : tez ) (b : tez ) = a > b
-[@inline] let eqTez (a : tez ) (b : tez ) = a = b
-[@inline] let natural_to_mutez (a: nat): tez = a * 1mutez
+[@inline] let leTez (a : tez) (b : tez) = a <= b
+[@inline] let ltTez (a : tez) (b : tez) = a < b
+[@inline] let gtbTez (a : tez) (b : tez) = a > b
+[@inline] let eqTez (a : tez) (b : tez) = a = b
+[@inline] let natural_to_mutez (a: nat) : tez = a * 1mutez
 [@inline] let divTez (a : tez) (b : tez) : tez = natural_to_mutez (a/b)
 [@inline] let multTez (n : tez) (m : tez) = (n/1tez) * m
 [@inline] let evenTez (i : tez) = (i mod 2n) = 0tez
 
-[@inline] let addN (a : nat ) (b : nat ) = a + b
-[@inline] let multN (a : nat ) (b : nat ) = a * b
-[@inline] let modN (a : nat ) (b : nat ) = a mod b
-[@inline] let divN (a : nat ) (b : nat ) = a / b
-[@inline] let eqN (a : nat ) (b : nat ) = a = b
-[@inline] let lebN (a : nat ) (b : nat ) = a <= b
-[@inline] let ltbN (a : nat ) (b : nat ) = a < b
+[@inline] let addN (a : nat) (b : nat) = a + b
+[@inline] let multN (a : nat) (b : nat) = a * b
+[@inline] let modN (a : nat) (b : nat) = a mod b
+[@inline] let divN (a : nat) (b : nat) = a / b
+[@inline] let eqN (a : nat) (b : nat) = a = b
+[@inline] let lebN (a : nat) (b : nat) = a <= b
+[@inline] let ltbN (a : nat) (b : nat) = a < b
 let divN_opt (n : nat) (m : nat) : nat option = match ediv n m with | Some (q,_) -> Some q | None -> None
 let moduloN (n : nat) (m : nat) : nat = match ediv n m with | Some (_,r) -> r | None -> 0n
 let subOption (n : nat) (m : nat) : nat option = if n < m then None else Some (abs (n-m))
 let z_to_N (i : int) : nat = if i < 0 then 0n else abs i
 let z_of_N (n : nat) : int = int (n)
 
-[@inline] let andb (a : bool ) (b : bool ) = a && b
-[@inline] let orb (a : bool ) (b : bool ) = a || b
+[@inline] let andb (a : bool) (b : bool) = a && b
+[@inline] let orb (a : bool) (b : bool) = a || b
 
 [@inline] let eqb_time (a1 : timestamp) (a2 : timestamp) = a1 = a2
 [@inline] let leb_time (a1 : timestamp) (a2 : timestamp) = a1 <= a2
@@ -87,8 +87,8 @@ finalized_height_ = Tezos.get_level ();
 }
 
 (* chain projections as functions *)
-let chain_height (c : chain ) = c.chain_height_
-let current_slot (c : chain ) = c.current_slot_
+let chain_height (c : chain) = c.chain_height_
+let current_slot (c : chain) = c.current_slot_
 let finalized_height (c : chain) = c.finalized_height_
 
 let call_to_token (type msg) (addr : address) (amt : nat) (msg : msg) : operation =
@@ -98,9 +98,9 @@ let call_to_token (type msg) (addr : address) (amt : nat) (msg : msg) : operatio
   | None -> (failwith "Contract not found." : msg contract) in
   Tezos.transaction msg (natural_to_mutez amt) token_
 
-[@inline] let natural_to_mutez (a: nat): tez = a * 1mutez
+[@inline] let natural_to_mutez (a: nat) : tez = a * 1mutez
 
-[@inline] let mutez_to_natural (a: tez): nat = a / 1mutez
+[@inline] let mutez_to_natural (a: tez) : nat = a / 1mutez
 
 let xtz_transfer (to_ : address) (amount_ : nat) : (operation, nat) result =
   match (Tezos.get_contract_opt to_ : unit contract option) with

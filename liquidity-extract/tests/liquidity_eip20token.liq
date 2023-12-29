@@ -16,10 +16,10 @@ let powInt(a : int)(b : int) = powIntAcc(a,b,1)
 
 let[@inline] addTez (n : tez) (m : tez) = n + m
 let[@inline] subTez (n : tez) (m : tez) = n - m
-let[@inline] leTez (a : tez ) (b : tez ) = a <= b
-let[@inline] ltTez (a : tez ) (b : tez ) = a < b
-let[@inline] gtTez (a : tez ) (b : tez ) = a > b
-let[@inline] eqTez (a : tez ) (b : tez ) = a = b
+let[@inline] leTez (a : tez) (b : tez) = a <= b
+let[@inline] ltTez (a : tez) (b : tez) = a < b
+let[@inline] gtTez (a : tez) (b : tez) = a > b
+let[@inline] eqTez (a : tez) (b : tez) = a = b
 let[@inline] evenTez (i : tez) = match i/2tz with | Some (_, r) -> r=0tz | None -> false
 let tez_to_nat (a : tez) : nat =
 let (n, _) = match a / 1DUN with
@@ -37,8 +37,8 @@ let[@inline] ltNat (i : nat) (j : nat) = i < j
 let[@inline] lxorNat (i : nat) (j : nat) = i lxor j
 let[@inline] eqNat (i : nat) (j : nat) = i = j
 
-let[@inline] andb (a : bool ) (b : bool ) = a & b
-let[@inline] orb (a : bool ) (b : bool ) = a || b
+let[@inline] andb (a : bool) (b : bool) = a & b
+let[@inline] orb (a : bool) (b : bool) = a || b
 
 let[@inline] eqb_time (a1 : timestamp) (a2 : timestamp) = a1 = a2
 let[@inline] leb_time (a1 : timestamp) (a2 : timestamp) = a1 <= a2
