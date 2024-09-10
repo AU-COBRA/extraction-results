@@ -164,6 +164,7 @@ Unresolved type (((int * key_hash) -> 'm5 result)[@closure
                                    :(timestamp * (address * (dun * dun)))]). Type variables 'm5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.61-42.10: Warning: 
 Unresolved type 'm5 result. Type variables 'm5 were replaced by unit.
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:60.18-60.98: Warning: 
 Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@closure
                                                             :(((coq_msg ->
@@ -288,16 +289,15 @@ Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@clos
                                                                     [@closure
                                                                     :int])))])
                                                                * coq_msg)]). Type variables 'm5 were replaced by unit.
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.36-53.10: Warning: 
 Unresolved type (((int * key_hash) -> 'u5 result)[@closure
                                    :(timestamp * (address * (dun * dun)))]). Type variables 'u5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.65-53.10: Warning: 
 Unresolved type 'u5 result. Type variables 'u5 were replaced by unit.
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz
@@ -326,9 +326,9 @@ Unresolved type 'a. Type variables 'a were replaced by unit.
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:3.38-3.43: Warning: 
 Unresolved type 'b. Type variables 'b were replaced by unit.
-Main contract CrowdfundingCertifiedExtraction
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:3.18-3.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+Main contract CrowdfundingCertifiedExtraction
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:16.15-16.16: Warning: 
 Unresolved type 'o1. Type variables 'o1 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:16.11-16.12: Warning: 
@@ -1235,12 +1235,12 @@ Unresolved type ((unit -> 'k19 result)[@closure :(timestamp * (address * (dun * 
 Unresolved type 'k19 result. Type variables 'k19 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:144.0-144.7: Warning: 
 Unresolved type 'k19 result. Type variables 'k19 were replaced by unit.
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/StackInterpreter.initializer.tz"
 Main contract Escrow
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:98.11-100.26: Warning: 
 unused variable "t2"
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:97.0-101.25: Warning: 
 unused variable "t1"
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/StackInterpreter.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:110.11-113.26: Warning: 
 unused variable "t1"
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:109.0-114.25: Warning: 
