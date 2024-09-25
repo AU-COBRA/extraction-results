@@ -294,10 +294,10 @@ Unresolved type (((int * key_hash) -> 'u5 result)[@closure
                                    :(timestamp * (address * (dun * dun)))]). Type variables 'u5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.65-53.10: Warning: 
 Unresolved type 'u5 result. Type variables 'u5 were replaced by unit.
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz
@@ -1567,9 +1567,6 @@ Unresolved type ((msg option -> result)[@closure
                             [@closure
                               :((dun -> ((dun -> bool)[@closure :dun])) *
                                  (dun -> ((dun -> dun)[@closure :dun])))]))]). Type variables 'q33, 'r33 were replaced by unit.
-File "tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz" generated
-You may want to typecheck with:
-  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:139.58-141.25: Warning: 
 Unresolved type ((state -> result)[@closure
                     :(((msg * (timestamp * (address * (dun * dun)))) * (nat *
@@ -1798,6 +1795,9 @@ Unresolved type ((state -> result)[@closure
                             [@closure
                               :((dun -> ((dun -> bool)[@closure :dun])) *
                                  (dun -> ((dun -> dun)[@closure :dun])))]))]))]). Type variables 'm35, 'n35, 'o35, 'p35, 'q35, 'r35, 's35, 't35 were replaced by unit.
+File "tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz" generated
+You may want to typecheck with:
+  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:166.18-166.111: Warning: 
 Unresolved type ((state -> (operation list * state))[@closure
                                       :(((((msg * (timestamp * (address *
@@ -2514,6 +2514,9 @@ Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/e
 Main contract Liquidity_eip20token
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:78.11-78.12: Warning: 
 unused variable "t"
+File "tests/extracted-code/liquidity-extract/tests/escrow.tz" generated
+You may want to typecheck with:
+  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/escrow.tz
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq: Warning: 
 unused variable "eq_addr"
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq: Warning: 
@@ -2572,9 +2575,6 @@ unused variable "snd"
 unused variable "fst"
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:125.78-125.82: Warning: 
 unused variable "ctx_"
-File "tests/extracted-code/liquidity-extract/tests/escrow.tz" generated
-You may want to typecheck with:
-  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/escrow.tz
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:2.18-2.19: Warning: 
