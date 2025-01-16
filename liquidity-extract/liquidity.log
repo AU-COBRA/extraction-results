@@ -7,66 +7,66 @@ unused variable "powInt"
 unused variable "modInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
 unused variable "eqInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "ltInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "mulInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "snd"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
-unused variable "fst"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "powInt"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "ltInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "modInt"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "mulInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "eqInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.65-41.69: Warning: 
-unused variable "ctx'"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "ltInt"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "fst"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "mulInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "fst"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.65-41.69: Warning: 
+unused variable "ctx'"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.69-52.73: Warning: 
 unused variable "ctx'"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.38-2.43: Warning: 
+Unresolved type 'a. Type variables 'a were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.38-2.43: Warning: 
+Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
 unused variable "exist_"
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
 unused variable "powInt"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.18-2.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
 unused variable "modInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
 unused variable "eqInt"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.18-2.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
 unused variable "leInt"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.38-3.43: Warning: 
+Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
 unused variable "mulInt"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.38-3.43: Warning: 
+Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
 unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
 unused variable "fst"
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.56-54.60: Warning: 
-unused variable "ctx_"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.38-2.43: Warning: 
-Unresolved type 'a. Type variables 'a were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.18-2.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.38-3.43: Warning: 
-Unresolved type 'b. Type variables 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.38-2.43: Warning: 
-Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.18-3.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.18-2.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.38-3.43: Warning: 
-Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.18-3.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.56-54.60: Warning: 
+unused variable "ctx_"
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:2.18-2.19: Warning: 
@@ -79,7 +79,6 @@ Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 Unresolved type 'o1. Type variables 'o1 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:16.11-16.12: Warning: 
 Unresolved type 'o1. Type variables 'o1 were replaced by unit.
-Main contract CrowdfundingCertifiedExtraction
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:49.18-49.94: Warning: 
 Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@closure
                                                             :(((msg ->
@@ -191,6 +190,11 @@ Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@clos
                                                                     [@closure
                                                                     :int])))])
                                                                * msg)]). Type variables 'e5 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.32-42.10: Warning: 
+Unresolved type (((int * key_hash) -> 'm5 result)[@closure
+                                   :(timestamp * (address * (dun * dun)))]). Type variables 'm5 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.61-42.10: Warning: 
+Unresolved type 'm5 result. Type variables 'm5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:62.18-62.98: Warning: 
 Unresolved type ((int -> (operation list * int))[@closure
                                   :(((coq_msg ->
@@ -279,47 +283,6 @@ Unresolved type ((int -> (operation list * int))[@closure
                                           (int ->
                                              ((int -> bool)[@closure :int])))])
                                      * coq_msg)]). Type variables 'w5 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.32-42.10: Warning: 
-Unresolved type (((int * key_hash) -> 'm5 result)[@closure
-                                   :(timestamp * (address * (dun * dun)))]). Type variables 'm5 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.61-42.10: Warning: 
-Unresolved type 'm5 result. Type variables 'm5 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "eqb_time"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "orb"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "eqNat"
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.36-55.10: Warning: 
-Unresolved type ((int -> 'e6 result)[@closure :(timestamp * (address * (dun * dun)))]). Type variables 'e6 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "lxorNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "ltNat"
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.52-55.10: Warning: 
-Unresolved type 'e6 result. Type variables 'e6 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "leNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "subNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "mulNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "addNat"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "multTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "divTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "evenTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "gtTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "subTez"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "powInt"
-./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
-unused variable "modInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:60.18-60.98: Warning: 
 Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@closure
                                                             :(((coq_msg ->
@@ -444,6 +407,54 @@ Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@clos
                                                                     [@closure
                                                                     :int])))])
                                                                * coq_msg)]). Type variables 'm5 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.36-55.10: Warning: 
+Unresolved type ((int -> 'e6 result)[@closure :(timestamp * (address * (dun * dun)))]). Type variables 'e6 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.52-55.10: Warning: 
+Unresolved type 'e6 result. Type variables 'e6 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.36-53.10: Warning: 
+Unresolved type (((int * key_hash) -> 'u5 result)[@closure
+                                   :(timestamp * (address * (dun * dun)))]). Type variables 'u5 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.65-53.10: Warning: 
+Unresolved type 'u5 result. Type variables 'u5 were replaced by unit.
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.initializer.tz"
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
+Main contract CrowdfundingCertifiedExtraction
+File "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz" generated
+You may want to typecheck with:
+  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "eqb_time"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "orb"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "eqNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "lxorNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "ltNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "leNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "subNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "mulNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "addNat"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "multTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "divTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "evenTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "gtTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "subTez"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "powInt"
+./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
+unused variable "modInt"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
 unused variable "eqInt"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
@@ -460,24 +471,16 @@ unused variable "addInt"
 unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
 unused variable "fst"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.36-53.10: Warning: 
-Unresolved type (((int * key_hash) -> 'u5 result)[@closure
-                                   :(timestamp * (address * (dun * dun)))]). Type variables 'u5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:92.4-92.7: Warning: 
 unused variable "snd"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.65-53.10: Warning: 
-Unresolved type 'u5 result. Type variables 'u5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:91.63-91.66: Warning: 
 unused variable "fst"
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.initializer.tz"
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
-File "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz" generated
-You may want to typecheck with:
-  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz
 File "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.tz
+File "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz" generated
+You may want to typecheck with:
+  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:2.18-2.19: Warning: 
@@ -486,9 +489,6 @@ Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:3.18-3.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-File "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz" generated
-You may want to typecheck with:
-  dune-client typecheck script tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.tz
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:92.29-92.34: Warning: 
 Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:92.9-92.10: Warning: 
@@ -550,10 +550,6 @@ unused variable "setup0"
 ./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:142.53-142.57: Warning: 
 unused variable "ctx0"
 Main contract Escrow
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:98.11-100.26: Warning: 
-unused variable "t2"
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:97.0-101.25: Warning: 
-unused variable "t1"
 ./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:2.18-2.19: Warning: 
@@ -562,6 +558,10 @@ Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:3.18-3.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/escrow.liq:98.11-100.26: Warning: 
+unused variable "t2"
+./tests/extracted-code/liquidity-extract/tests/escrow.liq:97.0-101.25: Warning: 
+unused variable "t1"
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:110.11-113.26: Warning: 
 unused variable "t1"
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:109.0-114.25: Warning: 
@@ -672,183 +672,6 @@ Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 Unresolved type 'b. Type variables 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:3.18-3.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/escrow.liq:91.28-137.33: Warning: 
-Unresolved type (((timestamp * (address * (dun * dun))) ->
-    ((state ->
-        ((msg option -> result)[@closure
-                                 :((nat -> ((nat -> nat)[@closure :nat])) *
-                                    (bool -> ((bool -> bool)[@closure :bool]))
-                                    * (nat * (nat * nat)) * (timestamp *
-                                    (address * (dun * dun))) * nat *
-                                    ((dun ->
-                                        ((dun -> dun)[@closure
-                                                       :(dun * (dun -> nat))]))
-                                    [@closure :dun -> nat]) *
-                                    (dun -> ((dun -> bool)[@closure :dun])) *
-                                    (address ->
-                                       ((address -> bool)[@closure :address]))
-                                    * (dun -> ((dun -> bool)[@closure :dun]))
-                                    * (nat -> ((nat -> bool)[@closure :nat]))
-                                    *
-                                    ((dun ->
-                                        ((dun -> dun)[@closure
-                                                       :(dun * (dun -> nat))]))
-                                    [@closure :dun -> nat]) *
-                                    ('r33 option ->
-                                       (('q33 -> ('q33, 'r33) result)
-                                       [@closure :'r33 option]))
-                                    * state *
-                                    ((dun ->
-                                        ((dun -> dun option)[@closure
-                                                              :((dun ->
-                                                                   ((
-                                                                   dun ->
-                                                                    bool)
-                                                                   [@closure
-                                                                    :dun]))
-                                                                 * dun *
-                                                                 (dun ->
-                                                                    ((
-                                                                    dun ->
-                                                                    dun)
-                                                                    [@closure
-                                                                    :dun])))]))
-                                    [@closure
-                                      :((dun ->
-                                           ((dun -> bool)[@closure :dun]))
-                                         *
-                                         (dun ->
-                                            ((dun -> dun)[@closure :dun])))]))]))
-    [@closure
-      :((nat -> ((nat -> nat)[@closure :nat])) *
-         (bool -> ((bool -> bool)[@closure :bool])) * (nat * (nat * nat)) *
-         (timestamp * (address * (dun * dun))) * nat *
-         ((dun -> ((dun -> dun)[@closure :(dun * (dun -> nat))]))[@closure
-                                                                   :dun ->
-                                                                    nat])
-         * (dun -> ((dun -> bool)[@closure :dun])) *
-         (address -> ((address -> bool)[@closure :address])) *
-         (dun -> ((dun -> bool)[@closure :dun])) *
-         (nat -> ((nat -> bool)[@closure :nat])) *
-         ((dun -> ((dun -> dun)[@closure :(dun * (dun -> nat))]))[@closure
-                                                                   :dun ->
-                                                                    nat])
-         *
-         ('p33 option ->
-            (('o33 -> ('o33, 'p33) result)[@closure :'p33 option]))
-         *
-         ((dun ->
-             ((dun -> dun option)[@closure
-                                   :((dun -> ((dun -> bool)[@closure :dun]))
-                                      * dun *
-                                      (dun -> ((dun -> dun)[@closure :dun])))]))
-         [@closure
-           :((dun -> ((dun -> bool)[@closure :dun])) *
-              (dun -> ((dun -> dun)[@closure :dun])))]))]))[@closure
-                                                             :((nat ->
-                                                                  ((nat ->
-                                                                    nat)
-                                                                  [@closure
-                                                                    :
-                                                                    nat]))
-                                                                *
-                                                                (bool ->
-                                                                   ((
-                                                                   bool ->
-                                                                    bool)
-                                                                   [@closure
-                                                                    :bool]))
-                                                                * (nat * (nat
-                                                                * nat)) * nat
-                                                                *
-                                                                ((dun ->
-                                                                    ((
-                                                                    dun ->
-                                                                    dun)
-                                                                    [@closure
-                                                                    :(dun *
-                                                                    (dun ->
-                                                                    nat))]))
-                                                                [@closure
-                                                                  :dun -> nat])
-                                                                *
-                                                                (dun ->
-                                                                   ((
-                                                                   dun ->
-                                                                    bool)
-                                                                   [@closure
-                                                                    :dun]))
-                                                                *
-                                                                (address ->
-                                                                   ((
-                                                                   address ->
-                                                                    bool)
-                                                                   [@closure
-                                                                    :address]))
-                                                                *
-                                                                (dun ->
-                                                                   ((
-                                                                   dun ->
-                                                                    bool)
-                                                                   [@closure
-                                                                    :dun]))
-                                                                *
-                                                                (nat ->
-                                                                   ((
-                                                                   nat ->
-                                                                    bool)
-                                                                   [@closure
-                                                                    :nat]))
-                                                                *
-                                                                ((dun ->
-                                                                    ((
-                                                                    dun ->
-                                                                    dun)
-                                                                    [@closure
-                                                                    :(dun *
-                                                                    (dun ->
-                                                                    nat))]))
-                                                                [@closure
-                                                                  :dun -> nat])
-                                                                *
-                                                                ('n33 option
-                                                                   ->
-                                                                   ((
-                                                                   'm33 ->
-                                                                    ('m33,
-                                                                    'n33)
-                                                                    result)
-                                                                   [@closure
-                                                                    :'n33
-                                                                    option]))
-                                                                *
-                                                                ((dun ->
-                                                                    ((
-                                                                    dun ->
-                                                                    dun
-                                                                    option)
-                                                                    [@closure
-                                                                    :((dun ->
-                                                                    ((dun ->
-                                                                    bool)[@closure
-                                                                    :dun])) *
-                                                                    dun *
-                                                                    (dun ->
-                                                                    ((dun ->
-                                                                    dun)
-                                                                    [@closure
-                                                                    :dun])))]))
-                                                                [@closure
-                                                                  :((dun ->
-                                                                    ((dun ->
-                                                                    bool)
-                                                                    [@closure
-                                                                    :dun])) *
-                                                                    (dun ->
-                                                                    ((dun ->
-                                                                    dun)
-                                                                    [@closure
-                                                                    :dun])))]))]). Type variables 'm33, 'n33, 'o33, 'p33, 'q33, 'r33 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:151.18-151.94: Warning: 
 Unresolved type ((value list -> (operation list * value list))[@closure
                                                 :((instruction list *
@@ -1524,6 +1347,189 @@ Unresolved type ((value list -> (operation list * value list))[@closure
                                                                ((int -> int)
                                                                [@closure
                                                                  :int])))])])]))]). Type variables 'h19 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:142.32-144.7: Warning: 
+Unresolved type ((unit -> 'k19 result)[@closure :(timestamp * (address * (dun * dun)))]). Type variables 'k19 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:142.49-144.7: Warning: 
+Unresolved type 'k19 result. Type variables 'k19 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:144.0-144.7: Warning: 
+Unresolved type 'k19 result. Type variables 'k19 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/escrow.liq:91.28-137.33: Warning: 
+Unresolved type (((timestamp * (address * (dun * dun))) ->
+    ((state ->
+        ((msg option -> result)[@closure
+                                 :((nat -> ((nat -> nat)[@closure :nat])) *
+                                    (bool -> ((bool -> bool)[@closure :bool]))
+                                    * (nat * (nat * nat)) * (timestamp *
+                                    (address * (dun * dun))) * nat *
+                                    ((dun ->
+                                        ((dun -> dun)[@closure
+                                                       :(dun * (dun -> nat))]))
+                                    [@closure :dun -> nat]) *
+                                    (dun -> ((dun -> bool)[@closure :dun])) *
+                                    (address ->
+                                       ((address -> bool)[@closure :address]))
+                                    * (dun -> ((dun -> bool)[@closure :dun]))
+                                    * (nat -> ((nat -> bool)[@closure :nat]))
+                                    *
+                                    ((dun ->
+                                        ((dun -> dun)[@closure
+                                                       :(dun * (dun -> nat))]))
+                                    [@closure :dun -> nat]) *
+                                    ('r33 option ->
+                                       (('q33 -> ('q33, 'r33) result)
+                                       [@closure :'r33 option]))
+                                    * state *
+                                    ((dun ->
+                                        ((dun -> dun option)[@closure
+                                                              :((dun ->
+                                                                   ((
+                                                                   dun ->
+                                                                    bool)
+                                                                   [@closure
+                                                                    :dun]))
+                                                                 * dun *
+                                                                 (dun ->
+                                                                    ((
+                                                                    dun ->
+                                                                    dun)
+                                                                    [@closure
+                                                                    :dun])))]))
+                                    [@closure
+                                      :((dun ->
+                                           ((dun -> bool)[@closure :dun]))
+                                         *
+                                         (dun ->
+                                            ((dun -> dun)[@closure :dun])))]))]))
+    [@closure
+      :((nat -> ((nat -> nat)[@closure :nat])) *
+         (bool -> ((bool -> bool)[@closure :bool])) * (nat * (nat * nat)) *
+         (timestamp * (address * (dun * dun))) * nat *
+         ((dun -> ((dun -> dun)[@closure :(dun * (dun -> nat))]))[@closure
+                                                                   :dun ->
+                                                                    nat])
+         * (dun -> ((dun -> bool)[@closure :dun])) *
+         (address -> ((address -> bool)[@closure :address])) *
+         (dun -> ((dun -> bool)[@closure :dun])) *
+         (nat -> ((nat -> bool)[@closure :nat])) *
+         ((dun -> ((dun -> dun)[@closure :(dun * (dun -> nat))]))[@closure
+                                                                   :dun ->
+                                                                    nat])
+         *
+         ('p33 option ->
+            (('o33 -> ('o33, 'p33) result)[@closure :'p33 option]))
+         *
+         ((dun ->
+             ((dun -> dun option)[@closure
+                                   :((dun -> ((dun -> bool)[@closure :dun]))
+                                      * dun *
+                                      (dun -> ((dun -> dun)[@closure :dun])))]))
+         [@closure
+           :((dun -> ((dun -> bool)[@closure :dun])) *
+              (dun -> ((dun -> dun)[@closure :dun])))]))]))[@closure
+                                                             :((nat ->
+                                                                  ((nat ->
+                                                                    nat)
+                                                                  [@closure
+                                                                    :
+                                                                    nat]))
+                                                                *
+                                                                (bool ->
+                                                                   ((
+                                                                   bool ->
+                                                                    bool)
+                                                                   [@closure
+                                                                    :bool]))
+                                                                * (nat * (nat
+                                                                * nat)) * nat
+                                                                *
+                                                                ((dun ->
+                                                                    ((
+                                                                    dun ->
+                                                                    dun)
+                                                                    [@closure
+                                                                    :(dun *
+                                                                    (dun ->
+                                                                    nat))]))
+                                                                [@closure
+                                                                  :dun -> nat])
+                                                                *
+                                                                (dun ->
+                                                                   ((
+                                                                   dun ->
+                                                                    bool)
+                                                                   [@closure
+                                                                    :dun]))
+                                                                *
+                                                                (address ->
+                                                                   ((
+                                                                   address ->
+                                                                    bool)
+                                                                   [@closure
+                                                                    :address]))
+                                                                *
+                                                                (dun ->
+                                                                   ((
+                                                                   dun ->
+                                                                    bool)
+                                                                   [@closure
+                                                                    :dun]))
+                                                                *
+                                                                (nat ->
+                                                                   ((
+                                                                   nat ->
+                                                                    bool)
+                                                                   [@closure
+                                                                    :nat]))
+                                                                *
+                                                                ((dun ->
+                                                                    ((
+                                                                    dun ->
+                                                                    dun)
+                                                                    [@closure
+                                                                    :(dun *
+                                                                    (dun ->
+                                                                    nat))]))
+                                                                [@closure
+                                                                  :dun -> nat])
+                                                                *
+                                                                ('n33 option
+                                                                   ->
+                                                                   ((
+                                                                   'm33 ->
+                                                                    ('m33,
+                                                                    'n33)
+                                                                    result)
+                                                                   [@closure
+                                                                    :'n33
+                                                                    option]))
+                                                                *
+                                                                ((dun ->
+                                                                    ((
+                                                                    dun ->
+                                                                    dun
+                                                                    option)
+                                                                    [@closure
+                                                                    :((dun ->
+                                                                    ((dun ->
+                                                                    bool)[@closure
+                                                                    :dun])) *
+                                                                    dun *
+                                                                    (dun ->
+                                                                    ((dun ->
+                                                                    dun)
+                                                                    [@closure
+                                                                    :dun])))]))
+                                                                [@closure
+                                                                  :((dun ->
+                                                                    ((dun ->
+                                                                    bool)
+                                                                    [@closure
+                                                                    :dun])) *
+                                                                    (dun ->
+                                                                    ((dun ->
+                                                                    dun)
+                                                                    [@closure
+                                                                    :dun])))]))]). Type variables 'm33, 'n33, 'o33, 'p33, 'q33, 'r33 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:91.41-137.33: Warning: 
 Unresolved type ((state ->
     ((msg option -> result)[@closure
@@ -1621,12 +1627,7 @@ Unresolved type ((msg option -> result)[@closure
                             [@closure
                               :((dun -> ((dun -> bool)[@closure :dun])) *
                                  (dun -> ((dun -> dun)[@closure :dun])))]))]). Type variables 'q33, 'r33 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:142.32-144.7: Warning: 
-Unresolved type ((unit -> 'k19 result)[@closure :(timestamp * (address * (dun * dun)))]). Type variables 'k19 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:142.49-144.7: Warning: 
-Unresolved type 'k19 result. Type variables 'k19 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/StackInterpreter.liq:144.0-144.7: Warning: 
-Unresolved type 'k19 result. Type variables 'k19 were replaced by unit.
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/StackInterpreter.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/escrow.liq:139.58-141.25: Warning: 
 Unresolved type ((state -> result)[@closure
                     :(((msg * (timestamp * (address * (dun * dun)))) * (nat *
@@ -1855,7 +1856,6 @@ Unresolved type ((state -> result)[@closure
                             [@closure
                               :((dun -> ((dun -> bool)[@closure :dun])) *
                                  (dun -> ((dun -> dun)[@closure :dun])))]))]))]). Type variables 'm35, 'n35, 'o35, 'p35, 'q35, 'r35, 's35, 't35 were replaced by unit.
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/StackInterpreter.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:2.18-2.19: Warning: 
@@ -3162,10 +3162,10 @@ Unresolved type ((state -> result)[@closure
                           (('j19 -> ('j19, 'k19) result)[@closure
                                                           :'k19 option]))
                        * (int -> ((int -> int)[@closure :int])) * address)]). Type variables 'i19, 'j19, 'k19 were replaced by unit.
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/escrow.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz" generated
 You may want to typecheck with:
   dune-client typecheck script tests/extracted-code/liquidity-extract/tests/StackInterpreter.tz
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/escrow.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/liquidity_eip20token.liq:111.63-120.33: Warning: 
 Unresolved type ((state ->
     ((msg option -> result)[@closure
