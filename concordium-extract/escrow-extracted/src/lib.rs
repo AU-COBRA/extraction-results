@@ -183,9 +183,9 @@ impl From<ReceiveError> for Reject {
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
-pub enum Coq_Init_Datatypes_list<'a, A> {
+pub enum Corelib_Init_Datatypes_list<'a, A> {
   nil(PhantomData<&'a A>),
-  cons(PhantomData<&'a A>, A, &'a Coq_Init_Datatypes_list<'a, A>)
+  cons(PhantomData<&'a A>, A, &'a Corelib_Init_Datatypes_list<'a, A>)
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
@@ -283,11 +283,11 @@ fn ConCert_Examples_Escrow_Escrow_default_error(&'a self) -> ConCert_Examples_Es
     0)
 }
 
-fn Coq_ZArith_BinIntDef_Z_eqb(&'a self, a: i64, b: i64) -> bool { a == b }
-fn Coq_ZArith_BinIntDef_Z_eqb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> bool {
+fn Corelib_BinNums_IntDef_Z_eqb(&'a self, a: i64, b: i64) -> bool { a == b }
+fn Corelib_BinNums_IntDef_Z_eqb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> bool {
   self.closure(move |x| {
     self.closure(move |y| {
-      self.Coq_ZArith_BinIntDef_Z_eqb(
+      self.Corelib_BinNums_IntDef_Z_eqb(
         x,
         y)
     })
@@ -308,10 +308,10 @@ fn ConCert_Execution_Blockchain_ctx_amount__curried(&'a self) -> &'a dyn Fn(&'a 
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_even(&'a self, a: i64) -> bool { a.checked_rem(2).unwrap() == 0 }
-fn Coq_ZArith_BinIntDef_Z_even__curried(&'a self) -> &'a dyn Fn(i64) -> bool {
+fn Corelib_BinNums_IntDef_Z_even(&'a self, a: i64) -> bool { a.checked_rem(2).unwrap() == 0 }
+fn Corelib_BinNums_IntDef_Z_even__curried(&'a self) -> &'a dyn Fn(i64) -> bool {
   self.closure(move |z| {
-    self.Coq_ZArith_BinIntDef_Z_even(
+    self.Corelib_BinNums_IntDef_Z_even(
       z)
   })
 }
@@ -350,7 +350,7 @@ fn ConCert_Examples_Escrow_Escrow_init(&'a self, chain: &'a ConCert_Execution_Bl
           },
         } {
     Ok(t) => {
-      match match self.Coq_ZArith_BinIntDef_Z_eqb(
+      match match self.Corelib_BinNums_IntDef_Z_eqb(
                     self.ConCert_Execution_Blockchain_ctx_amount(
                       ctx),
                     0) {
@@ -364,7 +364,7 @@ fn ConCert_Examples_Escrow_Escrow_init(&'a self, chain: &'a ConCert_Execution_Bl
               },
             } {
         Ok(t2) => {
-          match match self.Coq_ZArith_BinIntDef_Z_even(
+          match match self.Corelib_BinNums_IntDef_Z_even(
                         self.ConCert_Execution_Blockchain_ctx_amount(
                           ctx)) {
                   true => {
@@ -458,41 +458,41 @@ fn ConCert_Execution_ResultMonad_result_of_option__curried<T: Copy, E: Copy>(&'a
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_ltb(&'a self, a: i64, b: i64) -> bool { a < b }
-fn Coq_ZArith_BinIntDef_Z_ltb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> bool {
+fn Corelib_BinNums_IntDef_Z_ltb(&'a self, a: i64, b: i64) -> bool { a < b }
+fn Corelib_BinNums_IntDef_Z_ltb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> bool {
   self.closure(move |x| {
     self.closure(move |y| {
-      self.Coq_ZArith_BinIntDef_Z_ltb(
+      self.Corelib_BinNums_IntDef_Z_ltb(
         x,
         y)
     })
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_add(&'a self, a: i64, b: i64) -> i64 { a.checked_add(b).unwrap() }
-fn Coq_ZArith_BinIntDef_Z_add__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
+fn Corelib_BinNums_IntDef_Z_add(&'a self, a: i64, b: i64) -> i64 { a.checked_add(b).unwrap() }
+fn Corelib_BinNums_IntDef_Z_add__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
   self.closure(move |x| {
     self.closure(move |y| {
-      self.Coq_ZArith_BinIntDef_Z_add(
+      self.Corelib_BinNums_IntDef_Z_add(
         x,
         y)
     })
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_opp(&'a self, a: i64) -> i64 { a.checked_neg().unwrap() }
-fn Coq_ZArith_BinIntDef_Z_opp__curried(&'a self) -> &'a dyn Fn(i64) -> i64 {
+fn Corelib_BinNums_IntDef_Z_opp(&'a self, a: i64) -> i64 { a.checked_neg().unwrap() }
+fn Corelib_BinNums_IntDef_Z_opp__curried(&'a self) -> &'a dyn Fn(i64) -> i64 {
   self.closure(move |x| {
-    self.Coq_ZArith_BinIntDef_Z_opp(
+    self.Corelib_BinNums_IntDef_Z_opp(
       x)
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_sub(&'a self, a: i64, b: i64) -> i64 { a.checked_sub(b).unwrap() }
-fn Coq_ZArith_BinIntDef_Z_sub__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
+fn Corelib_BinNums_IntDef_Z_sub(&'a self, a: i64, b: i64) -> i64 { a.checked_sub(b).unwrap() }
+fn Corelib_BinNums_IntDef_Z_sub__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
   self.closure(move |m| {
     self.closure(move |n| {
-      self.Coq_ZArith_BinIntDef_Z_sub(
+      self.Corelib_BinNums_IntDef_Z_sub(
         m,
         n)
     })
@@ -500,7 +500,7 @@ fn Coq_ZArith_BinIntDef_Z_sub__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn F
 }
 
 fn ConCert_Examples_Escrow_Escrow_subAmountOption(&'a self, n: ConCert_Execution_Blockchain_Amount<'a>, m: ConCert_Execution_Blockchain_Amount<'a>) -> Option<ConCert_Execution_Blockchain_Amount<'a>> {
-  match self.Coq_ZArith_BinIntDef_Z_ltb(
+  match self.Corelib_BinNums_IntDef_Z_ltb(
           n,
           m) {
     true => {
@@ -508,7 +508,7 @@ fn ConCert_Examples_Escrow_Escrow_subAmountOption(&'a self, n: ConCert_Execution
     },
     false => {
       Some(
-        self.Coq_ZArith_BinIntDef_Z_sub(
+        self.Corelib_BinNums_IntDef_Z_sub(
           n,
           m))
     },
@@ -538,48 +538,48 @@ fn ConCert_Execution_Blockchain_ctx_contract_balance__curried(&'a self) -> &'a d
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_mul(&'a self, a: i64, b: i64) -> i64 { a.checked_mul(b).unwrap() }
-fn Coq_ZArith_BinIntDef_Z_mul__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
+fn Corelib_BinNums_IntDef_Z_mul(&'a self, a: i64, b: i64) -> i64 { a.checked_mul(b).unwrap() }
+fn Corelib_BinNums_IntDef_Z_mul__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
   self.closure(move |x| {
     self.closure(move |y| {
-      self.Coq_ZArith_BinIntDef_Z_mul(
+      self.Corelib_BinNums_IntDef_Z_mul(
         x,
         y)
     })
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_leb(&'a self, a: i64, b: i64) -> bool { a <= b }
-fn Coq_ZArith_BinIntDef_Z_leb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> bool {
+fn Corelib_BinNums_IntDef_Z_leb(&'a self, a: i64, b: i64) -> bool { a <= b }
+fn Corelib_BinNums_IntDef_Z_leb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> bool {
   self.closure(move |x| {
     self.closure(move |y| {
-      self.Coq_ZArith_BinIntDef_Z_leb(
+      self.Corelib_BinNums_IntDef_Z_leb(
         x,
         y)
     })
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_pos_div_eucl(&'a self, a: u64, b: i64) -> __pair<i64, i64> {
+fn Corelib_BinNums_IntDef_Z_pos_div_eucl(&'a self, a: u64, b: i64) -> __pair<i64, i64> {
   __pos_elim!(
     a2, {
       __pair_elim!(
         r, q, {
           let r2 =
-            self.Coq_ZArith_BinIntDef_Z_add(
-              self.Coq_ZArith_BinIntDef_Z_mul(
+            self.Corelib_BinNums_IntDef_Z_add(
+              self.Corelib_BinNums_IntDef_Z_mul(
                 __Z_frompos(
                   __pos_zerobit(
                     1)),
                 q),
               __Z_frompos(
                 1));
-          match self.Coq_ZArith_BinIntDef_Z_ltb(
+          match self.Corelib_BinNums_IntDef_Z_ltb(
                   r2,
                   b) {
             true => {
               __mk_pair(
-                self.Coq_ZArith_BinIntDef_Z_mul(
+                self.Corelib_BinNums_IntDef_Z_mul(
                   __Z_frompos(
                     __pos_zerobit(
                       1)),
@@ -588,21 +588,21 @@ fn Coq_ZArith_BinIntDef_Z_pos_div_eucl(&'a self, a: u64, b: i64) -> __pair<i64, 
             },
             false => {
               __mk_pair(
-                self.Coq_ZArith_BinIntDef_Z_add(
-                  self.Coq_ZArith_BinIntDef_Z_mul(
+                self.Corelib_BinNums_IntDef_Z_add(
+                  self.Corelib_BinNums_IntDef_Z_mul(
                     __Z_frompos(
                       __pos_zerobit(
                         1)),
                     r),
                   __Z_frompos(
                     1)),
-                self.Coq_ZArith_BinIntDef_Z_sub(
+                self.Corelib_BinNums_IntDef_Z_sub(
                   r2,
                   b))
             },
           }
         },
-        self.Coq_ZArith_BinIntDef_Z_pos_div_eucl(
+        self.Corelib_BinNums_IntDef_Z_pos_div_eucl(
           a2,
           b))
     },
@@ -610,17 +610,17 @@ fn Coq_ZArith_BinIntDef_Z_pos_div_eucl(&'a self, a: u64, b: i64) -> __pair<i64, 
       __pair_elim!(
         r, q, {
           let r2 =
-            self.Coq_ZArith_BinIntDef_Z_mul(
+            self.Corelib_BinNums_IntDef_Z_mul(
               __Z_frompos(
                 __pos_zerobit(
                   1)),
               q);
-          match self.Coq_ZArith_BinIntDef_Z_ltb(
+          match self.Corelib_BinNums_IntDef_Z_ltb(
                   r2,
                   b) {
             true => {
               __mk_pair(
-                self.Coq_ZArith_BinIntDef_Z_mul(
+                self.Corelib_BinNums_IntDef_Z_mul(
                   __Z_frompos(
                     __pos_zerobit(
                       1)),
@@ -629,26 +629,26 @@ fn Coq_ZArith_BinIntDef_Z_pos_div_eucl(&'a self, a: u64, b: i64) -> __pair<i64, 
             },
             false => {
               __mk_pair(
-                self.Coq_ZArith_BinIntDef_Z_add(
-                  self.Coq_ZArith_BinIntDef_Z_mul(
+                self.Corelib_BinNums_IntDef_Z_add(
+                  self.Corelib_BinNums_IntDef_Z_mul(
                     __Z_frompos(
                       __pos_zerobit(
                         1)),
                     r),
                   __Z_frompos(
                     1)),
-                self.Coq_ZArith_BinIntDef_Z_sub(
+                self.Corelib_BinNums_IntDef_Z_sub(
                   r2,
                   b))
             },
           }
         },
-        self.Coq_ZArith_BinIntDef_Z_pos_div_eucl(
+        self.Corelib_BinNums_IntDef_Z_pos_div_eucl(
           a2,
           b))
     },
     {
-      match self.Coq_ZArith_BinIntDef_Z_leb(
+      match self.Corelib_BinNums_IntDef_Z_leb(
               __Z_frompos(
                 __pos_zerobit(
                   1)),
@@ -669,17 +669,17 @@ fn Coq_ZArith_BinIntDef_Z_pos_div_eucl(&'a self, a: u64, b: i64) -> __pair<i64, 
     },
     a)
 }
-fn Coq_ZArith_BinIntDef_Z_pos_div_eucl__curried(&'a self) -> &'a dyn Fn(u64) -> &'a dyn Fn(i64) -> __pair<i64, i64> {
+fn Corelib_BinNums_IntDef_Z_pos_div_eucl__curried(&'a self) -> &'a dyn Fn(u64) -> &'a dyn Fn(i64) -> __pair<i64, i64> {
   self.closure(move |a| {
     self.closure(move |b| {
-      self.Coq_ZArith_BinIntDef_Z_pos_div_eucl(
+      self.Corelib_BinNums_IntDef_Z_pos_div_eucl(
         a,
         b)
     })
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_div_eucl(&'a self, a: i64, b: i64) -> __pair<i64, i64> {
+fn Corelib_BinNums_IntDef_Z_div_eucl(&'a self, a: i64, b: i64) -> __pair<i64, i64> {
   __Z_elim!(
     {
       __mk_pair(
@@ -694,7 +694,7 @@ fn Coq_ZArith_BinIntDef_Z_div_eucl(&'a self, a: i64, b: i64) -> __pair<i64, i64>
             a)
         },
         p, {
-          self.Coq_ZArith_BinIntDef_Z_pos_div_eucl(
+          self.Corelib_BinNums_IntDef_Z_pos_div_eucl(
             a2,
             b)
         },
@@ -704,35 +704,35 @@ fn Coq_ZArith_BinIntDef_Z_div_eucl(&'a self, a: i64, b: i64) -> __pair<i64, i64>
               __Z_elim!(
                 {
                   __mk_pair(
-                    self.Coq_ZArith_BinIntDef_Z_opp(
+                    self.Corelib_BinNums_IntDef_Z_opp(
                       r),
                     0)
                 },
                 p, {
                   __mk_pair(
-                    self.Coq_ZArith_BinIntDef_Z_opp(
-                      self.Coq_ZArith_BinIntDef_Z_add(
+                    self.Corelib_BinNums_IntDef_Z_opp(
+                      self.Corelib_BinNums_IntDef_Z_add(
                         r,
                         __Z_frompos(
                           1))),
-                    self.Coq_ZArith_BinIntDef_Z_add(
+                    self.Corelib_BinNums_IntDef_Z_add(
                       b,
                       q))
                 },
                 p, {
                   __mk_pair(
-                    self.Coq_ZArith_BinIntDef_Z_opp(
-                      self.Coq_ZArith_BinIntDef_Z_add(
+                    self.Corelib_BinNums_IntDef_Z_opp(
+                      self.Corelib_BinNums_IntDef_Z_add(
                         r,
                         __Z_frompos(
                           1))),
-                    self.Coq_ZArith_BinIntDef_Z_add(
+                    self.Corelib_BinNums_IntDef_Z_add(
                       b,
                       q))
                 },
                 q)
             },
-            self.Coq_ZArith_BinIntDef_Z_pos_div_eucl(
+            self.Corelib_BinNums_IntDef_Z_pos_div_eucl(
               a2,
               __Z_frompos(
                 b2)))
@@ -752,35 +752,35 @@ fn Coq_ZArith_BinIntDef_Z_div_eucl(&'a self, a: i64, b: i64) -> __pair<i64, i64>
               __Z_elim!(
                 {
                   __mk_pair(
-                    self.Coq_ZArith_BinIntDef_Z_opp(
+                    self.Corelib_BinNums_IntDef_Z_opp(
                       r),
                     0)
                 },
                 p2, {
                   __mk_pair(
-                    self.Coq_ZArith_BinIntDef_Z_opp(
-                      self.Coq_ZArith_BinIntDef_Z_add(
+                    self.Corelib_BinNums_IntDef_Z_opp(
+                      self.Corelib_BinNums_IntDef_Z_add(
                         r,
                         __Z_frompos(
                           1))),
-                    self.Coq_ZArith_BinIntDef_Z_sub(
+                    self.Corelib_BinNums_IntDef_Z_sub(
                       b,
                       q))
                 },
                 p2, {
                   __mk_pair(
-                    self.Coq_ZArith_BinIntDef_Z_opp(
-                      self.Coq_ZArith_BinIntDef_Z_add(
+                    self.Corelib_BinNums_IntDef_Z_opp(
+                      self.Corelib_BinNums_IntDef_Z_add(
                         r,
                         __Z_frompos(
                           1))),
-                    self.Coq_ZArith_BinIntDef_Z_sub(
+                    self.Corelib_BinNums_IntDef_Z_sub(
                       b,
                       q))
                 },
                 q)
             },
-            self.Coq_ZArith_BinIntDef_Z_pos_div_eucl(
+            self.Corelib_BinNums_IntDef_Z_pos_div_eucl(
               a2,
               b))
         },
@@ -789,10 +789,10 @@ fn Coq_ZArith_BinIntDef_Z_div_eucl(&'a self, a: i64, b: i64) -> __pair<i64, i64>
             r, q, {
               __mk_pair(
                 r,
-                self.Coq_ZArith_BinIntDef_Z_opp(
+                self.Corelib_BinNums_IntDef_Z_opp(
                   q))
             },
-            self.Coq_ZArith_BinIntDef_Z_pos_div_eucl(
+            self.Corelib_BinNums_IntDef_Z_pos_div_eucl(
               a2,
               __Z_frompos(
                 b2)))
@@ -801,29 +801,29 @@ fn Coq_ZArith_BinIntDef_Z_div_eucl(&'a self, a: i64, b: i64) -> __pair<i64, i64>
     },
     a)
 }
-fn Coq_ZArith_BinIntDef_Z_div_eucl__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> __pair<i64, i64> {
+fn Corelib_BinNums_IntDef_Z_div_eucl__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> __pair<i64, i64> {
   self.closure(move |a| {
     self.closure(move |b| {
-      self.Coq_ZArith_BinIntDef_Z_div_eucl(
+      self.Corelib_BinNums_IntDef_Z_div_eucl(
         a,
         b)
     })
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_div(&'a self, a: i64, b: i64) -> i64 {
+fn Corelib_BinNums_IntDef_Z_div(&'a self, a: i64, b: i64) -> i64 {
   __pair_elim!(
     x, q, {
       x
     },
-    self.Coq_ZArith_BinIntDef_Z_div_eucl(
+    self.Corelib_BinNums_IntDef_Z_div_eucl(
       a,
       b))
 }
-fn Coq_ZArith_BinIntDef_Z_div__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
+fn Corelib_BinNums_IntDef_Z_div__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> i64 {
   self.closure(move |a| {
     self.closure(move |b| {
-      self.Coq_ZArith_BinIntDef_Z_div(
+      self.Corelib_BinNums_IntDef_Z_div(
         a,
         b)
     })
@@ -1008,33 +1008,33 @@ fn ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable__curried(&'a self
   })
 }
 
-fn Coq_Init_Nat_ltb(&'a self, a: u64, b: u64) -> bool { a < b }
-fn Coq_Init_Nat_ltb__curried(&'a self) -> &'a dyn Fn(u64) -> &'a dyn Fn(u64) -> bool {
+fn Corelib_Init_Nat_ltb(&'a self, a: u64, b: u64) -> bool { a < b }
+fn Corelib_Init_Nat_ltb__curried(&'a self) -> &'a dyn Fn(u64) -> &'a dyn Fn(u64) -> bool {
   self.closure(move |n| {
     self.closure(move |m| {
-      self.Coq_Init_Nat_ltb(
+      self.Corelib_Init_Nat_ltb(
         n,
         m)
     })
   })
 }
 
-fn Coq_Init_Nat_add(&'a self, a: u64, b: u64) -> u64 { a.checked_add(b).unwrap() }
-fn Coq_Init_Nat_add__curried(&'a self) -> &'a dyn Fn(u64) -> &'a dyn Fn(u64) -> u64 {
+fn Corelib_Init_Nat_add(&'a self, a: u64, b: u64) -> u64 { a.checked_add(b).unwrap() }
+fn Corelib_Init_Nat_add__curried(&'a self) -> &'a dyn Fn(u64) -> &'a dyn Fn(u64) -> u64 {
   self.closure(move |n| {
     self.closure(move |m| {
-      self.Coq_Init_Nat_add(
+      self.Corelib_Init_Nat_add(
         n,
         m)
     })
   })
 }
 
-fn Coq_ZArith_BinIntDef_Z_gtb(&'a self, a: i64, b: i64) -> bool { a > b }
-fn Coq_ZArith_BinIntDef_Z_gtb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> bool {
+fn Stdlib_ZArith_BinIntDef_Z_gtb(&'a self, a: i64, b: i64) -> bool { a > b }
+fn Stdlib_ZArith_BinIntDef_Z_gtb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn Fn(i64) -> bool {
   self.closure(move |x| {
     self.closure(move |y| {
-      self.Coq_ZArith_BinIntDef_Z_gtb(
+      self.Stdlib_ZArith_BinIntDef_Z_gtb(
         x,
         y)
     })
@@ -1042,7 +1042,7 @@ fn Coq_ZArith_BinIntDef_Z_gtb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn F
 }
 
 
-fn Coq_Init_Datatypes_andb__curried(&'a self) -> &'a dyn Fn(bool) -> &'a dyn Fn(bool) -> bool {
+fn Corelib_Init_Datatypes_andb__curried(&'a self) -> &'a dyn Fn(bool) -> &'a dyn Fn(bool) -> bool {
   self.closure(move |b1| {
     self.closure(move |b2| {
       __andb!(
@@ -1052,7 +1052,7 @@ fn Coq_Init_Datatypes_andb__curried(&'a self) -> &'a dyn Fn(bool) -> &'a dyn Fn(
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution_Blockchain_Chain<'a>, ctx: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>, state: &'a ConCert_Examples_Escrow_Escrow_State<'a>, msg: Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Result<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Coq_Init_Datatypes_list<'a, ActionBody<'a>>>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
+fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution_Blockchain_Chain<'a>, ctx: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>, state: &'a ConCert_Examples_Escrow_Escrow_State<'a>, msg: Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Result<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Corelib_Init_Datatypes_list<'a, ActionBody<'a>>>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
   match msg {
     Some(m) => {
       match m {
@@ -1069,13 +1069,13 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                       self.ConCert_Examples_Escrow_Escrow_default_error()) {
                 Ok(t) => {
                   let item_price =
-                    self.Coq_ZArith_BinIntDef_Z_div(
+                    self.Corelib_BinNums_IntDef_Z_div(
                       t,
                       __Z_frompos(
                         __pos_zerobit(
                           1)));
                   let expected =
-                    self.Coq_ZArith_BinIntDef_Z_mul(
+                    self.Corelib_BinNums_IntDef_Z_mul(
                       item_price,
                       __Z_frompos(
                         __pos_zerobit(
@@ -1095,7 +1095,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                           },
                         } {
                     Ok(t2) => {
-                      match match self.Coq_ZArith_BinIntDef_Z_eqb(
+                      match match self.Corelib_BinNums_IntDef_Z_eqb(
                                     self.ConCert_Execution_Blockchain_ctx_amount(
                                       ctx),
                                     expected) {
@@ -1124,7 +1124,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                                   }),
                                   state)),
                               self.alloc(
-                                Coq_Init_Datatypes_list::nil(
+                                Corelib_Init_Datatypes_list::nil(
                                   PhantomData))))
                         },
                         Err(e) => {
@@ -1168,7 +1168,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
             },
             &ConCert_Examples_Escrow_Escrow_NextStep::buyer_confirm(_) => {
               let item_price =
-                self.Coq_ZArith_BinIntDef_Z_div(
+                self.Corelib_BinNums_IntDef_Z_div(
                   self.ConCert_Execution_Blockchain_ctx_contract_balance(
                     ctx),
                   __Z_frompos(
@@ -1190,7 +1190,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                       },
                     } {
                 Ok(t) => {
-                  match match self.Coq_ZArith_BinIntDef_Z_eqb(
+                  match match self.Corelib_BinNums_IntDef_Z_eqb(
                                 self.ConCert_Execution_Blockchain_ctx_amount(
                                   ctx),
                                 0) {
@@ -1207,7 +1207,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                       let new_state =
                         self.ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable(
                           self.closure(move |x| {
-                            self.Coq_ZArith_BinIntDef_Z_mul(
+                            self.Corelib_BinNums_IntDef_Z_mul(
                               item_price,
                               __Z_frompos(
                                 __pos_onebit(
@@ -1228,7 +1228,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                         __mk_pair(
                           new_state,
                           self.alloc(
-                            Coq_Init_Datatypes_list::nil(
+                            Corelib_Init_Datatypes_list::nil(
                               PhantomData))))
                     },
                     Err(e) => {
@@ -1257,7 +1257,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
           match self.ConCert_Examples_Escrow_Escrow_next_step(
                   state) {
             &ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(_) => {
-              match match self.Coq_ZArith_BinIntDef_Z_eqb(
+              match match self.Corelib_BinNums_IntDef_Z_eqb(
                             self.ConCert_Execution_Blockchain_ctx_amount(
                               ctx),
                             0) {
@@ -1271,8 +1271,8 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                       },
                     } {
                 Ok(t) => {
-                  match match self.Coq_Init_Nat_ltb(
-                                self.Coq_Init_Nat_add(
+                  match match self.Corelib_Init_Nat_ltb(
+                                self.Corelib_Init_Nat_add(
                                   self.ConCert_Examples_Escrow_Escrow_last_action(
                                     state),
                                   __nat_succ(
@@ -1366,14 +1366,14 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                                 }),
                                 state),
                               self.alloc(
-                                Coq_Init_Datatypes_list::cons(
+                                Corelib_Init_Datatypes_list::cons(
                                   PhantomData,
                                   ActionBody::Transfer(
                                     self.ConCert_Examples_Escrow_Escrow_seller(
                                       state),
                                     balance),
                                   self.alloc(
-                                    Coq_Init_Datatypes_list::nil(
+                                    Corelib_Init_Datatypes_list::nil(
                                       PhantomData))))))
                         },
                         Err(e) => {
@@ -1399,7 +1399,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                 self.ConCert_Examples_Escrow_Escrow_default_error())
             },
             &ConCert_Examples_Escrow_Escrow_NextStep::withdrawals(_) => {
-              match match self.Coq_ZArith_BinIntDef_Z_eqb(
+              match match self.Corelib_BinNums_IntDef_Z_eqb(
                             self.ConCert_Execution_Blockchain_ctx_amount(
                               ctx),
                             0) {
@@ -1457,7 +1457,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                     Ok(t2) => {
                       __pair_elim!(
                         new_state, to_pay, {
-                          match match self.Coq_ZArith_BinIntDef_Z_gtb(
+                          match match self.Stdlib_ZArith_BinIntDef_Z_gtb(
                                         new_state,
                                         0) {
                                   true => {
@@ -1472,11 +1472,11 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                             Ok(t3) => {
                               let new_state2 =
                                 match __andb!(
-                                        self.Coq_ZArith_BinIntDef_Z_eqb(
+                                        self.Corelib_BinNums_IntDef_Z_eqb(
                                           self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
                                             to_pay),
                                           0),
-                                        self.Coq_ZArith_BinIntDef_Z_eqb(
+                                        self.Corelib_BinNums_IntDef_Z_eqb(
                                           self.ConCert_Examples_Escrow_Escrow_seller_withdrawable(
                                             to_pay),
                                           0)) {
@@ -1497,14 +1497,14 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                                 __mk_pair(
                                   new_state2,
                                   self.alloc(
-                                    Coq_Init_Datatypes_list::cons(
+                                    Corelib_Init_Datatypes_list::cons(
                                       PhantomData,
                                       ActionBody::Transfer(
                                         self.ConCert_Execution_Blockchain_ctx_from(
                                           ctx),
                                         new_state),
                                       self.alloc(
-                                        Coq_Init_Datatypes_list::nil(
+                                        Corelib_Init_Datatypes_list::nil(
                                           PhantomData))))))
                             },
                             Err(e) => {
@@ -1541,7 +1541,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
     },
   }
 }
-fn ConCert_Examples_Escrow_Escrow_receive__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a dyn Fn(Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Result<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Coq_Init_Datatypes_list<'a, ActionBody<'a>>>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
+fn ConCert_Examples_Escrow_Escrow_receive__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a dyn Fn(Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Result<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Corelib_Init_Datatypes_list<'a, ActionBody<'a>>>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
   self.closure(move |chain| {
     self.closure(move |ctx| {
       self.closure(move |state| {
@@ -1598,10 +1598,10 @@ fn contract_init<StateError: Default>(
     }
 }
 
-fn convert_actions<A: HasActions>(acts: &Coq_Init_Datatypes_list<ActionBody>) -> Result<A, ReceiveError> {
+fn convert_actions<A: HasActions>(acts: &Corelib_Init_Datatypes_list<ActionBody>) -> Result<A, ReceiveError> {
   match acts {
-    &Coq_Init_Datatypes_list::nil(_) => Ok(A::accept()),
-    &Coq_Init_Datatypes_list::cons(_, hd, tl) => {
+    &Corelib_Init_Datatypes_list::nil(_) => Ok(A::accept()),
+    &Corelib_Init_Datatypes_list::cons(_, hd, tl) => {
       let cact =
         if let ActionBody::Transfer(Address::Account(acc), amount) = hd {
           let amount = convert::TryInto::try_into(amount).map_err(|_| ReceiveError::ConvertActions)?;

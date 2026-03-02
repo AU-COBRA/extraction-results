@@ -86,23 +86,23 @@ type Comparison
   | Lt
   | Gt
 
-coq_PArith_BinPosDef_Pos_compare_cont : Comparison -> Positive -> Positive -> Comparison
-coq_PArith_BinPosDef_Pos_compare_cont r x y =
+corelib_BinNums_PosDef_Pos_compare_cont : Comparison -> Positive -> Positive -> Comparison
+corelib_BinNums_PosDef_Pos_compare_cont r x y =
   case x of
     XI p ->
       case y of
         XI q ->
-          coq_PArith_BinPosDef_Pos_compare_cont r p q
+          corelib_BinNums_PosDef_Pos_compare_cont r p q
         XO q ->
-          coq_PArith_BinPosDef_Pos_compare_cont Gt p q
+          corelib_BinNums_PosDef_Pos_compare_cont Gt p q
         XH ->
           Gt
     XO p ->
       case y of
         XI q ->
-          coq_PArith_BinPosDef_Pos_compare_cont Lt p q
+          corelib_BinNums_PosDef_Pos_compare_cont Lt p q
         XO q ->
-          coq_PArith_BinPosDef_Pos_compare_cont r p q
+          corelib_BinNums_PosDef_Pos_compare_cont r p q
         XH ->
           Gt
     XH ->
@@ -114,12 +114,12 @@ coq_PArith_BinPosDef_Pos_compare_cont r x y =
         XH ->
           r
 
-coq_PArith_BinPosDef_Pos_compare : Positive -> Positive -> Comparison
-coq_PArith_BinPosDef_Pos_compare =
-  coq_PArith_BinPosDef_Pos_compare_cont Eq
+corelib_BinNums_PosDef_Pos_compare : Positive -> Positive -> Comparison
+corelib_BinNums_PosDef_Pos_compare =
+  corelib_BinNums_PosDef_Pos_compare_cont Eq
 
-coq_Init_Datatypes_CompOpp : Comparison -> Comparison
-coq_Init_Datatypes_CompOpp r =
+corelib_Init_Datatypes_CompOpp : Comparison -> Comparison
+corelib_Init_Datatypes_CompOpp r =
   case r of
     Eq ->
       Eq
@@ -128,8 +128,8 @@ coq_Init_Datatypes_CompOpp r =
     Gt ->
       Lt
 
-coq_ZArith_BinIntDef_Z_compare : Z -> Z -> Comparison
-coq_ZArith_BinIntDef_Z_compare x y =
+corelib_BinNums_IntDef_Z_compare : Z -> Z -> Comparison
+corelib_BinNums_IntDef_Z_compare x y =
   case x of
     Z0 ->
       case y of
@@ -144,7 +144,7 @@ coq_ZArith_BinIntDef_Z_compare x y =
         Z0 ->
           Gt
         Zpos y2 ->
-          coq_PArith_BinPosDef_Pos_compare x2 y2
+          corelib_BinNums_PosDef_Pos_compare x2 y2
         Zneg y2 ->
           Gt
     Zneg x2 ->
@@ -154,11 +154,11 @@ coq_ZArith_BinIntDef_Z_compare x y =
         Zpos y2 ->
           Lt
         Zneg y2 ->
-          coq_Init_Datatypes_CompOpp (coq_PArith_BinPosDef_Pos_compare x2 y2)
+          corelib_Init_Datatypes_CompOpp (corelib_BinNums_PosDef_Pos_compare x2 y2)
 
-coq_ZArith_BinIntDef_Z_ltb : Z -> Z -> Bool
-coq_ZArith_BinIntDef_Z_ltb x y =
-  case coq_ZArith_BinIntDef_Z_compare x y of
+corelib_BinNums_IntDef_Z_ltb : Z -> Z -> Bool
+corelib_BinNums_IntDef_Z_ltb x y =
+  case corelib_BinNums_IntDef_Z_compare x y of
     Eq ->
       False
     Lt ->
@@ -166,18 +166,18 @@ coq_ZArith_BinIntDef_Z_ltb x y =
     Gt ->
       False
 
-coq_PArith_BinPosDef_Pos_succ : Positive -> Positive
-coq_PArith_BinPosDef_Pos_succ x =
+corelib_BinNums_PosDef_Pos_succ : Positive -> Positive
+corelib_BinNums_PosDef_Pos_succ x =
   case x of
     XI p ->
-      XO (coq_PArith_BinPosDef_Pos_succ p)
+      XO (corelib_BinNums_PosDef_Pos_succ p)
     XO p ->
       XI p
     XH ->
       XO XH
 
-coq_PArith_BinPosDef_Pos_add : Positive -> Positive -> Positive
-coq_PArith_BinPosDef_Pos_add =
+corelib_BinNums_PosDef_Pos_add : Positive -> Positive -> Positive
+corelib_BinNums_PosDef_Pos_add =
   let
     add x y =
       case x of
@@ -188,7 +188,7 @@ coq_PArith_BinPosDef_Pos_add =
             XO q ->
               XI (add p q)
             XH ->
-              XO (coq_PArith_BinPosDef_Pos_succ p)
+              XO (corelib_BinNums_PosDef_Pos_succ p)
         XO p ->
           case y of
             XI q ->
@@ -200,7 +200,7 @@ coq_PArith_BinPosDef_Pos_add =
         XH ->
           case y of
             XI q ->
-              XO (coq_PArith_BinPosDef_Pos_succ q)
+              XO (corelib_BinNums_PosDef_Pos_succ q)
             XO q ->
               XI q
             XH ->
@@ -214,7 +214,7 @@ coq_PArith_BinPosDef_Pos_add =
             XO q ->
               XO (add_carry p q)
             XH ->
-              XI (coq_PArith_BinPosDef_Pos_succ p)
+              XI (corelib_BinNums_PosDef_Pos_succ p)
         XO p ->
           case y of
             XI q ->
@@ -222,20 +222,20 @@ coq_PArith_BinPosDef_Pos_add =
             XO q ->
               XI (add p q)
             XH ->
-              XO (coq_PArith_BinPosDef_Pos_succ p)
+              XO (corelib_BinNums_PosDef_Pos_succ p)
         XH ->
           case y of
             XI q ->
-              XI (coq_PArith_BinPosDef_Pos_succ q)
+              XI (corelib_BinNums_PosDef_Pos_succ q)
             XO q ->
-              XO (coq_PArith_BinPosDef_Pos_succ q)
+              XO (corelib_BinNums_PosDef_Pos_succ q)
             XH ->
               XI XH
   in
   add
 
-coq_ZArith_BinIntDef_Z_double : Z -> Z
-coq_ZArith_BinIntDef_Z_double x =
+corelib_BinNums_IntDef_Z_double : Z -> Z
+corelib_BinNums_IntDef_Z_double x =
   case x of
     Z0 ->
       Z0
@@ -244,66 +244,66 @@ coq_ZArith_BinIntDef_Z_double x =
     Zneg p ->
       Zneg (XO p)
 
-coq_PArith_BinPosDef_Pos_pred_double : Positive -> Positive
-coq_PArith_BinPosDef_Pos_pred_double x =
+corelib_BinNums_PosDef_Pos_pred_double : Positive -> Positive
+corelib_BinNums_PosDef_Pos_pred_double x =
   case x of
     XI p ->
       XI (XO p)
     XO p ->
-      XI (coq_PArith_BinPosDef_Pos_pred_double p)
+      XI (corelib_BinNums_PosDef_Pos_pred_double p)
     XH ->
       XH
 
-coq_ZArith_BinIntDef_Z_succ_double : Z -> Z
-coq_ZArith_BinIntDef_Z_succ_double x =
+corelib_BinNums_IntDef_Z_succ_double : Z -> Z
+corelib_BinNums_IntDef_Z_succ_double x =
   case x of
     Z0 ->
       Zpos XH
     Zpos p ->
       Zpos (XI p)
     Zneg p ->
-      Zneg (coq_PArith_BinPosDef_Pos_pred_double p)
+      Zneg (corelib_BinNums_PosDef_Pos_pred_double p)
 
-coq_ZArith_BinIntDef_Z_pred_double : Z -> Z
-coq_ZArith_BinIntDef_Z_pred_double x =
+corelib_BinNums_IntDef_Z_pred_double : Z -> Z
+corelib_BinNums_IntDef_Z_pred_double x =
   case x of
     Z0 ->
       Zneg XH
     Zpos p ->
-      Zpos (coq_PArith_BinPosDef_Pos_pred_double p)
+      Zpos (corelib_BinNums_PosDef_Pos_pred_double p)
     Zneg p ->
       Zneg (XI p)
 
-coq_ZArith_BinIntDef_Z_pos_sub : Positive -> Positive -> Z
-coq_ZArith_BinIntDef_Z_pos_sub x y =
+corelib_BinNums_IntDef_Z_pos_sub : Positive -> Positive -> Z
+corelib_BinNums_IntDef_Z_pos_sub x y =
   case x of
     XI p ->
       case y of
         XI q ->
-          coq_ZArith_BinIntDef_Z_double (coq_ZArith_BinIntDef_Z_pos_sub p q)
+          corelib_BinNums_IntDef_Z_double (corelib_BinNums_IntDef_Z_pos_sub p q)
         XO q ->
-          coq_ZArith_BinIntDef_Z_succ_double (coq_ZArith_BinIntDef_Z_pos_sub p q)
+          corelib_BinNums_IntDef_Z_succ_double (corelib_BinNums_IntDef_Z_pos_sub p q)
         XH ->
           Zpos (XO p)
     XO p ->
       case y of
         XI q ->
-          coq_ZArith_BinIntDef_Z_pred_double (coq_ZArith_BinIntDef_Z_pos_sub p q)
+          corelib_BinNums_IntDef_Z_pred_double (corelib_BinNums_IntDef_Z_pos_sub p q)
         XO q ->
-          coq_ZArith_BinIntDef_Z_double (coq_ZArith_BinIntDef_Z_pos_sub p q)
+          corelib_BinNums_IntDef_Z_double (corelib_BinNums_IntDef_Z_pos_sub p q)
         XH ->
-          Zpos (coq_PArith_BinPosDef_Pos_pred_double p)
+          Zpos (corelib_BinNums_PosDef_Pos_pred_double p)
     XH ->
       case y of
         XI q ->
           Zneg (XO q)
         XO q ->
-          Zneg (coq_PArith_BinPosDef_Pos_pred_double q)
+          Zneg (corelib_BinNums_PosDef_Pos_pred_double q)
         XH ->
           Z0
 
-coq_ZArith_BinIntDef_Z_add : Z -> Z -> Z
-coq_ZArith_BinIntDef_Z_add x y =
+corelib_BinNums_IntDef_Z_add : Z -> Z -> Z
+corelib_BinNums_IntDef_Z_add x y =
   case x of
     Z0 ->
       y
@@ -312,20 +312,20 @@ coq_ZArith_BinIntDef_Z_add x y =
         Z0 ->
           x
         Zpos y2 ->
-          Zpos (coq_PArith_BinPosDef_Pos_add x2 y2)
+          Zpos (corelib_BinNums_PosDef_Pos_add x2 y2)
         Zneg y2 ->
-          coq_ZArith_BinIntDef_Z_pos_sub x2 y2
+          corelib_BinNums_IntDef_Z_pos_sub x2 y2
     Zneg x2 ->
       case y of
         Z0 ->
           x
         Zpos y2 ->
-          coq_ZArith_BinIntDef_Z_pos_sub y2 x2
+          corelib_BinNums_IntDef_Z_pos_sub y2 x2
         Zneg y2 ->
-          Zneg (coq_PArith_BinPosDef_Pos_add x2 y2)
+          Zneg (corelib_BinNums_PosDef_Pos_add x2 y2)
 
-coq_ZArith_BinIntDef_Z_opp : Z -> Z
-coq_ZArith_BinIntDef_Z_opp x =
+corelib_BinNums_IntDef_Z_opp : Z -> Z
+corelib_BinNums_IntDef_Z_opp x =
   case x of
     Z0 ->
       Z0
@@ -334,34 +334,34 @@ coq_ZArith_BinIntDef_Z_opp x =
     Zneg x2 ->
       Zpos x2
 
-coq_ZArith_BinIntDef_Z_sub : Z -> Z -> Z
-coq_ZArith_BinIntDef_Z_sub m n =
-  coq_ZArith_BinIntDef_Z_add m (coq_ZArith_BinIntDef_Z_opp n)
+corelib_BinNums_IntDef_Z_sub : Z -> Z -> Z
+corelib_BinNums_IntDef_Z_sub m n =
+  corelib_BinNums_IntDef_Z_add m (corelib_BinNums_IntDef_Z_opp n)
 
 conCert_Examples_Escrow_Escrow_subAmountOption : Z -> Z -> Option Z
 conCert_Examples_Escrow_Escrow_subAmountOption n m =
-  case coq_ZArith_BinIntDef_Z_ltb n m of
+  case corelib_BinNums_IntDef_Z_ltb n m of
     True ->
       None
     False ->
-      Some (coq_ZArith_BinIntDef_Z_sub n m)
+      Some (corelib_BinNums_IntDef_Z_sub n m)
 
 conCert_Examples_Escrow_Escrow_default_error : Error
 conCert_Examples_Escrow_Escrow_default_error =
   S O
 
-coq_PArith_BinPosDef_Pos_mul : Positive -> Positive -> Positive
-coq_PArith_BinPosDef_Pos_mul x y =
+corelib_BinNums_PosDef_Pos_mul : Positive -> Positive -> Positive
+corelib_BinNums_PosDef_Pos_mul x y =
   case x of
     XI p ->
-      coq_PArith_BinPosDef_Pos_add y (XO (coq_PArith_BinPosDef_Pos_mul p y))
+      corelib_BinNums_PosDef_Pos_add y (XO (corelib_BinNums_PosDef_Pos_mul p y))
     XO p ->
-      XO (coq_PArith_BinPosDef_Pos_mul p y)
+      XO (corelib_BinNums_PosDef_Pos_mul p y)
     XH ->
       y
 
-coq_ZArith_BinIntDef_Z_mul : Z -> Z -> Z
-coq_ZArith_BinIntDef_Z_mul x y =
+corelib_BinNums_IntDef_Z_mul : Z -> Z -> Z
+corelib_BinNums_IntDef_Z_mul x y =
   case x of
     Z0 ->
       Z0
@@ -370,21 +370,21 @@ coq_ZArith_BinIntDef_Z_mul x y =
         Z0 ->
           Z0
         Zpos y2 ->
-          Zpos (coq_PArith_BinPosDef_Pos_mul x2 y2)
+          Zpos (corelib_BinNums_PosDef_Pos_mul x2 y2)
         Zneg y2 ->
-          Zneg (coq_PArith_BinPosDef_Pos_mul x2 y2)
+          Zneg (corelib_BinNums_PosDef_Pos_mul x2 y2)
     Zneg x2 ->
       case y of
         Z0 ->
           Z0
         Zpos y2 ->
-          Zneg (coq_PArith_BinPosDef_Pos_mul x2 y2)
+          Zneg (corelib_BinNums_PosDef_Pos_mul x2 y2)
         Zneg y2 ->
-          Zpos (coq_PArith_BinPosDef_Pos_mul x2 y2)
+          Zpos (corelib_BinNums_PosDef_Pos_mul x2 y2)
 
-coq_ZArith_BinIntDef_Z_leb : Z -> Z -> Bool
-coq_ZArith_BinIntDef_Z_leb x y =
-  case coq_ZArith_BinIntDef_Z_compare x y of
+corelib_BinNums_IntDef_Z_leb : Z -> Z -> Bool
+corelib_BinNums_IntDef_Z_leb x y =
+  case corelib_BinNums_IntDef_Z_compare x y of
     Eq ->
       True
     Lt ->
@@ -392,42 +392,42 @@ coq_ZArith_BinIntDef_Z_leb x y =
     Gt ->
       False
 
-coq_ZArith_BinIntDef_Z_pos_div_eucl : Positive -> Z -> Prod Z Z
-coq_ZArith_BinIntDef_Z_pos_div_eucl a b =
+corelib_BinNums_IntDef_Z_pos_div_eucl : Positive -> Z -> Prod Z Z
+corelib_BinNums_IntDef_Z_pos_div_eucl a b =
   case a of
     XI a2 ->
-      case coq_ZArith_BinIntDef_Z_pos_div_eucl a2 b of
+      case corelib_BinNums_IntDef_Z_pos_div_eucl a2 b of
         Pair q r ->
           let
             r2 =
-              coq_ZArith_BinIntDef_Z_add (coq_ZArith_BinIntDef_Z_mul (Zpos (XO XH)) r) (Zpos XH)
+              corelib_BinNums_IntDef_Z_add (corelib_BinNums_IntDef_Z_mul (Zpos (XO XH)) r) (Zpos XH)
           in
-          case coq_ZArith_BinIntDef_Z_ltb r2 b of
+          case corelib_BinNums_IntDef_Z_ltb r2 b of
             True ->
-              Pair (coq_ZArith_BinIntDef_Z_mul (Zpos (XO XH)) q) r2
+              Pair (corelib_BinNums_IntDef_Z_mul (Zpos (XO XH)) q) r2
             False ->
-              Pair (coq_ZArith_BinIntDef_Z_add (coq_ZArith_BinIntDef_Z_mul (Zpos (XO XH)) q) (Zpos XH)) (coq_ZArith_BinIntDef_Z_sub r2 b)
+              Pair (corelib_BinNums_IntDef_Z_add (corelib_BinNums_IntDef_Z_mul (Zpos (XO XH)) q) (Zpos XH)) (corelib_BinNums_IntDef_Z_sub r2 b)
     XO a2 ->
-      case coq_ZArith_BinIntDef_Z_pos_div_eucl a2 b of
+      case corelib_BinNums_IntDef_Z_pos_div_eucl a2 b of
         Pair q r ->
           let
             r2 =
-              coq_ZArith_BinIntDef_Z_mul (Zpos (XO XH)) r
+              corelib_BinNums_IntDef_Z_mul (Zpos (XO XH)) r
           in
-          case coq_ZArith_BinIntDef_Z_ltb r2 b of
+          case corelib_BinNums_IntDef_Z_ltb r2 b of
             True ->
-              Pair (coq_ZArith_BinIntDef_Z_mul (Zpos (XO XH)) q) r2
+              Pair (corelib_BinNums_IntDef_Z_mul (Zpos (XO XH)) q) r2
             False ->
-              Pair (coq_ZArith_BinIntDef_Z_add (coq_ZArith_BinIntDef_Z_mul (Zpos (XO XH)) q) (Zpos XH)) (coq_ZArith_BinIntDef_Z_sub r2 b)
+              Pair (corelib_BinNums_IntDef_Z_add (corelib_BinNums_IntDef_Z_mul (Zpos (XO XH)) q) (Zpos XH)) (corelib_BinNums_IntDef_Z_sub r2 b)
     XH ->
-      case coq_ZArith_BinIntDef_Z_leb (Zpos (XO XH)) b of
+      case corelib_BinNums_IntDef_Z_leb (Zpos (XO XH)) b of
         True ->
           Pair Z0 (Zpos XH)
         False ->
           Pair (Zpos XH) Z0
 
-coq_ZArith_BinIntDef_Z_div_eucl : Z -> Z -> Prod Z Z
-coq_ZArith_BinIntDef_Z_div_eucl a b =
+corelib_BinNums_IntDef_Z_div_eucl : Z -> Z -> Prod Z Z
+corelib_BinNums_IntDef_Z_div_eucl a b =
   case a of
     Z0 ->
       Pair Z0 Z0
@@ -436,39 +436,39 @@ coq_ZArith_BinIntDef_Z_div_eucl a b =
         Z0 ->
           Pair Z0 a
         Zpos p ->
-          coq_ZArith_BinIntDef_Z_pos_div_eucl a2 b
+          corelib_BinNums_IntDef_Z_pos_div_eucl a2 b
         Zneg b2 ->
-          case coq_ZArith_BinIntDef_Z_pos_div_eucl a2 (Zpos b2) of
+          case corelib_BinNums_IntDef_Z_pos_div_eucl a2 (Zpos b2) of
             Pair q r ->
               case r of
                 Z0 ->
-                  Pair (coq_ZArith_BinIntDef_Z_opp q) Z0
+                  Pair (corelib_BinNums_IntDef_Z_opp q) Z0
                 Zpos p ->
-                  Pair (coq_ZArith_BinIntDef_Z_opp (coq_ZArith_BinIntDef_Z_add q (Zpos XH))) (coq_ZArith_BinIntDef_Z_add b r)
+                  Pair (corelib_BinNums_IntDef_Z_opp (corelib_BinNums_IntDef_Z_add q (Zpos XH))) (corelib_BinNums_IntDef_Z_add b r)
                 Zneg p ->
-                  Pair (coq_ZArith_BinIntDef_Z_opp (coq_ZArith_BinIntDef_Z_add q (Zpos XH))) (coq_ZArith_BinIntDef_Z_add b r)
+                  Pair (corelib_BinNums_IntDef_Z_opp (corelib_BinNums_IntDef_Z_add q (Zpos XH))) (corelib_BinNums_IntDef_Z_add b r)
     Zneg a2 ->
       case b of
         Z0 ->
           Pair Z0 a
         Zpos p ->
-          case coq_ZArith_BinIntDef_Z_pos_div_eucl a2 b of
+          case corelib_BinNums_IntDef_Z_pos_div_eucl a2 b of
             Pair q r ->
               case r of
                 Z0 ->
-                  Pair (coq_ZArith_BinIntDef_Z_opp q) Z0
+                  Pair (corelib_BinNums_IntDef_Z_opp q) Z0
                 Zpos p2 ->
-                  Pair (coq_ZArith_BinIntDef_Z_opp (coq_ZArith_BinIntDef_Z_add q (Zpos XH))) (coq_ZArith_BinIntDef_Z_sub b r)
+                  Pair (corelib_BinNums_IntDef_Z_opp (corelib_BinNums_IntDef_Z_add q (Zpos XH))) (corelib_BinNums_IntDef_Z_sub b r)
                 Zneg p2 ->
-                  Pair (coq_ZArith_BinIntDef_Z_opp (coq_ZArith_BinIntDef_Z_add q (Zpos XH))) (coq_ZArith_BinIntDef_Z_sub b r)
+                  Pair (corelib_BinNums_IntDef_Z_opp (corelib_BinNums_IntDef_Z_add q (Zpos XH))) (corelib_BinNums_IntDef_Z_sub b r)
         Zneg b2 ->
-          case coq_ZArith_BinIntDef_Z_pos_div_eucl a2 (Zpos b2) of
+          case corelib_BinNums_IntDef_Z_pos_div_eucl a2 (Zpos b2) of
             Pair q r ->
-              Pair q (coq_ZArith_BinIntDef_Z_opp r)
+              Pair q (corelib_BinNums_IntDef_Z_opp r)
 
-coq_ZArith_BinIntDef_Z_div : Z -> Z -> Z
-coq_ZArith_BinIntDef_Z_div a b =
-  case coq_ZArith_BinIntDef_Z_div_eucl a b of
+corelib_BinNums_IntDef_Z_div : Z -> Z -> Z
+corelib_BinNums_IntDef_Z_div a b =
+  case corelib_BinNums_IntDef_Z_div_eucl a b of
     Pair q x ->
       q
 
@@ -478,13 +478,13 @@ conCert_Examples_Escrow_Escrow_buyer s =
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       buyer
 
-coq_PArith_BinPosDef_Pos_eqb : Positive -> Positive -> Bool
-coq_PArith_BinPosDef_Pos_eqb p q =
+corelib_BinNums_PosDef_Pos_eqb : Positive -> Positive -> Bool
+corelib_BinNums_PosDef_Pos_eqb p q =
   case p of
     XI p2 ->
       case q of
         XI q2 ->
-          coq_PArith_BinPosDef_Pos_eqb p2 q2
+          corelib_BinNums_PosDef_Pos_eqb p2 q2
         XO p0 ->
           False
         XH ->
@@ -494,7 +494,7 @@ coq_PArith_BinPosDef_Pos_eqb p q =
         XI p0 ->
           False
         XO q2 ->
-          coq_PArith_BinPosDef_Pos_eqb p2 q2
+          corelib_BinNums_PosDef_Pos_eqb p2 q2
         XH ->
           False
     XH ->
@@ -506,8 +506,8 @@ coq_PArith_BinPosDef_Pos_eqb p q =
         XH ->
           True
 
-coq_ZArith_BinIntDef_Z_eqb : Z -> Z -> Bool
-coq_ZArith_BinIntDef_Z_eqb x y =
+corelib_BinNums_IntDef_Z_eqb : Z -> Z -> Bool
+corelib_BinNums_IntDef_Z_eqb x y =
   case x of
     Z0 ->
       case y of
@@ -522,7 +522,7 @@ coq_ZArith_BinIntDef_Z_eqb x y =
         Z0 ->
           False
         Zpos q ->
-          coq_PArith_BinPosDef_Pos_eqb p q
+          corelib_BinNums_PosDef_Pos_eqb p q
         Zneg p0 ->
           False
     Zneg p ->
@@ -532,7 +532,7 @@ coq_ZArith_BinIntDef_Z_eqb x y =
         Zpos p0 ->
           False
         Zneg q ->
-          coq_PArith_BinPosDef_Pos_eqb p q
+          corelib_BinNums_PosDef_Pos_eqb p q
 
 conCert_Examples_Escrow_Escrow_last_action : State -> Nat
 conCert_Examples_Escrow_Escrow_last_action s =
@@ -574,8 +574,8 @@ conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable : (Z -> Z) -> State 
 conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable f r =
   Build_state (conCert_Examples_Escrow_Escrow_last_action r) (conCert_Examples_Escrow_Escrow_next_step r) (conCert_Examples_Escrow_Escrow_seller r) (conCert_Examples_Escrow_Escrow_buyer r) (conCert_Examples_Escrow_Escrow_seller_withdrawable r) (f (conCert_Examples_Escrow_Escrow_buyer_withdrawable r))
 
-coq_Init_Nat_leb : Nat -> Nat -> Bool
-coq_Init_Nat_leb n m =
+corelib_Init_Nat_leb : Nat -> Nat -> Bool
+corelib_Init_Nat_leb n m =
   case n of
     O ->
       True
@@ -584,23 +584,23 @@ coq_Init_Nat_leb n m =
         O ->
           False
         S m2 ->
-          coq_Init_Nat_leb n2 m2
+          corelib_Init_Nat_leb n2 m2
 
-coq_Init_Nat_ltb : Nat -> Nat -> Bool
-coq_Init_Nat_ltb n m =
-  coq_Init_Nat_leb (S n) m
+corelib_Init_Nat_ltb : Nat -> Nat -> Bool
+corelib_Init_Nat_ltb n m =
+  corelib_Init_Nat_leb (S n) m
 
-coq_Init_Nat_add : Nat -> Nat -> Nat
-coq_Init_Nat_add n m =
+corelib_Init_Nat_add : Nat -> Nat -> Nat
+corelib_Init_Nat_add n m =
   case n of
     O ->
       m
     S p ->
-      S (coq_Init_Nat_add p m)
+      S (corelib_Init_Nat_add p m)
 
-coq_ZArith_BinIntDef_Z_gtb : Z -> Z -> Bool
-coq_ZArith_BinIntDef_Z_gtb x y =
-  case coq_ZArith_BinIntDef_Z_compare x y of
+stdlib_ZArith_BinIntDef_Z_gtb : Z -> Z -> Bool
+stdlib_ZArith_BinIntDef_Z_gtb x y =
+  case corelib_BinNums_IntDef_Z_compare x y of
     Eq ->
       False
     Lt ->
@@ -608,8 +608,8 @@ coq_ZArith_BinIntDef_Z_gtb x y =
     Gt ->
       True
 
-coq_Init_Datatypes_andb : Bool -> Bool -> Bool
-coq_Init_Datatypes_andb b1 b2 =
+corelib_Init_Datatypes_andb : Bool -> Bool -> Bool
+corelib_Init_Datatypes_andb b1 b2 =
   case b1 of
     True ->
       b2
@@ -628,11 +628,11 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                 Ok t ->
                   let
                     item_price =
-                      coq_ZArith_BinIntDef_Z_div t (Zpos (XO XH))
+                      corelib_BinNums_IntDef_Z_div t (Zpos (XO XH))
                   in
                   let
                     expected =
-                      coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XO XH))
+                      corelib_BinNums_IntDef_Z_mul item_price (Zpos (XO XH))
                   in
                   case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
                           True ->
@@ -640,7 +640,7 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                           False ->
                             Err conCert_Examples_Escrow_Escrow_default_error) of
                     Ok t2 ->
-                      case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) expected of
+                      case (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) expected of
                               True ->
                                 Ok Tt
                               False ->
@@ -666,7 +666,7 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
             Buyer_confirm ->
               let
                 item_price =
-                  coq_ZArith_BinIntDef_Z_div (ctx_contract_balance ctx) (Zpos (XO (XO XH)))
+                  corelib_BinNums_IntDef_Z_div (ctx_contract_balance ctx) (Zpos (XO (XO XH)))
               in
               case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
                       True ->
@@ -674,7 +674,7 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                       False ->
                         Err conCert_Examples_Escrow_Escrow_default_error) of
                 Ok t ->
-                  case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) Z0 of
+                  case (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) Z0 of
                           True ->
                             Ok Tt
                           False ->
@@ -682,7 +682,7 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                     Ok t2 ->
                       let
                         new_state =
-                          conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x -> coq_ZArith_BinIntDef_Z_mul item_price (Zpos (XI XH))) (conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x -> item_price) (conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> Withdrawals) state))
+                          conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x -> corelib_BinNums_IntDef_Z_mul item_price (Zpos (XI XH))) (conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x -> item_price) (conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> Withdrawals) state))
                       in
                       Ok (Pair new_state Nil)
                     Err e ->
@@ -696,13 +696,13 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
         Withdraw ->
           case conCert_Examples_Escrow_Escrow_next_step state of
             Buyer_commit ->
-              case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) Z0 of
+              case (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) Z0 of
                       True ->
                         Ok Tt
                       False ->
                         Err conCert_Examples_Escrow_Escrow_default_error) of
                 Ok t ->
-                  case (case coq_Init_Nat_ltb (coq_Init_Nat_add (conCert_Examples_Escrow_Escrow_last_action state) (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S O))))))))))))))))))))))))))))))))))))))))))))))))))) (current_slot chain) of
+                  case (case corelib_Init_Nat_ltb (corelib_Init_Nat_add (conCert_Examples_Escrow_Escrow_last_action state) (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S O))))))))))))))))))))))))))))))))))))))))))))))))))) (current_slot chain) of
                           True ->
                             Err conCert_Examples_Escrow_Escrow_default_error
                           False ->
@@ -728,7 +728,7 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
             Buyer_confirm ->
               Err conCert_Examples_Escrow_Escrow_default_error
             Withdrawals ->
-              case (case coq_ZArith_BinIntDef_Z_eqb (ctx_amount ctx) Z0 of
+              case (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) Z0 of
                       True ->
                         Ok Tt
                       False ->
@@ -750,7 +750,7 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                     Ok t2 ->
                       case t2 of
                         Pair to_pay new_state ->
-                          case (case coq_ZArith_BinIntDef_Z_gtb to_pay Z0 of
+                          case (case stdlib_ZArith_BinIntDef_Z_gtb to_pay Z0 of
                                   True ->
                                     Ok Tt
                                   False ->
@@ -758,7 +758,7 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                             Ok t3 ->
                               let
                                 new_state2 =
-                                  case coq_Init_Datatypes_andb (coq_ZArith_BinIntDef_Z_eqb (conCert_Examples_Escrow_Escrow_buyer_withdrawable new_state) Z0) (coq_ZArith_BinIntDef_Z_eqb (conCert_Examples_Escrow_Escrow_seller_withdrawable new_state) Z0) of
+                                  case corelib_Init_Datatypes_andb (corelib_BinNums_IntDef_Z_eqb (conCert_Examples_Escrow_Escrow_buyer_withdrawable new_state) Z0) (corelib_BinNums_IntDef_Z_eqb (conCert_Examples_Escrow_Escrow_seller_withdrawable new_state) Z0) of
                                     True ->
                                       conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> No_next_step) new_state
                                     False ->
