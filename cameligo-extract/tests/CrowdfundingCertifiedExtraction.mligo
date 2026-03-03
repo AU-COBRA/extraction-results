@@ -95,75 +95,75 @@ let test_account : address = ("tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" : address)
 let init_storage : (timestamp * (tez * address)) =
           (Tezos.get_now (), (42tez,("tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx": address)))
 
-type time_coq = 
-  Time_coq of nat
+type time_rocq = 
+  Time_rocq of nat
 
 
-type msg_coq = 
-  Donate_coq
-| GetFunds_coq
-| Claim_coq
+type msg_rocq = 
+  Donate_rocq
+| GetFunds_rocq
+| Claim_rocq
 
 
-let leb_time (t1 : time_coq) (t2 : time_coq) : bool = 
+let leb_time (t1 : time_rocq) (t2 : time_rocq) : bool = 
 match t1 with 
-Time_coq n10 -> (match t2 with 
-Time_coq n20 -> (lebN n10 n20))
+Time_rocq n10 -> (match t2 with 
+Time_rocq n20 -> (lebN n10 n20))
 
-let update_contribs (f_st : ((time_coq * (tez * address)) * ((address,tez) map * bool))) (cs : (address,tez) map) : ((time_coq * (tez * address)) * ((address,tez) map * bool)) = 
+let update_contribs (f_st : ((time_rocq * (tez * address)) * ((address,tez) map * bool))) (cs : (address,tez) map) : ((time_rocq * (tez * address)) * ((address,tez) map * bool)) = 
 (f_st.0, (cs, f_st.1.1))
 
-let ltb_time (t1 : time_coq) (t2 : time_coq) : bool = 
+let ltb_time (t1 : time_rocq) (t2 : time_rocq) : bool = 
 match t1 with 
-Time_coq n10 -> (match t2 with 
-Time_coq n20 -> (ltbN n10 n20))
+Time_rocq n10 -> (match t2 with 
+Time_rocq n20 -> (ltbN n10 n20))
 
-let maybe_bind_unit (o : unit option) (b : (operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))) option) : (operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))) option = 
+let maybe_bind_unit (o : unit option) (b : (operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))) option) : (operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))) option = 
 match o with 
 Some a -> b
- | None  -> (None:(operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))) option)
+ | None  -> (None:(operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))) option)
 
 let validate (tx_amount : tez) : unit option = 
 if eqTez 0tez tx_amount then Some () else (None:unit option)
 
-let set_done (f_st : ((time_coq * (tez * address)) * ((address,tez) map * bool))) : ((time_coq * (tez * address)) * ((address,tez) map * bool)) = 
+let set_done (f_st : ((time_rocq * (tez * address)) * ((address,tez) map * bool))) : ((time_rocq * (tez * address)) * ((address,tez) map * bool)) = 
 (f_st.0, (f_st.1.0, true))
 
-let receive (m : msg_coq) (s : ((time_coq * (tez * address)) * ((address,tez) map * bool))) (ctx : (time_coq * (address * (tez * tez)))) : (operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))) option = 
+let receive (m : msg_rocq) (s : ((time_rocq * (tez * address)) * ((address,tez) map * bool))) (ctx : (time_rocq * (address * (tez * tez)))) : (operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))) option = 
 match m with 
-Donate_coq  -> (if leb_time ctx.0 s.0.0 then match Map.find_opt ctx.1.0 s.1.0 with 
+Donate_rocq  -> (if leb_time ctx.0 s.0.0 then match Map.find_opt ctx.1.0 s.1.0 with 
 Some v0 -> (Some (([]:operation list), (update_contribs s (Map.add ctx.1.0 (addTez v0 ctx.1.1.0) s.1.0))))
- | None  -> (Some (([]:operation list), (update_contribs s (Map.add ctx.1.0 ctx.1.1.0 s.1.0)))) else (None:(operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))) option))
- | GetFunds_coq  -> (if andb (andb (eq_addr s.0.1.1 ctx.1.0) (ltb_time s.0.0 ctx.0)) (leTez s.0.1.0 ctx.1.1.1) then maybe_bind_unit (validate ctx.1.1.0) (Some ((Tezos.transaction unit ctx.1.1.1 (get_contract_unit ctx.1.0) :: ([]:operation list)), (set_done s))) else (None:(operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))) option))
- | Claim_coq  -> (if andb (andb (ltb_time s.0.0 ctx.0) (ltTez ctx.1.1.1 s.0.1.0)) (not s.1.1) then match Map.find_opt ctx.1.0 s.1.0 with 
+ | None  -> (Some (([]:operation list), (update_contribs s (Map.add ctx.1.0 ctx.1.1.0 s.1.0)))) else (None:(operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))) option))
+ | GetFunds_rocq  -> (if andb (andb (eq_addr s.0.1.1 ctx.1.0) (ltb_time s.0.0 ctx.0)) (leTez s.0.1.0 ctx.1.1.1) then maybe_bind_unit (validate ctx.1.1.0) (Some ((Tezos.transaction unit ctx.1.1.1 (get_contract_unit ctx.1.0) :: ([]:operation list)), (set_done s))) else (None:(operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))) option))
+ | Claim_rocq  -> (if andb (andb (ltb_time s.0.0 ctx.0) (ltTez ctx.1.1.1 s.0.1.0)) (not s.1.1) then match Map.find_opt ctx.1.0 s.1.0 with 
 Some v0 -> (maybe_bind_unit (validate ctx.1.1.0) (Some ((Tezos.transaction unit v0 (get_contract_unit ctx.1.0) :: ([]:operation list)), (update_contribs s (Map.add ctx.1.0 0tez s.1.0)))))
- | None  -> (None:(operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))) option) else (None:(operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))) option))
+ | None  -> (None:(operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))) option) else (None:(operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))) option))
 
 let result_of_option(type t e) (o : t option) (err : e) : (t, e) result = 
 match o with 
 Some a0 -> ((Ok a0):(t, e) result)
  | None  -> ((Err err):(t, e) result)
 
-let crowdfunding_receive_inner (c : chain) (ctx : cctx) (params : msg_coq) (st : ((time_coq * (tez * address)) * ((address,tez) map * bool))) : ((operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))), nat) result = 
-let res = receive params st ((Time_coq (current_slot c)), (((fun (x : address) -> x) (ctx_from ctx)), ((ctx_amount ctx), (ctx_contract_balance ctx)))) in 
+let crowdfunding_receive_inner (c : chain) (ctx : cctx) (params : msg_rocq) (st : ((time_rocq * (tez * address)) * ((address,tez) map * bool))) : ((operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))), nat) result = 
+let res = receive params st ((Time_rocq (current_slot c)), (((fun (x : address) -> x) (ctx_from ctx)), ((ctx_amount ctx), (ctx_contract_balance ctx)))) in 
 result_of_option res 0n
 
-let crowdfunding_receive (c : chain) (ctx : cctx) (st : ((time_coq * (tez * address)) * ((address,tez) map * bool))) (msg : msg_coq option) : ((operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))), nat) result = 
+let crowdfunding_receive (c : chain) (ctx : cctx) (st : ((time_rocq * (tez * address)) * ((address,tez) map * bool))) (msg : msg_rocq option) : ((operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))), nat) result = 
 match msg with 
 Some msg0 -> (crowdfunding_receive_inner c ctx msg0 st)
- | None  -> ((Err 0n):((operation list * ((time_coq * (tez * address)) * ((address,tez) map * bool))), nat) result)
+ | None  -> ((Err 0n):((operation list * ((time_rocq * (tez * address)) * ((address,tez) map * bool))), nat) result)
 
-let init (setup : (time_coq * (tez * address))) : (((time_coq * (tez * address)) * ((address,tez) map * bool)), nat) result = let inner (setup : (time_coq * (tez * address))) :(((time_coq * (tez * address)) * ((address,tez) map * bool)), nat) result = 
-((Ok (setup, ((Map.empty:(address,tez) map), false))):(((time_coq * (tez * address)) * ((address,tez) map * bool)), nat) result) in
+let init (setup : (time_rocq * (tez * address))) : (((time_rocq * (tez * address)) * ((address,tez) map * bool)), nat) result = let inner (setup : (time_rocq * (tez * address))) :(((time_rocq * (tez * address)) * ((address,tez) map * bool)), nat) result = 
+((Ok (setup, ((Map.empty:(address,tez) map), false))):(((time_rocq * (tez * address)) * ((address,tez) map * bool)), nat) result) in
 match (inner setup) with
   Ok v -> Ok v
-| Err e -> (failwith e: (((time_coq * (tez * address)) * ((address,tez) map * bool)), nat) result)
+| Err e -> (failwith e: (((time_rocq * (tez * address)) * ((address,tez) map * bool)), nat) result)
 
-type storage = ((time_coq * (tez * address)) * ((address,tez) map * bool))
+type storage = ((time_rocq * (tez * address)) * ((address,tez) map * bool))
 
 type return = (operation) list * storage
 
-let main (p, st : msg_coq option * storage) : return = 
+let main (p, st : msg_rocq option * storage) : return = 
    (match (crowdfunding_receive dummy_chain cctx_instance  st p) with 
       Ok v -> (v.0, v.1)
     | Err e -> (failwith e : return))

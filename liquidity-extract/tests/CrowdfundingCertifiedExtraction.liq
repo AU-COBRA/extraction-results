@@ -53,10 +53,10 @@ type ('t,'e) result =
 | Err of 'e
 type storage = ((timestamp * (tez * address)) * ((address,tez) map * bool))
 
-type msg_coq = 
-Donate_coq
-| GetFunds_coq
-| Claim_coq
+type msg_rocq = 
+Donate_rocq
+| GetFunds_rocq
+| Claim_rocq
 
 
 type  simpleCallCtx = (timestamp * (address * (tez * tez)))
@@ -75,16 +75,16 @@ let validate (tx_amount : tez) = if eqTez 0DUN tx_amount then Some (()) else Non
 
 let set_done (f_st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) =  (f_st.(0),  (f_st.(1).(0), true))
 
-let receive (m : msg_coq) (s : ((timestamp * (tez * address)) * ((address,tez) map * bool))) (ctx : (timestamp * (address * (tez * tez)))) = match m with 
-Donate_coq  -> (if leb_time ctx.(0) s.(0).(0) then match Map.find ctx.(1).(0) s.(1).(0) with 
+let receive (m : msg_rocq) (s : ((timestamp * (tez * address)) * ((address,tez) map * bool))) (ctx : (timestamp * (address * (tez * tez)))) = match m with 
+Donate_rocq  -> (if leb_time ctx.(0) s.(0).(0) then match Map.find ctx.(1).(0) s.(1).(0) with 
 Some (v0) -> (Some ( ([], (update_contribs s (Map.add ctx.(1).(0) (addTez v0 ctx.(1).(1).(0)) s.(1).(0))))))
  | None  -> (Some ( ([], (update_contribs s (Map.add ctx.(1).(0) ctx.(1).(1).(0) s.(1).(0)))))) else None)
- | GetFunds_coq  -> (if andb (andb (eq_addr s.(0).(1).(1) ctx.(1).(0)) (ltb_time s.(0).(0) ctx.(0))) (leTez s.(0).(1).(0) ctx.(1).(1).(1)) then maybe_bind_unit (validate ctx.(1).(1).(0)) (Some ( ((Contract.call ctx.(1).(0) ctx.(1).(1).(1) default () :: []), (set_done s)))) else None)
- | Claim_coq  -> (if andb (andb (ltb_time s.(0).(0) ctx.(0)) (ltTez ctx.(1).(1).(1) s.(0).(1).(0))) (not s.(1).(1)) then match Map.find ctx.(1).(0) s.(1).(0) with 
+ | GetFunds_rocq  -> (if andb (andb (eq_addr s.(0).(1).(1) ctx.(1).(0)) (ltb_time s.(0).(0) ctx.(0))) (leTez s.(0).(1).(0) ctx.(1).(1).(1)) then maybe_bind_unit (validate ctx.(1).(1).(0)) (Some ( ((Contract.call ctx.(1).(0) ctx.(1).(1).(1) default () :: []), (set_done s)))) else None)
+ | Claim_rocq  -> (if andb (andb (ltb_time s.(0).(0) ctx.(0)) (ltTez ctx.(1).(1).(1) s.(0).(1).(0))) (not s.(1).(1)) then match Map.find ctx.(1).(0) s.(1).(0) with 
 Some (v0) -> (maybe_bind_unit (validate ctx.(1).(1).(0)) (Some ( ((Contract.call ctx.(1).(0) v0 default () :: []), (update_contribs s (Map.add ctx.(1).(0) 0DUN s.(1).(0)))))))
  | None  -> None else None)
 
-let crowdfunding_receive (params : ((timestamp * (address * (tez * tez))) * msg_coq)) (st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) = match receive params.(1) st params.(0) with 
+let crowdfunding_receive (params : ((timestamp * (address * (tez * tez))) * msg_rocq)) (st : ((timestamp * (tez * address)) * ((address,tez) map * bool))) = match receive params.(1) st params.(0) with 
 Some (v0) -> (Ok (v0))
  | None  -> (Err (default_error))
 
