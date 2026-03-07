@@ -189,22 +189,22 @@ pub enum Corelib_Init_Datatypes_list<'a, A> {
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
-pub enum ConCert_Execution_Blockchain_Chain<'a> {
+pub enum ConCert_Execution_BlockchainBase_Chain<'a> {
   build_chain(PhantomData<&'a ()>, u64, u64, u64)
 }
 
-type ConCert_Execution_Blockchain_Address<'a> = concordium_std::Address;
+type ConCert_Execution_BlockchainBase_Address<'a> = concordium_std::Address;
 
-type ConCert_Execution_Blockchain_Amount<'a> = i64;
+type ConCert_Execution_BlockchainBase_Amount<'a> = i64;
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
-pub enum ConCert_Execution_Blockchain_ContractCallContext<'a> {
-  build_ctx(PhantomData<&'a ()>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Amount<'a>, ConCert_Execution_Blockchain_Amount<'a>)
+pub enum ConCert_Execution_BlockchainBase_ContractCallContext<'a> {
+  build_ctx(PhantomData<&'a ()>, ConCert_Execution_BlockchainBase_Address<'a>, ConCert_Execution_BlockchainBase_Address<'a>, ConCert_Execution_BlockchainBase_Address<'a>, ConCert_Execution_BlockchainBase_Amount<'a>, ConCert_Execution_BlockchainBase_Amount<'a>)
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
 pub enum ConCert_Examples_Escrow_Escrow_Setup<'a> {
-  build_setup(PhantomData<&'a ()>, ConCert_Execution_Blockchain_Address<'a>)
+  build_setup(PhantomData<&'a ()>, ConCert_Execution_BlockchainBase_Address<'a>)
 }
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
@@ -217,7 +217,7 @@ pub enum ConCert_Examples_Escrow_Escrow_NextStep<'a> {
 
 #[derive(Clone, ConCertSerial, ConCertDeserial, PartialEq)]
 pub enum ConCert_Examples_Escrow_Escrow_State<'a> {
-  build_state(PhantomData<&'a ()>, u64, &'a ConCert_Examples_Escrow_Escrow_NextStep<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Address<'a>, ConCert_Execution_Blockchain_Amount<'a>, ConCert_Execution_Blockchain_Amount<'a>)
+  build_state(PhantomData<&'a ()>, u64, &'a ConCert_Examples_Escrow_Escrow_NextStep<'a>, ConCert_Execution_BlockchainBase_Address<'a>, ConCert_Execution_BlockchainBase_Address<'a>, ConCert_Execution_BlockchainBase_Amount<'a>, ConCert_Execution_BlockchainBase_Amount<'a>)
 }
 
 type ConCert_Examples_Escrow_Escrow_Error<'a> = u64;
@@ -248,35 +248,35 @@ fn closure<TArg, TRet>(&'a self, F: impl Fn(TArg) -> TRet + 'a) -> &'a dyn Fn(TA
   self.__alloc.alloc(F)
 }
 
-fn ConCert_Execution_Blockchain_ctx_from(&'a self, c: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Execution_BlockchainBase_ctx_from(&'a self, c: &'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>) -> ConCert_Execution_BlockchainBase_Address<'a> {
   match c {
-    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
+    &ConCert_Execution_BlockchainBase_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
       ctx_from
     },
   }
 }
-fn ConCert_Execution_Blockchain_ctx_from__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Execution_BlockchainBase_ctx_from__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>) -> ConCert_Execution_BlockchainBase_Address<'a> {
   self.closure(move |c| {
-    self.ConCert_Execution_Blockchain_ctx_from(
+    self.ConCert_Execution_BlockchainBase_ctx_from(
       c)
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_setup_buyer(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_setup_buyer(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> ConCert_Execution_BlockchainBase_Address<'a> {
   match s {
     &ConCert_Examples_Escrow_Escrow_Setup::build_setup(_, setup_buyer) => {
       setup_buyer
     },
   }
 }
-fn ConCert_Examples_Escrow_Escrow_setup_buyer__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_setup_buyer__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> ConCert_Execution_BlockchainBase_Address<'a> {
   self.closure(move |s| {
     self.ConCert_Examples_Escrow_Escrow_setup_buyer(
       s)
   })
 }
 
-fn ConCert_Execution_Blockchain_address_eqb(&'a self) -> impl Fn(concordium_std::Address) -> &'a dyn Fn(concordium_std::Address) -> bool { move |a| self.alloc(move |b| a == b) }
+fn ConCert_Execution_BlockchainBase_address_eqb(&'a self) -> impl Fn(concordium_std::Address) -> &'a dyn Fn(concordium_std::Address) -> bool { move |a| self.alloc(move |b| a == b) }
 
 fn ConCert_Examples_Escrow_Escrow_default_error(&'a self) -> ConCert_Examples_Escrow_Escrow_Error<'a> {
   __nat_succ(
@@ -294,16 +294,16 @@ fn Corelib_BinNums_IntDef_Z_eqb__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn
   })
 }
 
-fn ConCert_Execution_Blockchain_ctx_amount(&'a self, c: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Execution_BlockchainBase_ctx_amount(&'a self, c: &'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a> {
   match c {
-    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
+    &ConCert_Execution_BlockchainBase_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
       ctx_amount
     },
   }
 }
-fn ConCert_Execution_Blockchain_ctx_amount__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Execution_BlockchainBase_ctx_amount__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a> {
   self.closure(move |c| {
-    self.ConCert_Execution_Blockchain_ctx_amount(
+    self.ConCert_Execution_BlockchainBase_ctx_amount(
       c)
   })
 }
@@ -316,28 +316,28 @@ fn Corelib_BinNums_IntDef_Z_even__curried(&'a self) -> &'a dyn Fn(i64) -> bool {
   })
 }
 
-fn ConCert_Execution_Blockchain_current_slot(&'a self, c: &'a ConCert_Execution_Blockchain_Chain<'a>) -> u64 {
+fn ConCert_Execution_BlockchainBase_current_slot(&'a self, c: &'a ConCert_Execution_BlockchainBase_Chain<'a>) -> u64 {
   match c {
-    &ConCert_Execution_Blockchain_Chain::build_chain(_, chain_height, current_slot, finalized_height) => {
+    &ConCert_Execution_BlockchainBase_Chain::build_chain(_, chain_height, current_slot, finalized_height) => {
       current_slot
     },
   }
 }
-fn ConCert_Execution_Blockchain_current_slot__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_Chain<'a>) -> u64 {
+fn ConCert_Execution_BlockchainBase_current_slot__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_BlockchainBase_Chain<'a>) -> u64 {
   self.closure(move |c| {
-    self.ConCert_Execution_Blockchain_current_slot(
+    self.ConCert_Execution_BlockchainBase_current_slot(
       c)
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_init(&'a self, chain: &'a ConCert_Execution_Blockchain_Chain<'a>, ctx: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>, setup: &'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> Result<&'a ConCert_Examples_Escrow_Escrow_State<'a>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
+fn ConCert_Examples_Escrow_Escrow_init(&'a self, chain: &'a ConCert_Execution_BlockchainBase_Chain<'a>, ctx: &'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>, setup: &'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> Result<&'a ConCert_Examples_Escrow_Escrow_State<'a>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
   let seller =
-    self.ConCert_Execution_Blockchain_ctx_from(
+    self.ConCert_Execution_BlockchainBase_ctx_from(
       ctx);
   let buyer =
     self.ConCert_Examples_Escrow_Escrow_setup_buyer(
       setup);
-  match match self.ConCert_Execution_Blockchain_address_eqb()(
+  match match self.ConCert_Execution_BlockchainBase_address_eqb()(
                 buyer)(
                 seller) {
           true => {
@@ -351,7 +351,7 @@ fn ConCert_Examples_Escrow_Escrow_init(&'a self, chain: &'a ConCert_Execution_Bl
         } {
     Ok(t) => {
       match match self.Corelib_BinNums_IntDef_Z_eqb(
-                    self.ConCert_Execution_Blockchain_ctx_amount(
+                    self.ConCert_Execution_BlockchainBase_ctx_amount(
                       ctx),
                     0) {
               true => {
@@ -365,7 +365,7 @@ fn ConCert_Examples_Escrow_Escrow_init(&'a self, chain: &'a ConCert_Execution_Bl
             } {
         Ok(t2) => {
           match match self.Corelib_BinNums_IntDef_Z_even(
-                        self.ConCert_Execution_Blockchain_ctx_amount(
+                        self.ConCert_Execution_BlockchainBase_ctx_amount(
                           ctx)) {
                   true => {
                     Ok(
@@ -381,7 +381,7 @@ fn ConCert_Examples_Escrow_Escrow_init(&'a self, chain: &'a ConCert_Execution_Bl
                 self.alloc(
                   ConCert_Examples_Escrow_Escrow_State::build_state(
                     PhantomData,
-                    self.ConCert_Execution_Blockchain_current_slot(
+                    self.ConCert_Execution_BlockchainBase_current_slot(
                       chain),
                     self.alloc(
                       ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(
@@ -409,7 +409,7 @@ fn ConCert_Examples_Escrow_Escrow_init(&'a self, chain: &'a ConCert_Execution_Bl
     },
   }
 }
-fn ConCert_Examples_Escrow_Escrow_init__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> Result<&'a ConCert_Examples_Escrow_Escrow_State<'a>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
+fn ConCert_Examples_Escrow_Escrow_init__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_BlockchainBase_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_Setup<'a>) -> Result<&'a ConCert_Examples_Escrow_Escrow_State<'a>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
   self.closure(move |chain| {
     self.closure(move |ctx| {
       self.closure(move |setup| {
@@ -499,7 +499,7 @@ fn Corelib_BinNums_IntDef_Z_sub__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_subAmountOption(&'a self, n: ConCert_Execution_Blockchain_Amount<'a>, m: ConCert_Execution_Blockchain_Amount<'a>) -> Option<ConCert_Execution_Blockchain_Amount<'a>> {
+fn ConCert_Examples_Escrow_Escrow_subAmountOption(&'a self, n: ConCert_Execution_BlockchainBase_Amount<'a>, m: ConCert_Execution_BlockchainBase_Amount<'a>) -> Option<ConCert_Execution_BlockchainBase_Amount<'a>> {
   match self.Corelib_BinNums_IntDef_Z_ltb(
           n,
           m) {
@@ -514,7 +514,7 @@ fn ConCert_Examples_Escrow_Escrow_subAmountOption(&'a self, n: ConCert_Execution
     },
   }
 }
-fn ConCert_Examples_Escrow_Escrow_subAmountOption__curried(&'a self) -> &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> Option<ConCert_Execution_Blockchain_Amount<'a>> {
+fn ConCert_Examples_Escrow_Escrow_subAmountOption__curried(&'a self) -> &'a dyn Fn(ConCert_Execution_BlockchainBase_Amount<'a>) -> &'a dyn Fn(ConCert_Execution_BlockchainBase_Amount<'a>) -> Option<ConCert_Execution_BlockchainBase_Amount<'a>> {
   self.closure(move |n| {
     self.closure(move |m| {
       self.ConCert_Examples_Escrow_Escrow_subAmountOption(
@@ -524,16 +524,16 @@ fn ConCert_Examples_Escrow_Escrow_subAmountOption__curried(&'a self) -> &'a dyn 
   })
 }
 
-fn ConCert_Execution_Blockchain_ctx_contract_balance(&'a self, c: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Execution_BlockchainBase_ctx_contract_balance(&'a self, c: &'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a> {
   match c {
-    &ConCert_Execution_Blockchain_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
+    &ConCert_Execution_BlockchainBase_ContractCallContext::build_ctx(_, ctx_origin, ctx_from, ctx_contract_address, ctx_contract_balance, ctx_amount) => {
       ctx_contract_balance
     },
   }
 }
-fn ConCert_Execution_Blockchain_ctx_contract_balance__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Execution_BlockchainBase_ctx_contract_balance__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a> {
   self.closure(move |c| {
-    self.ConCert_Execution_Blockchain_ctx_contract_balance(
+    self.ConCert_Execution_BlockchainBase_ctx_contract_balance(
       c)
   })
 }
@@ -830,14 +830,14 @@ fn Corelib_BinNums_IntDef_Z_div__curried(&'a self) -> &'a dyn Fn(i64) -> &'a dyn
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_buyer(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_buyer(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_BlockchainBase_Address<'a> {
   match s {
     &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       buyer
     },
   }
 }
-fn ConCert_Examples_Escrow_Escrow_buyer__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_buyer__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_BlockchainBase_Address<'a> {
   self.closure(move |s| {
     self.ConCert_Examples_Escrow_Escrow_buyer(
       s)
@@ -858,42 +858,42 @@ fn ConCert_Examples_Escrow_Escrow_last_action__curried(&'a self) -> &'a dyn Fn(&
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_seller(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_seller(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_BlockchainBase_Address<'a> {
   match s {
     &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       seller
     },
   }
 }
-fn ConCert_Examples_Escrow_Escrow_seller__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Address<'a> {
+fn ConCert_Examples_Escrow_Escrow_seller__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_BlockchainBase_Address<'a> {
   self.closure(move |s| {
     self.ConCert_Examples_Escrow_Escrow_seller(
       s)
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_seller_withdrawable(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Examples_Escrow_Escrow_seller_withdrawable(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a> {
   match s {
     &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       seller_withdrawable
     },
   }
 }
-fn ConCert_Examples_Escrow_Escrow_seller_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Examples_Escrow_Escrow_seller_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a> {
   self.closure(move |s| {
     self.ConCert_Examples_Escrow_Escrow_seller_withdrawable(
       s)
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_buyer_withdrawable(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Examples_Escrow_Escrow_buyer_withdrawable(&'a self, s: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a> {
   match s {
     &ConCert_Examples_Escrow_Escrow_State::build_state(_, last_action, next_step, seller, buyer, seller_withdrawable, buyer_withdrawable) => {
       buyer_withdrawable
     },
   }
 }
-fn ConCert_Examples_Escrow_Escrow_buyer_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_Blockchain_Amount<'a> {
+fn ConCert_Examples_Escrow_Escrow_buyer_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a> {
   self.closure(move |s| {
     self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
       s)
@@ -954,7 +954,7 @@ fn ConCert_Examples_Escrow_Escrow_set_State_next_step__curried(&'a self) -> &'a 
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable(&'a self, f: &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>, r: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable(&'a self, f: &'a dyn Fn(ConCert_Execution_BlockchainBase_Amount<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a>, r: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.alloc(
     ConCert_Examples_Escrow_Escrow_State::build_state(
       PhantomData,
@@ -971,7 +971,7 @@ fn ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable(&'a self, f: &'a
       self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
         r)))
 }
-fn ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(ConCert_Execution_BlockchainBase_Amount<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.closure(move |f| {
     self.closure(move |r| {
       self.ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable(
@@ -981,7 +981,7 @@ fn ConCert_Examples_Escrow_Escrow_set_State_seller_withdrawable__curried(&'a sel
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable(&'a self, f: &'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>, r: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable(&'a self, f: &'a dyn Fn(ConCert_Execution_BlockchainBase_Amount<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a>, r: &'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.alloc(
     ConCert_Examples_Escrow_Escrow_State::build_state(
       PhantomData,
@@ -998,7 +998,7 @@ fn ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable(&'a self, f: &'a 
       hint_app(f)(self.ConCert_Examples_Escrow_Escrow_buyer_withdrawable(
                     r))))
 }
-fn ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(ConCert_Execution_Blockchain_Amount<'a>) -> ConCert_Execution_Blockchain_Amount<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
+fn ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable__curried(&'a self) -> &'a dyn Fn(&'a dyn Fn(ConCert_Execution_BlockchainBase_Amount<'a>) -> ConCert_Execution_BlockchainBase_Amount<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a ConCert_Examples_Escrow_Escrow_State<'a> {
   self.closure(move |f| {
     self.closure(move |r| {
       self.ConCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable(
@@ -1052,7 +1052,7 @@ fn Corelib_Init_Datatypes_andb__curried(&'a self) -> &'a dyn Fn(bool) -> &'a dyn
   })
 }
 
-fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution_Blockchain_Chain<'a>, ctx: &'a ConCert_Execution_Blockchain_ContractCallContext<'a>, state: &'a ConCert_Examples_Escrow_Escrow_State<'a>, msg: Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Result<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Corelib_Init_Datatypes_list<'a, ActionBody<'a>>>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
+fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution_BlockchainBase_Chain<'a>, ctx: &'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>, state: &'a ConCert_Examples_Escrow_Escrow_State<'a>, msg: Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Result<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Corelib_Init_Datatypes_list<'a, ActionBody<'a>>>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
   match msg {
     Some(m) => {
       match m {
@@ -1062,9 +1062,9 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
             &ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(_) => {
               match self.ConCert_Execution_ResultMonad_result_of_option(
                       self.ConCert_Examples_Escrow_Escrow_subAmountOption(
-                        self.ConCert_Execution_Blockchain_ctx_contract_balance(
+                        self.ConCert_Execution_BlockchainBase_ctx_contract_balance(
                           ctx),
-                        self.ConCert_Execution_Blockchain_ctx_amount(
+                        self.ConCert_Execution_BlockchainBase_ctx_amount(
                           ctx)),
                       self.ConCert_Examples_Escrow_Escrow_default_error()) {
                 Ok(t) => {
@@ -1080,8 +1080,8 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                       __Z_frompos(
                         __pos_zerobit(
                           1)));
-                  match match self.ConCert_Execution_Blockchain_address_eqb()(
-                                self.ConCert_Execution_Blockchain_ctx_from(
+                  match match self.ConCert_Execution_BlockchainBase_address_eqb()(
+                                self.ConCert_Execution_BlockchainBase_ctx_from(
                                   ctx))(
                                 self.ConCert_Examples_Escrow_Escrow_buyer(
                                   state)) {
@@ -1096,7 +1096,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                         } {
                     Ok(t2) => {
                       match match self.Corelib_BinNums_IntDef_Z_eqb(
-                                    self.ConCert_Execution_Blockchain_ctx_amount(
+                                    self.ConCert_Execution_BlockchainBase_ctx_amount(
                                       ctx),
                                     expected) {
                               true => {
@@ -1113,7 +1113,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                             __mk_pair(
                               self.ConCert_Examples_Escrow_Escrow_set_State_last_action(
                                 self.closure(move |x| {
-                                  self.ConCert_Execution_Blockchain_current_slot(
+                                  self.ConCert_Execution_BlockchainBase_current_slot(
                                     chain)
                                 }),
                                 self.ConCert_Examples_Escrow_Escrow_set_State_next_step(
@@ -1169,14 +1169,14 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
             &ConCert_Examples_Escrow_Escrow_NextStep::buyer_confirm(_) => {
               let item_price =
                 self.Corelib_BinNums_IntDef_Z_div(
-                  self.ConCert_Execution_Blockchain_ctx_contract_balance(
+                  self.ConCert_Execution_BlockchainBase_ctx_contract_balance(
                     ctx),
                   __Z_frompos(
                     __pos_zerobit(
                       __pos_zerobit(
                         1))));
-              match match self.ConCert_Execution_Blockchain_address_eqb()(
-                            self.ConCert_Execution_Blockchain_ctx_from(
+              match match self.ConCert_Execution_BlockchainBase_address_eqb()(
+                            self.ConCert_Execution_BlockchainBase_ctx_from(
                               ctx))(
                             self.ConCert_Examples_Escrow_Escrow_buyer(
                               state)) {
@@ -1191,7 +1191,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                     } {
                 Ok(t) => {
                   match match self.Corelib_BinNums_IntDef_Z_eqb(
-                                self.ConCert_Execution_Blockchain_ctx_amount(
+                                self.ConCert_Execution_BlockchainBase_ctx_amount(
                                   ctx),
                                 0) {
                           true => {
@@ -1258,7 +1258,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                   state) {
             &ConCert_Examples_Escrow_Escrow_NextStep::buyer_commit(_) => {
               match match self.Corelib_BinNums_IntDef_Z_eqb(
-                            self.ConCert_Execution_Blockchain_ctx_amount(
+                            self.ConCert_Execution_BlockchainBase_ctx_amount(
                               ctx),
                             0) {
                       true => {
@@ -1326,7 +1326,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                                                                                                                                   __nat_succ(
                                                                                                                                     __nat_succ(
                                                                                                                                       0))))))))))))))))))))))))))))))))))))))))))))))))))),
-                                self.ConCert_Execution_Blockchain_current_slot(
+                                self.ConCert_Execution_BlockchainBase_current_slot(
                                   chain)) {
                           true => {
                             Err(
@@ -1338,8 +1338,8 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                           },
                         } {
                     Ok(t2) => {
-                      match match self.ConCert_Execution_Blockchain_address_eqb()(
-                                    self.ConCert_Execution_Blockchain_ctx_from(
+                      match match self.ConCert_Execution_BlockchainBase_address_eqb()(
+                                    self.ConCert_Execution_BlockchainBase_ctx_from(
                                       ctx))(
                                     self.ConCert_Examples_Escrow_Escrow_seller(
                                       state)) {
@@ -1354,7 +1354,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                             } {
                         Ok(t3) => {
                           let balance =
-                            self.ConCert_Execution_Blockchain_ctx_contract_balance(
+                            self.ConCert_Execution_BlockchainBase_ctx_contract_balance(
                               ctx);
                           Ok(
                             __mk_pair(
@@ -1400,7 +1400,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
             },
             &ConCert_Examples_Escrow_Escrow_NextStep::withdrawals(_) => {
               match match self.Corelib_BinNums_IntDef_Z_eqb(
-                            self.ConCert_Execution_Blockchain_ctx_amount(
+                            self.ConCert_Execution_BlockchainBase_ctx_amount(
                               ctx),
                             0) {
                       true => {
@@ -1414,9 +1414,9 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                     } {
                 Ok(t) => {
                   let from =
-                    self.ConCert_Execution_Blockchain_ctx_from(
+                    self.ConCert_Execution_BlockchainBase_ctx_from(
                       ctx);
-                  match match self.ConCert_Execution_Blockchain_address_eqb()(
+                  match match self.ConCert_Execution_BlockchainBase_address_eqb()(
                                 from)(
                                 self.ConCert_Examples_Escrow_Escrow_buyer(
                                   state)) {
@@ -1432,7 +1432,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                                   state)))
                           },
                           false => {
-                            match self.ConCert_Execution_Blockchain_address_eqb()(
+                            match self.ConCert_Execution_BlockchainBase_address_eqb()(
                                     from)(
                                     self.ConCert_Examples_Escrow_Escrow_seller(
                                       state)) {
@@ -1500,7 +1500,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
                                     Corelib_Init_Datatypes_list::cons(
                                       PhantomData,
                                       ActionBody::Transfer(
-                                        self.ConCert_Execution_Blockchain_ctx_from(
+                                        self.ConCert_Execution_BlockchainBase_ctx_from(
                                           ctx),
                                         new_state),
                                       self.alloc(
@@ -1541,7 +1541,7 @@ fn ConCert_Examples_Escrow_Escrow_receive(&'a self, chain: &'a ConCert_Execution
     },
   }
 }
-fn ConCert_Examples_Escrow_Escrow_receive__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_Blockchain_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a dyn Fn(Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Result<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Corelib_Init_Datatypes_list<'a, ActionBody<'a>>>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
+fn ConCert_Examples_Escrow_Escrow_receive__curried(&'a self) -> &'a dyn Fn(&'a ConCert_Execution_BlockchainBase_Chain<'a>) -> &'a dyn Fn(&'a ConCert_Execution_BlockchainBase_ContractCallContext<'a>) -> &'a dyn Fn(&'a ConCert_Examples_Escrow_Escrow_State<'a>) -> &'a dyn Fn(Option<&'a ConCert_Examples_Escrow_Escrow_Msg<'a>>) -> Result<__pair<&'a ConCert_Examples_Escrow_Escrow_State<'a>, &'a Corelib_Init_Datatypes_list<'a, ActionBody<'a>>>, ConCert_Examples_Escrow_Escrow_Error<'a>> {
   self.closure(move |chain| {
     self.closure(move |ctx| {
       self.closure(move |state| {
@@ -1572,14 +1572,14 @@ fn contract_init<StateError: Default>(
             Err(_) => return Err(InitError::DeserialParams)
         };
     let cchain =
-        ConCert_Execution_Blockchain_Chain::build_chain(
+        ConCert_Execution_BlockchainBase_Chain::build_chain(
             PhantomData,
             0, // No chain height
             ctx.metadata().slot_time().timestamp_millis(),
             0 // No finalized height
         );
     let cctx =
-        ConCert_Execution_Blockchain_ContractCallContext::build_ctx(
+        ConCert_Execution_BlockchainBase_ContractCallContext::build_ctx(
             PhantomData,
             Address::Account(ctx.init_origin()),
             Address::Account(ctx.init_origin()),
@@ -1633,7 +1633,7 @@ fn contract_receive<A: HasActions, StateError: Default>(
             Err(_) => return Err(ReceiveError::DeserialOldState)
         };
     let cchain =
-        ConCert_Execution_Blockchain_Chain::build_chain(
+        ConCert_Execution_BlockchainBase_Chain::build_chain(
             PhantomData,
             0, // No chain height
             ctx.metadata().slot_time().timestamp_millis(),
@@ -1647,7 +1647,7 @@ fn contract_receive<A: HasActions, StateError: Default>(
         ctx.self_balance().micro_ccd as i64
     };
     let cctx =
-        ConCert_Execution_Blockchain_ContractCallContext::build_ctx(
+        ConCert_Execution_BlockchainBase_ContractCallContext::build_ctx(
             PhantomData,
             Address::Account(ctx.invoker()),
             ctx.sender(),
