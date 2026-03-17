@@ -73,6 +73,15 @@ conCert_Examples_Escrow_Escrow_next_step s =
     Build_state last_action next_step seller buyer seller_withdrawable buyer_withdrawable ->
       next_step
 
+type Monad m
+  = Build_monad (() -> () -> m) (() -> () -> m -> (() -> m) -> m)
+
+conCert_Execution_Monad_bind : Monad () -> () -> () -> m -> (t -> m) -> m
+conCert_Execution_Monad_bind monad =
+  case monad of
+    Build_monad ret bind ->
+      bind
+
 conCert_Execution_ResultMonad_result_of_option : Option t -> e -> Result t e
 conCert_Execution_ResultMonad_result_of_option o err =
   case o of
@@ -624,35 +633,35 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
         Commit_money ->
           case conCert_Examples_Escrow_Escrow_next_step state of
             Buyer_commit ->
-              case conCert_Execution_ResultMonad_result_of_option (conCert_Examples_Escrow_Escrow_subAmountOption (ctx_contract_balance ctx) (ctx_amount ctx)) conCert_Examples_Escrow_Escrow_default_error of
-                Ok t ->
-                  let
-                    item_price =
-                      corelib_BinNums_IntDef_Z_div t (Zpos (XO XH))
-                  in
-                  let
-                    expected =
-                      corelib_BinNums_IntDef_Z_mul item_price (Zpos (XO XH))
-                  in
-                  case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
-                          True ->
-                            Ok Tt
-                          False ->
-                            Err conCert_Examples_Escrow_Escrow_default_error) of
-                    Ok t2 ->
-                      case (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) expected of
-                              True ->
-                                Ok Tt
-                              False ->
-                                Err conCert_Examples_Escrow_Escrow_default_error) of
-                        Ok t3 ->
-                          Ok (Pair (conCert_Examples_Escrow_Escrow_set_State_last_action (\x -> current_slot chain) (conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> Buyer_confirm) state)) Nil)
-                        Err e ->
-                          Err e
-                    Err e ->
-                      Err e
-                Err e ->
-                  Err e
+              conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                         Ok t2 ->
+                                                                                           f t2
+                                                                                         Err e ->
+                                                                                           Err e)) () () (conCert_Execution_ResultMonad_result_of_option (conCert_Examples_Escrow_Escrow_subAmountOption (ctx_contract_balance ctx) (ctx_amount ctx)) conCert_Examples_Escrow_Escrow_default_error) (\diff_ -> let
+                                                                                                                                                                                                                                                                                                                 item_price =
+                                                                                                                                                                                                                                                                                                                   corelib_BinNums_IntDef_Z_div diff_ (Zpos (XO XH))
+                                                                                                                                                                                                                                                                                                               in
+                                                                                                                                                                                                                                                                                                               let
+                                                                                                                                                                                                                                                                                                                 expected =
+                                                                                                                                                                                                                                                                                                                   corelib_BinNums_IntDef_Z_mul item_price (Zpos (XO XH))
+                                                                                                                                                                                                                                                                                                               in
+                                                                                                                                                                                                                                                                                                               conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                                                                                                                                                                                                                                                                                                                          Ok t2 ->
+                                                                                                                                                                                                                                                                                                                                                                                            f t2
+                                                                                                                                                                                                                                                                                                                                                                                          Err e ->
+                                                                                                                                                                                                                                                                                                                                                                                            Err e)) () () (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
+                                                                                                                                                                                                                                                                                                                                                                                                             True ->
+                                                                                                                                                                                                                                                                                                                                                                                                               Ok Tt
+                                                                                                                                                                                                                                                                                                                                                                                                             False ->
+                                                                                                                                                                                                                                                                                                                                                                                                               Err conCert_Examples_Escrow_Escrow_default_error) (\x -> conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Ok t2 ->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     f t2
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Err e ->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Err e)) () () (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) expected of
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      True ->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Ok Tt
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      False ->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Err conCert_Examples_Escrow_Escrow_default_error) (\x2 -> Ok (Pair (conCert_Examples_Escrow_Escrow_set_State_last_action (\x3 -> current_slot chain) (conCert_Examples_Escrow_Escrow_set_State_next_step (\x3 -> Buyer_confirm) state)) Nil))))
             Buyer_confirm ->
               Err conCert_Examples_Escrow_Escrow_default_error
             Withdrawals ->
@@ -668,27 +677,27 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
                 item_price =
                   corelib_BinNums_IntDef_Z_div (ctx_contract_balance ctx) (Zpos (XO (XO XH)))
               in
-              case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
-                      True ->
-                        Ok Tt
-                      False ->
-                        Err conCert_Examples_Escrow_Escrow_default_error) of
-                Ok t ->
-                  case (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) Z0 of
-                          True ->
-                            Ok Tt
-                          False ->
-                            Err conCert_Examples_Escrow_Escrow_default_error) of
-                    Ok t2 ->
-                      let
-                        new_state =
-                          conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x -> corelib_BinNums_IntDef_Z_mul item_price (Zpos (XI XH))) (conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x -> item_price) (conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> Withdrawals) state))
-                      in
-                      Ok (Pair new_state Nil)
-                    Err e ->
-                      Err e
-                Err e ->
-                  Err e
+              conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                         Ok t2 ->
+                                                                                           f t2
+                                                                                         Err e ->
+                                                                                           Err e)) () () (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_buyer state) of
+                                                                                                            True ->
+                                                                                                              Ok Tt
+                                                                                                            False ->
+                                                                                                              Err conCert_Examples_Escrow_Escrow_default_error) (\x -> conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                                                                                                                                                                                  Ok t2 ->
+                                                                                                                                                                                                                                                    f t2
+                                                                                                                                                                                                                                                  Err e ->
+                                                                                                                                                                                                                                                    Err e)) () () (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) Z0 of
+                                                                                                                                                                                                                                                                     True ->
+                                                                                                                                                                                                                                                                       Ok Tt
+                                                                                                                                                                                                                                                                     False ->
+                                                                                                                                                                                                                                                                       Err conCert_Examples_Escrow_Escrow_default_error) (\x2 -> let
+                                                                                                                                                                                                                                                                                                                                   new_state =
+                                                                                                                                                                                                                                                                                                                                     conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x3 -> corelib_BinNums_IntDef_Z_mul item_price (Zpos (XI XH))) (conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x3 -> item_price) (conCert_Examples_Escrow_Escrow_set_State_next_step (\x3 -> Withdrawals) state))
+                                                                                                                                                                                                                                                                                                                                 in
+                                                                                                                                                                                                                                                                                                                                 Ok (Pair new_state Nil)))
             Withdrawals ->
               Err conCert_Examples_Escrow_Escrow_default_error
             No_next_step ->
@@ -696,81 +705,81 @@ conCert_Examples_Escrow_Escrow_receive chain ctx state msg =
         Withdraw ->
           case conCert_Examples_Escrow_Escrow_next_step state of
             Buyer_commit ->
-              case (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) Z0 of
-                      True ->
-                        Ok Tt
-                      False ->
-                        Err conCert_Examples_Escrow_Escrow_default_error) of
-                Ok t ->
-                  case (case corelib_Init_Nat_ltb (corelib_Init_Nat_add (conCert_Examples_Escrow_Escrow_last_action state) (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S O))))))))))))))))))))))))))))))))))))))))))))))))))) (current_slot chain) of
-                          True ->
-                            Err conCert_Examples_Escrow_Escrow_default_error
-                          False ->
-                            Ok Tt) of
-                    Ok t2 ->
-                      case (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_seller state) of
-                              True ->
-                                Ok Tt
-                              False ->
-                                Err conCert_Examples_Escrow_Escrow_default_error) of
-                        Ok t3 ->
-                          let
-                            balance =
-                              ctx_contract_balance ctx
-                          in
-                          Ok (Pair (conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> No_next_step) state) (Cons (Act_transfer (conCert_Examples_Escrow_Escrow_seller state) balance) Nil))
-                        Err e ->
-                          Err e
-                    Err e ->
-                      Err e
-                Err e ->
-                  Err e
+              conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                         Ok t2 ->
+                                                                                           f t2
+                                                                                         Err e ->
+                                                                                           Err e)) () () (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) Z0 of
+                                                                                                            True ->
+                                                                                                              Ok Tt
+                                                                                                            False ->
+                                                                                                              Err conCert_Examples_Escrow_Escrow_default_error) (\x -> conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                                                                                                                                                                                  Ok t2 ->
+                                                                                                                                                                                                                                                    f t2
+                                                                                                                                                                                                                                                  Err e ->
+                                                                                                                                                                                                                                                    Err e)) () () (case corelib_Init_Nat_ltb (corelib_Init_Nat_add (conCert_Examples_Escrow_Escrow_last_action state) (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S (S O))))))))))))))))))))))))))))))))))))))))))))))))))) (current_slot chain) of
+                                                                                                                                                                                                                                                                     True ->
+                                                                                                                                                                                                                                                                       Err conCert_Examples_Escrow_Escrow_default_error
+                                                                                                                                                                                                                                                                     False ->
+                                                                                                                                                                                                                                                                       Ok Tt) (\x2 -> conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                                                                                                                                                                                                                                                                                                 Ok t2 ->
+                                                                                                                                                                                                                                                                                                                                                                   f t2
+                                                                                                                                                                                                                                                                                                                                                                 Err e ->
+                                                                                                                                                                                                                                                                                                                                                                   Err e)) () () (case Order.eq (ctx_from ctx) (conCert_Examples_Escrow_Escrow_seller state) of
+                                                                                                                                                                                                                                                                                                                                                                                    True ->
+                                                                                                                                                                                                                                                                                                                                                                                      Ok Tt
+                                                                                                                                                                                                                                                                                                                                                                                    False ->
+                                                                                                                                                                                                                                                                                                                                                                                      Err conCert_Examples_Escrow_Escrow_default_error) (\x3 -> let
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  balance =
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    ctx_contract_balance ctx
+                                                                                                                                                                                                                                                                                                                                                                                                                                                in
+                                                                                                                                                                                                                                                                                                                                                                                                                                                Ok (Pair (conCert_Examples_Escrow_Escrow_set_State_next_step (\x4 -> No_next_step) state) (Cons (Act_transfer (conCert_Examples_Escrow_Escrow_seller state) balance) Nil)))))
             Buyer_confirm ->
               Err conCert_Examples_Escrow_Escrow_default_error
             Withdrawals ->
-              case (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) Z0 of
-                      True ->
-                        Ok Tt
-                      False ->
-                        Err conCert_Examples_Escrow_Escrow_default_error) of
-                Ok t ->
-                  let
-                    from =
-                      ctx_from ctx
-                  in
-                  case (case Order.eq from (conCert_Examples_Escrow_Escrow_buyer state) of
-                          True ->
-                            Ok (Pair (conCert_Examples_Escrow_Escrow_buyer_withdrawable state) (conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x -> Z0) state))
-                          False ->
-                            case Order.eq from (conCert_Examples_Escrow_Escrow_seller state) of
-                              True ->
-                                Ok (Pair (conCert_Examples_Escrow_Escrow_seller_withdrawable state) (conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x -> Z0) state))
-                              False ->
-                                Err conCert_Examples_Escrow_Escrow_default_error) of
-                    Ok t2 ->
-                      case t2 of
-                        Pair to_pay new_state ->
-                          case (case stdlib_ZArith_BinIntDef_Z_gtb to_pay Z0 of
-                                  True ->
-                                    Ok Tt
-                                  False ->
-                                    Err conCert_Examples_Escrow_Escrow_default_error) of
-                            Ok t3 ->
-                              let
-                                new_state2 =
-                                  case corelib_Init_Datatypes_andb (corelib_BinNums_IntDef_Z_eqb (conCert_Examples_Escrow_Escrow_buyer_withdrawable new_state) Z0) (corelib_BinNums_IntDef_Z_eqb (conCert_Examples_Escrow_Escrow_seller_withdrawable new_state) Z0) of
-                                    True ->
-                                      conCert_Examples_Escrow_Escrow_set_State_next_step (\x -> No_next_step) new_state
-                                    False ->
-                                      new_state
-                              in
-                              Ok (Pair new_state2 (Cons (Act_transfer (ctx_from ctx) to_pay) Nil))
-                            Err e ->
-                              Err e
-                    Err e ->
-                      Err e
-                Err e ->
-                  Err e
+              conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                         Ok t2 ->
+                                                                                           f t2
+                                                                                         Err e ->
+                                                                                           Err e)) () () (case corelib_BinNums_IntDef_Z_eqb (ctx_amount ctx) Z0 of
+                                                                                                            True ->
+                                                                                                              Ok Tt
+                                                                                                            False ->
+                                                                                                              Err conCert_Examples_Escrow_Escrow_default_error) (\x -> let
+                                                                                                                                                                         from =
+                                                                                                                                                                           ctx_from ctx
+                                                                                                                                                                       in
+                                                                                                                                                                       conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                                                                                                                                                                                  Ok t2 ->
+                                                                                                                                                                                                                                                    f t2
+                                                                                                                                                                                                                                                  Err e ->
+                                                                                                                                                                                                                                                    Err e)) () () (case Order.eq from (conCert_Examples_Escrow_Escrow_buyer state) of
+                                                                                                                                                                                                                                                                     True ->
+                                                                                                                                                                                                                                                                       Ok (Pair (conCert_Examples_Escrow_Escrow_buyer_withdrawable state) (conCert_Examples_Escrow_Escrow_set_State_buyer_withdrawable (\x2 -> Z0) state))
+                                                                                                                                                                                                                                                                     False ->
+                                                                                                                                                                                                                                                                       case Order.eq from (conCert_Examples_Escrow_Escrow_seller state) of
+                                                                                                                                                                                                                                                                         True ->
+                                                                                                                                                                                                                                                                           Ok (Pair (conCert_Examples_Escrow_Escrow_seller_withdrawable state) (conCert_Examples_Escrow_Escrow_set_State_seller_withdrawable (\x2 -> Z0) state))
+                                                                                                                                                                                                                                                                         False ->
+                                                                                                                                                                                                                                                                           Err conCert_Examples_Escrow_Escrow_default_error) (\x2 -> case x2 of
+                                                                                                                                                                                                                                                                                                                                       Pair to_pay new_state ->
+                                                                                                                                                                                                                                                                                                                                         conCert_Execution_Monad_bind (Build_monad (\t t2 -> Ok t2) (\t u mt f -> case mt of
+                                                                                                                                                                                                                                                                                                                                                                                                                    Ok t2 ->
+                                                                                                                                                                                                                                                                                                                                                                                                                      f t2
+                                                                                                                                                                                                                                                                                                                                                                                                                    Err e ->
+                                                                                                                                                                                                                                                                                                                                                                                                                      Err e)) () () (case stdlib_ZArith_BinIntDef_Z_gtb to_pay Z0 of
+                                                                                                                                                                                                                                                                                                                                                                                                                                       True ->
+                                                                                                                                                                                                                                                                                                                                                                                                                                         Ok Tt
+                                                                                                                                                                                                                                                                                                                                                                                                                                       False ->
+                                                                                                                                                                                                                                                                                                                                                                                                                                         Err conCert_Examples_Escrow_Escrow_default_error) (\x3 -> let
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     new_state2 =
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       case corelib_Init_Datatypes_andb (corelib_BinNums_IntDef_Z_eqb (conCert_Examples_Escrow_Escrow_buyer_withdrawable new_state) Z0) (corelib_BinNums_IntDef_Z_eqb (conCert_Examples_Escrow_Escrow_seller_withdrawable new_state) Z0) of
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         True ->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           conCert_Examples_Escrow_Escrow_set_State_next_step (\x4 -> No_next_step) new_state
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         False ->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           new_state
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   in
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Ok (Pair new_state2 (Cons (Act_transfer (ctx_from ctx) to_pay) Nil)))))
             No_next_step ->
               Err conCert_Examples_Escrow_Escrow_default_error
     None ->
