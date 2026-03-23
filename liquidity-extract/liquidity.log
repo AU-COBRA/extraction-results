@@ -7,66 +7,66 @@ unused variable "powInt"
 unused variable "modInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
 unused variable "eqInt"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
+unused variable "powInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
 unused variable "ltInt"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
+unused variable "modInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
 unused variable "mulInt"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
+unused variable "eqInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
 unused variable "snd"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
+unused variable "ltInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq: Warning: 
+unused variable "fst"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
+unused variable "mulInt"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
+unused variable "snd"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
 unused variable "fst"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.65-41.69: Warning: 
 unused variable "ctx'"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.70-52.74: Warning: 
+unused variable "ctx'"
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "exist_"
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "powInt"
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "modInt"
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "eqInt"
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.38-2.43: Warning: 
+Unresolved type 'a. Type variables 'a were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "leInt"
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "mulInt"
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "snd"
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
+unused variable "fst"
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:2.18-2.19: Warning: 
 Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.38-3.43: Warning: 
-Unresolved type 'b. Type variables 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
-unused variable "powInt"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
-unused variable "modInt"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
-unused variable "eqInt"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
-unused variable "ltInt"
-./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.18-3.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
-unused variable "mulInt"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
-unused variable "snd"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq: Warning: 
-unused variable "fst"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.70-52.74: Warning: 
-unused variable "ctx'"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.38-2.43: Warning: 
-Unresolved type 'a. Type variables 'a were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.18-2.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
-unused variable "exist_"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.38-3.43: Warning: 
-Unresolved type 'b. Type variables 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
-unused variable "powInt"
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
-unused variable "modInt"
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
-unused variable "eqInt"
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
-unused variable "leInt"
-./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.18-3.19: Warning: 
-Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
-unused variable "mulInt"
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
-unused variable "snd"
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq: Warning: 
-unused variable "fst"
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.57-54.61: Warning: 
 unused variable "ctx_"
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.38-3.43: Warning: 
+Unresolved type 'b. Type variables 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:2.18-2.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:3.18-3.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.38-3.43: Warning: 
+Unresolved type 'b. Type variables 'b were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:3.18-3.19: Warning: 
+Unresolved type ('a * 'b). Type variables 'a, 'b were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:2.38-2.43: Warning: 
 Unresolved type 'a. Type variables 'a were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:2.18-2.19: Warning: 
@@ -195,7 +195,6 @@ Unresolved type (((int * key_hash) -> 'm5 result)[@closure
                                    :(timestamp * (address * (dun * dun)))]). Type variables 'm5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.liq:41.61-42.10: Warning: 
 Unresolved type 'm5 result. Type variables 'm5 were replaced by unit.
-Main contract CrowdfundingCertifiedExtraction
 ./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:62.18-62.99: Warning: 
 Unresolved type ((int -> (operation list * int))[@closure
                                   :(rocq_msg *
@@ -283,6 +282,11 @@ Unresolved type ((int -> (operation list * int))[@closure
                                           [@closure
                                             :int ->
                                                ((int -> int)[@closure :int])]))]))]). Type variables 'w5 were replaced by unit.
+Main contract CrowdfundingCertifiedExtraction
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.37-55.10: Warning: 
+Unresolved type ((int -> 'e6 result)[@closure :(timestamp * (address * (dun * dun)))]). Type variables 'e6 were replaced by unit.
+./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.53-55.10: Warning: 
+Unresolved type 'e6 result. Type variables 'e6 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:60.18-60.99: Warning: 
 Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@closure
                                                             :(rocq_msg *
@@ -403,16 +407,11 @@ Unresolved type (((int * key_hash) -> (operation list * (int * key_hash)))[@clos
                                                                     rocq_sumbool)
                                                                     [@closure
                                                                     :bool])))]))]). Type variables 'm5 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.37-55.10: Warning: 
-Unresolved type ((int -> 'e6 result)[@closure :(timestamp * (address * (dun * dun)))]). Type variables 'e6 were replaced by unit.
-./tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.liq:54.53-55.10: Warning: 
-Unresolved type 'e6 result. Type variables 'e6 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.37-53.10: Warning: 
 Unresolved type (((int * key_hash) -> 'u5 result)[@closure
                                    :(timestamp * (address * (dun * dun)))]). Type variables 'u5 were replaced by unit.
 ./tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.liq:52.66-53.10: Warning: 
 Unresolved type 'u5 result. Type variables 'u5 were replaced by unit.
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
 unused variable "eqb_time"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
@@ -425,6 +424,7 @@ unused variable "lxorNat"
 unused variable "ltNat"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
 unused variable "leNat"
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
 unused variable "subNat"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
@@ -461,11 +461,11 @@ unused variable "addInt"
 unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq: Warning: 
 unused variable "fst"
+Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.initializer.tz"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:92.4-92.7: Warning: 
 unused variable "snd"
 ./tests/extracted-code/liquidity-extract/tests/CrowdfundingCertifiedExtraction.liq:91.63-91.66: Warning: 
 unused variable "fst"
-Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterSubsetTypes.initializer.tz"
 Storage initializer generated in "tests/extracted-code/liquidity-extract/tests/CounterDepCertifiedLiquidity.initializer.tz"
 File "tests/extracted-code/liquidity-extract/tests/CounterCertifiedLiquidity.tz" generated
 You may want to typecheck with:
